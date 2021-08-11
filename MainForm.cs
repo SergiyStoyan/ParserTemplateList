@@ -309,6 +309,9 @@ namespace Cliver.PdfDocumentParserTemplateList
                     case "Edit2":
                         edit2Template(r);
                         break;
+                    case "Debug":
+                        debugTemplate(r);
+                        break;
                 }
             };
 
@@ -353,6 +356,22 @@ namespace Cliver.PdfDocumentParserTemplateList
             rows2Template2Form[r] = tf;
         }
         Dictionary<DataGridViewRow, Template2Form> rows2Template2Form = new Dictionary<DataGridViewRow, Template2Form>();
+
+
+        virtual protected void debugTemplate(DataGridViewRow r)
+        {
+            Template2 t = (Template2)r.Tag;
+            if (t == null)
+                return;
+
+            DebugForm f = FormManager.Get<DebugForm>(t);
+            if (f == null)
+            {
+                f = new DebugForm();
+            }
+            f.Show();
+            f.Activate();
+        }
 
         //void setButtonColor(DataGridViewRow r)
         //{

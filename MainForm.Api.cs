@@ -312,5 +312,36 @@ namespace Cliver.PdfDocumentParserTemplateList
 
         public event Func<bool> SavingFromGui;
         public event Action Loading2Gui;
+
+        public class FormManager
+        {
+            static Dictionary<Type, Dictionary<Template2, Form>> formTypes2templates2form = new Dictionary<Type, Dictionary<Template2, Form>>();
+
+            static public T Get<T>(Template2 template2) where T : Form
+            {
+                getTemplates2form(typeof(T)).TryGetValue(template2, out Form form);
+                return (T)form;
+            }
+
+            static Dictionary<Template2, Form> getTemplates2form(Type formType)
+            {
+                if (!formTypes2templates2form.TryGetValue(formType, out Dictionary<Template2, Form> templates2form))
+                {
+                    templates2form = new Dictionary<Template2, Form>();
+                    formTypes2templates2form[formType] = templates2form;
+                }
+                return templates2form;
+            }
+
+            static public void Set(Template2 template2, Form form)
+            {
+                Dictionary<Template2, Form> templates2form = getTemplates2form(form.GetType());
+                form.FormClosed += delegate
+                {
+                    templates2form.Remove(template2);
+                };
+                templates2form[template2] = form;
+            }
+        }
     }
 }
