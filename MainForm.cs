@@ -325,38 +325,32 @@ namespace Cliver.PdfDocumentParserTemplateList
 
         virtual protected void edit2Template(DataGridViewRow r)
         {
-            if (rows2Template2Form.TryGetValue(r, out Template2Form tf) && !tf.IsDisposed)
-            {
-                tf.Show();
-                tf.Activate();
-                return;
-            }
-
             Template2 t = (Template2)r.Tag;
             if (t == null)
                 return;
 
-            tf = new Template2Form(t.CreateCloneByJson());
-            tf.FormClosed += delegate
+            Template2Form tf = FormManager.Get<Template2Form>(t);
+            if (tf == null)
             {
-                rows2Template2Form.Remove(r);
-                if (tf.DialogResult != DialogResult.OK)
-                    return;
-                t = tf.Template2;
-                r.Tag = t;
-                r.Cells["Active"].Value = t.Active;
-                r.Cells["Group"].Value = t.Group;
-                r.Cells["Comment"].Value = t.Comment;
-                r.Cells["OrderWeight"].Value = t.OrderWeight;
+                tf = new Template2Form(t.CreateCloneByJson());
+                tf.FormClosed += delegate
+                {
+                    if (tf.DialogResult != DialogResult.OK)
+                        return;
+                    t = tf.Template2;
+                    r.Tag = t;
+                    r.Cells["Active"].Value = t.Active;
+                    r.Cells["Group"].Value = t.Group;
+                    r.Cells["Comment"].Value = t.Comment;
+                    r.Cells["OrderWeight"].Value = t.OrderWeight;
 
-                Settings.TemplateInfo.Touch();
-                //setButtonColor(r);
-            };
+                    Settings.TemplateInfo.Touch();
+                    //setButtonColor(r);
+                };
+            }
             tf.Show();
-            rows2Template2Form[r] = tf;
+            tf.Activate();
         }
-        Dictionary<DataGridViewRow, Template2Form> rows2Template2Form = new Dictionary<DataGridViewRow, Template2Form>();
-
 
         virtual protected void debugTemplate(DataGridViewRow r)
         {
@@ -365,10 +359,8 @@ namespace Cliver.PdfDocumentParserTemplateList
                 return;
 
             DebugForm f = FormManager.Get<DebugForm>(t);
-            if (f == null)
-            {
+            if (f != null)
                 f = new DebugForm();
-            }
             f.Show();
             f.Activate();
         }
@@ -524,7 +516,8 @@ namespace Cliver.PdfDocumentParserTemplateList
                 Row.Cells["Name_"].Value = t.Template.Name;
                 Row.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();
 
-                if (This.rows2Template2Form.TryGetValue(Row, out Template2Form tf))
+                Template2Form tf = FormManager.Get<Template2Form>((Template2)Row.Tag);
+                if (tf != null)
                     tf.Template2 = t.CreateCloneByJson();
             }
         }
