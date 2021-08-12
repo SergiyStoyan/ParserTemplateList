@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B1806527-7726-4214-98D1-E2DE6D248388}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Cliver.PdfDocumentParserTemplateList</RootNamespace>
-    <AssemblyName>PdfDocumentParserTemplateList</AssemblyName>
+    <RootNamespace>Cliver.ParserTemplateList</RootNamespace>
+    <AssemblyName>ParserTemplateList</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

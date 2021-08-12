@@ -10,7 +10,7 @@ using System;
 using System.Reflection;
 using System.Text.RegularExpressions;
 
-namespace Cliver.PdfDocumentParserTemplateList
+namespace Cliver.ParserTemplateList
 {
     public partial class Settings
     {

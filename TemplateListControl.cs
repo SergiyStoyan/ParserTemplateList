@@ -14,7 +14,7 @@ using System.Threading;
 using Cliver.PdfDocumentParser;
 using System.Drawing;
 
-namespace Cliver.PdfDocumentParserTemplateList
+namespace Cliver.ParserTemplateList
 {
     public partial class TemplateListControl : UserControl
     {

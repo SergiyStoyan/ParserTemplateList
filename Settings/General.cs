@@ -5,7 +5,7 @@
 //********************************************************************************************
 using System;
 
-namespace Cliver.PdfDocumentParserTemplateList
+namespace Cliver.ParserTemplateList
 {
     public partial class Settings
     {

@@ -10,7 +10,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Cliver.PdfDocumentParserTemplateList
+namespace Cliver.ParserTemplateList
 {
     public class Template2
     {

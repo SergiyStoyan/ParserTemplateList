@@ -1,4 +1,4 @@
-﻿namespace Cliver.PdfDocumentParserTemplateList
+﻿namespace Cliver.ParserTemplateList
 {
     partial class MainForm
     {
