@@ -325,44 +325,51 @@ namespace Cliver.PdfDocumentParserTemplateList
 
         virtual protected void edit2Template(DataGridViewRow r)
         {
-            Template2 t = (Template2)r.Tag;
-            if (t == null)
+            Template2 t2 = (Template2)r.Tag;
+            if (t2 == null)
                 return;
 
-            Template2Form tf = FormManager.Get<Template2Form>(t);
-            if (tf == null)
+            Template2Form tf = FormManager.Get<Template2Form>(r);
+            if (tf != null)
             {
-                tf = new Template2Form(t.CreateCloneByJson());
-                tf.FormClosed += delegate
-                {
-                    if (tf.DialogResult != DialogResult.OK)
-                        return;
-                    t = tf.Template2;
-                    r.Tag = t;
-                    r.Cells["Active"].Value = t.Active;
-                    r.Cells["Group"].Value = t.Group;
-                    r.Cells["Comment"].Value = t.Comment;
-                    r.Cells["OrderWeight"].Value = t.OrderWeight;
-
-                    Settings.TemplateInfo.Touch();
-                    //setButtonColor(r);
-                };
+                tf.Activate();
+                return;
             }
+            tf = new Template2Form(t2.CreateCloneByJson());
+            FormManager.Set(r, tf);
+            tf.FormClosed += delegate
+            {
+                if (tf.DialogResult != DialogResult.OK)
+                    return;
+                t2 = tf.Template2;
+                r.Tag = t2;
+                r.Cells["Active"].Value = t2.Active;
+                r.Cells["Group"].Value = t2.Group;
+                r.Cells["Comment"].Value = t2.Comment;
+                r.Cells["OrderWeight"].Value = t2.OrderWeight;
+
+                Settings.TemplateInfo.Touch();
+                //setButtonColor(r);
+            };
             tf.Show();
-            tf.Activate();
         }
 
         virtual protected void debugTemplate(DataGridViewRow r)
         {
-            Template2 t = (Template2)r.Tag;
-            if (t == null)
+            Template2 t2 = (Template2)r.Tag;
+            if (t2 == null)
                 return;
 
-            DebugForm f = FormManager.Get<DebugForm>(t);
+            DebugForm f = FormManager.Get<DebugForm>(r);
             if (f != null)
-                f = new DebugForm();
+            {
+                f.Activate();
+                return;
+            }
+            f = new DebugForm();
+            FormManager.Set(r, f);
             f.Show();
-            f.Activate();
+            f.Template2 = t2;
         }
 
         //void setButtonColor(DataGridViewRow r)
@@ -399,13 +406,12 @@ namespace Cliver.PdfDocumentParserTemplateList
 
         virtual protected void editTemplate(DataGridViewRow r)
         {
-            if (rows2TemplateForm.TryGetValue(r, out TemplateForm tf) && !tf.IsDisposed)
+            TemplateForm tf = FormManager.Get<TemplateForm>(r);
+            if (tf != null)
             {
-                tf.Show();
                 tf.Activate();
                 return;
             }
-
             Template2 t = (Template2)r.Tag;
             if (t == null)
             {
@@ -417,37 +423,7 @@ namespace Cliver.PdfDocumentParserTemplateList
             else
             {//synchronize the template with the current format
                 Template2 t0 = Settings.TemplateInfo.CreateInitialTemplate();
-                //for (int i = t.Template.Conditions.Count - 1; i >= 0; i--)
-                //    if (t0.Template.Conditions.Find(a => a.Name == t.Template.Conditions[i].Name) == null)
-                //        t.Template.Conditions.RemoveAt(i);
-                for (int i = 0; i < t0.Template.Conditions.Count; i++)
-                    if (t.Template.Conditions.Find(a => a.Name == t0.Template.Conditions[i].Name) == null)
-                        t.Template.Conditions.Insert(i, t0.Template.Conditions[i]);
-                for (int i = 0; i < t0.Template.Conditions.Count; i++)//ordering
-                    while (t.Template.Conditions[i].Name != t0.Template.Conditions[i].Name)
-                    {
-                        t.Template.Conditions.Add(t.Template.Conditions[i]);
-                        t.Template.Conditions.RemoveAt(i);
-                    }
-
-                //for (int i = t.Template.Fields.Count - 1; i >= 0; i--)
-                //    if (t0.Template.Fields.Find(a => a.Name == t.Template.Fields[i].Name) == null)
-                //        t.Template.Fields.RemoveAt(i);
-                for (int i = 0; i < t0.Template.Fields.Count; i++)
-                    if (t.Template.Fields.Find(a => a.Name == t0.Template.Fields[i].Name) == null)
-                        t.Template.Fields.Add(t0.Template.Fields[i]);
-                int j = 0;
-                for (int i = 0; i < t0.Template.Fields.Count; i++)//ordering
-                {
-                    while (t.Template.Fields[j].Name != t0.Template.Fields[i].Name)
-                    {
-                        t.Template.Fields.Add(t.Template.Fields[j]);
-                        t.Template.Fields.RemoveAt(j);
-                    }
-                    j++;
-                    while (j < t.Template.Fields.Count && t.Template.Fields[j].Name == t0.Template.Fields[i].Name)//there may be maltiple field defintions
-                        j++;
-                }
+                t.Rectify(t0);
             }
 
             string lastTestFile = Settings.LocalInfo.GetInfo(t).LastTestFile;
@@ -462,6 +438,7 @@ namespace Cliver.PdfDocumentParserTemplateList
             );
 
             tf = new TemplateForm(tm);
+            FormManager.Set(r, tf);
             tf.FormClosed += delegate
             {
                 if (tm.LastTestFile != null)
@@ -471,9 +448,7 @@ namespace Cliver.PdfDocumentParserTemplateList
                 }
             };
             tf.Show();
-            rows2TemplateForm[r] = tf;
         }
-        Dictionary<DataGridViewRow, TemplateForm> rows2TemplateForm = new Dictionary<DataGridViewRow, TemplateForm>();
 
         public class TemplateManager : TemplateForm.TemplateManager
         {
@@ -516,7 +491,7 @@ namespace Cliver.PdfDocumentParserTemplateList
                 Row.Cells["Name_"].Value = t.Template.Name;
                 Row.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();
 
-                Template2Form tf = FormManager.Get<Template2Form>((Template2)Row.Tag);
+                Template2Form tf = FormManager.Get<Template2Form>(Row);
                 if (tf != null)
                     tf.Template2 = t.CreateCloneByJson();
             }

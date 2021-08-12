@@ -315,32 +315,38 @@ namespace Cliver.PdfDocumentParserTemplateList
 
         public class FormManager
         {
-            static Dictionary<Type, Dictionary<Template2, Form>> formTypes2templates2form = new Dictionary<Type, Dictionary<Template2, Form>>();
+            static Dictionary<Type, Dictionary<DataGridViewRow, Form>> formTypes2rows2form = new Dictionary<Type, Dictionary<DataGridViewRow, Form>>();
 
-            static public T Get<T>(Template2 template2) where T : Form
+            static public T Get<T>(DataGridViewRow row) where T : Form
             {
-                getTemplates2form(typeof(T)).TryGetValue(template2, out Form form);
+                Dictionary<DataGridViewRow, Form> rows2form = getRows2form(typeof(T));
+                rows2form.TryGetValue(row, out Form form);
+                if (form.IsDisposed)
+                {
+                    rows2form.Remove(row);
+                    form = null;
+                }
                 return (T)form;
             }
 
-            static Dictionary<Template2, Form> getTemplates2form(Type formType)
+            static Dictionary<DataGridViewRow, Form> getRows2form(Type formType)
             {
-                if (!formTypes2templates2form.TryGetValue(formType, out Dictionary<Template2, Form> templates2form))
+                if (!formTypes2rows2form.TryGetValue(formType, out Dictionary<DataGridViewRow, Form> rows2form))
                 {
-                    templates2form = new Dictionary<Template2, Form>();
-                    formTypes2templates2form[formType] = templates2form;
+                    rows2form = new Dictionary<DataGridViewRow, Form>();
+                    formTypes2rows2form[formType] = rows2form;
                 }
-                return templates2form;
+                return rows2form;
             }
 
-            static public void Set(Template2 template2, Form form)
+            static public void Set(DataGridViewRow row, Form form)
             {
-                Dictionary<Template2, Form> templates2form = getTemplates2form(form.GetType());
+                Dictionary<DataGridViewRow, Form> rows2form = getRows2form(form.GetType());
                 form.FormClosed += delegate
                 {
-                    templates2form.Remove(template2);
+                    rows2form.Remove(row);
                 };
-                templates2form[template2] = form;
+                rows2form[row] = form;
             }
         }
     }
