@@ -1,4 +1,10 @@
-﻿using System;
+﻿//********************************************************************************************
+//Author: Sergey Stoyan
+//        sergey.stoyan@gmail.com
+//        sergey.stoyan@hotmail.com
+//        http://www.cliversoft.com
+//********************************************************************************************
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;

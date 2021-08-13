@@ -1,9 +1,9 @@
 //********************************************************************************************
 //Author: Sergey Stoyan
 //        sergey.stoyan@gmail.com
+//        sergey.stoyan@hotmail.com
 //        http://www.cliversoft.com
 //********************************************************************************************
-using Cliver.PdfDocumentParser;
 using System.Collections.Generic;
 using System.Linq;
 using System;

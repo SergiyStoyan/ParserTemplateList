@@ -439,9 +439,9 @@
             this.Name_,
             this.Group,
             this.OrderWeight,
-            this.UsedTime,
+            this.ModifiedTime,
             this.Comment,
-            this.ModifiedTime
+            this.UsedTime
             });
             this.template2s.Location = new System.Drawing.Point(3, 3);
             this.template2s.MultiSelect = false;
