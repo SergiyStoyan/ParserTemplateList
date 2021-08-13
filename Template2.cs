@@ -19,7 +19,7 @@ namespace Cliver.ParserTemplateList
             return (T2)Serialization.Json.Clone(typeof(T2), this);
         }
 
-        public Template Template;
+        public virtual Template Template { get; set; }
 
         public bool Active = true;
         public string Group = "";

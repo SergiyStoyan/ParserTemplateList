@@ -105,7 +105,7 @@ namespace Cliver.ParserTemplateList
             saveTemplates.Enabled = false;
             saveTemplates.Click += delegate
             {
-                saveFromGui(false);
+                SaveFromGui(false);
             };
 
             template2s.CellValidating += delegate (object sender, DataGridViewCellValidatingEventArgs e)
@@ -491,7 +491,7 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        virtual protected bool saveFromGui(bool trueIfDeclined)
+        virtual public bool SaveFromGui(bool trueIfDeclined)
         {
             try
             {

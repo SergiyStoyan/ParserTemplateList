@@ -29,7 +29,7 @@ namespace Cliver.ParserTemplateList
 
             this.templateListControl = templateListControl;
 
-            Template2 = template2;
+            Template2 = template2.CreateCloneByJson();
             Active.Checked = template2.Active;
             Group.Text = template2.Group;
             Comment.Text = template2.Comment;

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class DebugForm<T2> : Form where T2:Template2
+    public partial class DebugForm<T2> : Form where T2 : Template2
     {
         public DebugForm(TemplateListControl<T2> templateListControl)
         {
@@ -31,6 +31,7 @@ namespace Cliver.ParserTemplateList
                 TestFile.Text = templateListControl.LocalInfo.GetInfo(template2).LastTestFile;
                 debug();
             }
+            protected get { return template2; }
         }
         T2 template2;
 
@@ -49,19 +50,18 @@ namespace Cliver.ParserTemplateList
                     return;
                 }
                 Cursor.Current = Cursors.WaitCursor;
-                Result.Text = "";
-                logBox.Text = "";
-                //template2.DocumentParser = null;
-                //FieldValues fieldValues = Pdf.Parser.Parse(TestFile.Text, new List<Template2> { template2 }, true);
-                //if (fieldValues != null)
-                //{
-                //    StringBuilder sb = new StringBuilder();
-                //    foreach (var p in fieldValues.Records.GroupBy(a => a.PageI))
-                //        sb.Append(">>>>  Page " + p.Key + " >>>>\r\n\r\n" + string.Join("\r\n", p.Select(a => a.Item)) + "\r\n\r\n");
-                //    Result.Text = sb.ToString();
-                //}
-                //else
-                //    logBox.Text = "The template could not parse the test file.";
+                debug(out List<List<string>> resultsPages, out string log);
+                logBox.Text = log;
+                if (resultsPages != null)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    string joinString = Result.WordWrap ? "\r\n\r\n" : "\r\n";
+                    for (int i = 0; i < resultsPages.Count; i++)
+                        sb.Append(">>>>  Page " + i + " >>>>\r\n\r\n" + string.Join(joinString, resultsPages[i]) + "\r\n\r\n");
+                    Result.Text = sb.ToString();
+                }
+                else
+                    logBox.Text = "The template could not parse the test file.";
             }
             catch (Exception e)
             {
@@ -73,6 +73,12 @@ namespace Cliver.ParserTemplateList
             {
                 Cursor.Current = Cursors.Default;
             }
+        }
+
+        virtual protected void debug(out List<List<string>> resultsPages, out string log)
+        {
+            resultsPages = new List<List<string>> { new List<string> { "To be overriden." } };
+            log = "To be overriden.";
         }
 
         virtual protected void bDebug_Click(object sender, EventArgs e)
@@ -115,6 +121,11 @@ namespace Cliver.ParserTemplateList
                 System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + Log.Main.File + "\"");
             else
                 System.Diagnostics.Process.Start(Log.RootDir);
+        }
+
+        private void cWrapLines_CheckedChanged(object sender, EventArgs e)
+        {
+            Result.WordWrap = cWrapLines.Checked;
         }
     }
 }

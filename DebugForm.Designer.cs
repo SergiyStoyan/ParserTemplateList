@@ -39,6 +39,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.logBox = new System.Windows.Forms.RichTextBox();
             this.bLog = new System.Windows.Forms.Button();
+            this.cWrapLines = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -91,6 +92,7 @@
             this.flowLayoutPanel1.Controls.Add(this.bDebug);
             this.flowLayoutPanel1.Controls.Add(this.bEdit);
             this.flowLayoutPanel1.Controls.Add(this.bLog);
+            this.flowLayoutPanel1.Controls.Add(this.cWrapLines);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 419);
@@ -161,6 +163,17 @@
             this.logBox.TabIndex = 1;
             this.logBox.Text = "";
             // 
+            // cWrapLines
+            // 
+            this.cWrapLines.AutoSize = true;
+            this.cWrapLines.Location = new System.Drawing.Point(167, 3);
+            this.cWrapLines.Name = "cWrapLines";
+            this.cWrapLines.Size = new System.Drawing.Size(80, 17);
+            this.cWrapLines.TabIndex = 88;
+            this.cWrapLines.Text = "Wrap Lines";
+            this.cWrapLines.UseVisualStyleBackColor = true;
+            this.cWrapLines.CheckedChanged += new System.EventHandler(this.cWrapLines_CheckedChanged);
+            // 
             // bLog
             // 
             this.bLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -196,16 +209,17 @@
 
         #endregion
 
-        private System.Windows.Forms.RichTextBox Result;
+        protected System.Windows.Forms.RichTextBox Result;
         private System.Windows.Forms.Button bTestFile;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox TestFile;
+        protected System.Windows.Forms.TextBox TestFile;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button bClose;
         private System.Windows.Forms.Button bDebug;
         private System.Windows.Forms.Button bEdit;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.RichTextBox logBox;
+        protected System.Windows.Forms.RichTextBox logBox;
         private System.Windows.Forms.Button bLog;
+        protected System.Windows.Forms.CheckBox cWrapLines;
     }
 }

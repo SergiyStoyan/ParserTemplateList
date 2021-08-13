@@ -16,23 +16,23 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl<T2>
+    public partial class TemplateListControl<T2> where T2 : Template2
     {
         #region processorThread
 
         public bool TryLaunchProcessorThread(string progressTask, Func<bool> preProcessorCode, MethodInvoker processorCode/*, Win.ThreadRoutines.ErrorHandler exceptionCode=null*/, MethodInvoker finallyCode = null)
         {
-            if (IsPpocessorThreadRunning)
+            if (IsProcessorRunning)
             {
                 string m = "Processor is running. Would you like to abort it and restart?";
                 Log.Inform(m);
                 if (!Message.YesNo(m, FindForm()))
                     return false;
-                if (!StopPpocessorThread())
+                if (!StopPpocessor())
                     return false;
             }
 
-            if (!saveFromGui(false))
+            if (!SaveFromGui(false))
                 return false;
 
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
@@ -42,7 +42,7 @@ namespace Cliver.ParserTemplateList
             {
                 lProgressTask.Text = progressTask + ":";
             });
-            RunPpocessorThreadFlag = true;
+            RunProcessorFlag = true;
             processorThread = Win.ThreadRoutines.StartTry(
                 processorCode,
                 (Exception e) =>
@@ -63,17 +63,16 @@ namespace Cliver.ParserTemplateList
         }
         Thread processorThread = null;
 
-        public bool RunPpocessorThreadFlag { get; private set; } = false;
-
+        public bool RunProcessorFlag { get; private set; } = false;
 
         public event Action<bool> PpocessorThreadStateChange;
 
-        public bool StopPpocessorThread()
+        public bool StopPpocessor()
         {
-            if (!IsPpocessorThreadRunning)
+            if (!IsProcessorRunning)
                 return true;
             Log.Inform("Stopping processorThread...");
-            RunPpocessorThreadFlag = false;
+            RunProcessorFlag = false;
             if (processorThread.TryAbort(1000))
             {
                 processorThread = null;
@@ -82,10 +81,10 @@ namespace Cliver.ParserTemplateList
                 ThreadRoutines.Start(() => { Message.Inform("TERMINATED...", FindForm()); });
                 PpocessorThreadStateChange?.BeginInvoke(false, null, null);
             }
-            return IsPpocessorThreadRunning;
+            return IsProcessorRunning;
         }
 
-        public bool IsPpocessorThreadRunning
+        public bool IsProcessorRunning
         {
             get
             {
@@ -321,7 +320,7 @@ namespace Cliver.ParserTemplateList
             {
                 Dictionary<DataGridViewRow, Form> rows2form = getRows2form(typeof(T));
                 rows2form.TryGetValue(row, out Form form);
-                if (form.IsDisposed)
+                if (form?.IsDisposed == true)
                 {
                     rows2form.Remove(row);
                     form = null;
