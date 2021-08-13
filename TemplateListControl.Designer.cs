@@ -1,6 +1,6 @@
 ﻿namespace Cliver.ParserTemplateList
 {
-    partial class TemplateListControl<T2>
+    partial class TemplateListControl<Template2T>
     {
         /// <summary> 
         /// Required designer variable.
@@ -364,9 +364,9 @@
             // progress
             // 
             this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.progress.Location = new System.Drawing.Point(3, 480);
+            this.progress.Location = new System.Drawing.Point(3, 475);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(1085, 12);
+            this.progress.Size = new System.Drawing.Size(1087, 12);
             this.progress.TabIndex = 43;
             // 
             // lProgress
@@ -387,10 +387,10 @@
             this.flowLayoutPanel4.Controls.Add(this.lProgressTask);
             this.flowLayoutPanel4.Controls.Add(this.lProgress);
             this.flowLayoutPanel4.Controls.Add(this.lProgressCurrentBlock);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 457);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 452);
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(1085, 17);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(1087, 17);
             this.flowLayoutPanel4.TabIndex = 44;
             // 
             // lProgressTask

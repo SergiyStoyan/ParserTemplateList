@@ -14,9 +14,9 @@ namespace Cliver.ParserTemplateList
 {
     public class Template2
     {
-        public T2 Clone<T2>() where T2 : Template2
+        public Template2T Clone<Template2T>() where Template2T : Template2
         {
-            return (T2)Serialization.Json.Clone(typeof(T2), this);
+            return (Template2T)Serialization.Json.Clone(typeof(Template2T), this);
         }
 
         public virtual Template Template { get; set; }

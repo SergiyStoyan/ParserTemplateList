@@ -11,12 +11,11 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
-using Cliver.PdfDocumentParser;
 using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl<T2> 
+    public partial class TemplateListControl<Template2T> 
     {
         #region processorThread
 
@@ -54,10 +53,10 @@ namespace Cliver.ParserTemplateList
                 () =>
                 {
                     finallyCode?.Invoke();
-                    PpocessorThreadStateChange?.BeginInvoke(false, null, null);
+                    ProcessorStateChange?.BeginInvoke(false, null, null);
                 }
             );
-            PpocessorThreadStateChange?.BeginInvoke(true, null, null);
+            ProcessorStateChange?.BeginInvoke(true, null, null);
 
             return true;
         }
@@ -65,7 +64,7 @@ namespace Cliver.ParserTemplateList
 
         public bool RunProcessorFlag { get; private set; } = false;
 
-        public event Action<bool> PpocessorThreadStateChange;
+        public event Action<bool> ProcessorStateChange;
 
         public bool StopPpocessor()
         {
@@ -79,7 +78,7 @@ namespace Cliver.ParserTemplateList
                 Log.Inform("TERMINATED");
                 SetProgressTask("TERMINATED", Color.Yellow);
                 ThreadRoutines.Start(() => { Message.Inform("TERMINATED...", FindForm()); });
-                PpocessorThreadStateChange?.BeginInvoke(false, null, null);
+                ProcessorStateChange?.BeginInvoke(false, null, null);
             }
             return IsProcessorRunning;
         }

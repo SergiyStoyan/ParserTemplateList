@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class DebugForm<T2> : Form where T2 : Template2
+    abstract public partial class DebugForm<Template2T> : Form where Template2T : Template2
     {
-        public DebugForm(TemplateListControl<T2> templateListControl)
+        public DebugForm(TemplateListControl<Template2T> templateListControl)
         {
             InitializeComponent();
 
@@ -20,9 +20,9 @@ namespace Cliver.ParserTemplateList
 
             this.templateListControl = templateListControl;
         }
-        TemplateListControl<T2> templateListControl;
+        TemplateListControl<Template2T> templateListControl;
 
-        virtual public T2 Template2
+        virtual public Template2T Template2
         {
             set
             {
@@ -33,7 +33,7 @@ namespace Cliver.ParserTemplateList
             }
             protected get { return template2; }
         }
-        T2 template2;
+        Template2T template2;
 
         virtual protected void debug()
         {
@@ -75,11 +75,7 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        virtual protected void debug(out List<List<string>> resultsPages, out string log)
-        {
-            resultsPages = new List<List<string>> { new List<string> { "To be overriden." } };
-            log = "To be overriden.";
-        }
+        abstract protected void debug(out List<List<string>> resultsPages, out string log);
 
         virtual protected void bDebug_Click(object sender, EventArgs e)
         {
@@ -96,7 +92,7 @@ namespace Cliver.ParserTemplateList
             OpenFileDialog d = new OpenFileDialog();
             if (string.IsNullOrWhiteSpace(TestFile.Text))
             {
-                T2 t2 = templateListControl.TemplateInfo.Template2s.OrderByDescending(a => a.ModifiedTime).FirstOrDefault(a =>
+                Template2T t2 = templateListControl.TemplateInfo.Template2s.OrderByDescending(a => a.ModifiedTime).FirstOrDefault(a =>
                 {
                     string tf = templateListControl.LocalInfo.TemplateNames2TemplateInfo[a.Template.Name].LastTestFile;
                     return tf != null && System.IO.File.Exists(tf);

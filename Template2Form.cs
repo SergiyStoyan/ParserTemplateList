@@ -12,9 +12,9 @@ using System.Text;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class Template2Form<T2> : Form where T2 : Template2
+    abstract public partial class Template2Form<Template2T> : Form where Template2T : Template2
     {
-        public Template2Form(T2 template2, List<string> hardcodedDocumentParsers, TemplateListControl<T2> templateListControl)
+        public Template2Form(Template2T template2, List<string> hardcodedDocumentParsers, TemplateListControl<Template2T> templateListControl)
         {
             InitializeComponent();
 
@@ -45,9 +45,9 @@ namespace Cliver.ParserTemplateList
             DocumentParserClass.DataSource = ds;
             DocumentParserClass.SelectedValue = template2.DocumentParserClass;
         }
-        TemplateListControl<T2> templateListControl;
+        TemplateListControl<Template2T> templateListControl;
 
-        virtual public T2 Template2
+        virtual public Template2T Template2
         {
             set
             {
@@ -60,7 +60,7 @@ namespace Cliver.ParserTemplateList
                 return template2;
             }
         }
-        T2 template2;
+        Template2T template2;
 
         virtual protected bool setTemplate2()
         {
@@ -71,9 +71,9 @@ namespace Cliver.ParserTemplateList
                     DocumentParserClassDefinition.Document.MarkerStrategy.RemoveAll(marker => true);
                     try
                     {
-                        //bool documentParserClassDefinitionIsSet = null != Pdf.DocumentParserCompiler.Compile(DocumentParserClassDefinition.Text);//checking
-                        //if (documentParserClassDefinitionIsSet && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
-                        //    throw new Exception("DocumentParser class and its definition cannot be specified at the same time.");
+                        bool documentParserClassDefinitionIsSet = null != compile(DocumentParserClassDefinition.Text);//checking
+                        if (documentParserClassDefinitionIsSet && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
+                            throw new Exception("DocumentParser class and its definition cannot be specified at the same time.");
                     }
                     catch (PdfDocumentParser.Compiler.Exception ex)
                     {
@@ -106,6 +106,8 @@ namespace Cliver.ParserTemplateList
             }
         }
 
+        abstract protected Type compile(string documentParserClassDefinition);
+
         virtual protected void bOK_Click(object sender, EventArgs e)
         {
             if (!setTemplate2())
@@ -131,7 +133,7 @@ namespace Cliver.ParserTemplateList
                 debugForm.BringToFront();
             }
         }
-        protected DebugForm<T2> debugForm = null;
+        protected DebugForm<Template2T> debugForm = null;
     }
 }
 

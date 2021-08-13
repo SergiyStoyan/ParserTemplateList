@@ -12,9 +12,9 @@ using System.Text.RegularExpressions;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public class TemplateInfoSettings<T2> : Cliver.UserSettings where T2 : Template2
+    abstract public class TemplateInfoSettings<Template2T> : Cliver.UserSettings where Template2T : Template2
     {
-        public List<T2> Template2s = new List<T2>();
+        public List<Template2T> Template2s = new List<Template2T>();
 
         protected override void Saving()
         {
@@ -51,6 +51,6 @@ namespace Cliver.ParserTemplateList
             TouchedChanged?.BeginInvoke(null, null);
         }
 
-        abstract public T2 CreateInitialTemplate();
+        abstract public Template2T CreateInitialTemplate();
     }
 }

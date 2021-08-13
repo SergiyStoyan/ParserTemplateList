@@ -16,29 +16,25 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl<T2> : UserControl where T2 : Template2
+    abstract public partial class TemplateListControl<Template2T> : UserControl where Template2T : Template2
     {
+        public abstract TemplateInfoSettings<Template2T> TemplateInfo { get; }
+
+        public abstract LocalInfoSettings<Template2T> LocalInfo { get; }
+
+        public abstract DebugForm<Template2T> NewDebugForm();
+
+        public abstract Template2Form<Template2T> NewTemplate2Form(Template2T template2);
+
         public TemplateListControl()
         {
             InitializeComponent();
-
-            Load += delegate { initialize(); };
         }
 
-        public virtual TemplateInfoSettings<T2> TemplateInfo { get; set; }
-        public virtual LocalInfoSettings<T2> LocalInfo { get; set; }
-
-        public virtual DebugForm<T2> NewDebugForm()
-        {
-            return null;
-        }
-
-        public virtual Template2Form<T2> NewTemplate2Form(T2 template2)
-        {
-            return null;
-        }
-
-        void initialize()
+        /// <summary>
+        /// !!!Should not be called from Load because VS Form Designer fails
+        /// </summary>
+        public void Initialize()
         {
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {
@@ -87,7 +83,7 @@ namespace Cliver.ParserTemplateList
             Selected.ValueType = typeof(bool);
             OrderWeight.ValueType = typeof(float);
 
-            TemplateInfoSettings<T2>.TouchedChanged += delegate ()
+            TemplateInfoSettings<Template2T>.TouchedChanged += delegate ()
             {
                 this.BeginInvoke(() =>
                 {
@@ -274,10 +270,10 @@ namespace Cliver.ParserTemplateList
                         editTemplate(r);
                         break;
                     case "Copy":
-                        T2 t = (T2)r.Tag;
+                        Template2T t = (Template2T)r.Tag;
                         if (t == null)
                             return;
-                        T2 t2 = t.Clone<T2>();
+                        Template2T t2 = t.Clone<Template2T>();
                         t2.Template.Name = "";
                         //t2.Template.Editor.TestFile = null;
                         LocalInfo.SetLastTestFile(t2, LocalInfo.GetInfo(t).LastTestFile);
@@ -303,17 +299,17 @@ namespace Cliver.ParserTemplateList
 
             Load += delegate
             {
-                Load2Gui();
+                //Load2Gui();
             };
         }
 
         virtual protected void edit2Template(DataGridViewRow r)
         {
-            T2 t2 = (T2)r.Tag;
+            Template2T t2 = (Template2T)r.Tag;
             if (t2 == null)
                 return;
 
-            Template2Form<T2> tf = FormManager.Get<Template2Form<T2>>(r);
+            Template2Form<Template2T> tf = FormManager.Get<Template2Form<Template2T>>(r);
             if (tf != null)
             {
                 tf.Activate();
@@ -340,11 +336,11 @@ namespace Cliver.ParserTemplateList
 
         virtual protected void debugTemplate(DataGridViewRow r)
         {
-            T2 t2 = (T2)r.Tag;
+            Template2T t2 = (Template2T)r.Tag;
             if (t2 == null)
                 return;
 
-            DebugForm<T2> f = FormManager.Get<DebugForm<T2>>(r);
+            DebugForm<Template2T> f = FormManager.Get<DebugForm<Template2T>>(r);
             if (f != null)
             {
                 f.Activate();
@@ -396,7 +392,7 @@ namespace Cliver.ParserTemplateList
                 tf.Activate();
                 return;
             }
-            T2 t = (T2)r.Tag;
+            Template2T t = (Template2T)r.Tag;
             if (t == null)
             {
                 t = TemplateInfo.CreateInitialTemplate();
@@ -406,7 +402,7 @@ namespace Cliver.ParserTemplateList
             }
             else
             {//synchronize the template with the current format
-                T2 t0 = TemplateInfo.CreateInitialTemplate();
+                Template2T t0 = TemplateInfo.CreateInitialTemplate();
                 t.Rectify(t0);
             }
 
@@ -437,12 +433,12 @@ namespace Cliver.ParserTemplateList
 
         public class TemplateManager : TemplateForm.TemplateManager
         {
-            public TemplateManager(DataGridViewRow row, Template template, string lastTestFile, string testFileDefaultFolder, TemplateListControl<T2> templateListControl) : base(template, lastTestFile, testFileDefaultFolder)
+            public TemplateManager(DataGridViewRow row, Template template, string lastTestFile, string testFileDefaultFolder, TemplateListControl<Template2T> templateListControl) : base(template, lastTestFile, testFileDefaultFolder)
             {
                 Row = row;
                 this.templateListControl = templateListControl;
             }
-            TemplateListControl<T2> templateListControl;
+            TemplateListControl<Template2T> templateListControl;
 
             static internal DataGridView Templates;
             internal DataGridViewRow Row;
@@ -450,12 +446,12 @@ namespace Cliver.ParserTemplateList
             bool firstSave = true;
             override public void Save()
             {
-                T2 t = (T2)Row.Tag;
+                Template2T t = (Template2T)Row.Tag;
                 if (firstSave && templateListControl.TemplateInfo.Template2s.Where(a => a != t && a.Template.Name == Template.Name).FirstOrDefault() != null)
                     throw new Exception("Template '" + Template.Name + "' already exists.");
                 firstSave = false;
 
-                T2 it = templateListControl.TemplateInfo.CreateInitialTemplate();
+                Template2T it = templateListControl.TemplateInfo.CreateInitialTemplate();
                 foreach (Template.Condition c in it.Template.Conditions)
                     if (Template.Conditions.FirstOrDefault(x => x.Name == c.Name) == null)
                         throw new Exception("The template does not have obligatory condition '" + c.Name + "'.");
@@ -478,7 +474,7 @@ namespace Cliver.ParserTemplateList
                 Row.Cells["Name_"].Value = t.Template.Name;
                 Row.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();
 
-                Template2Form<T2> tf = FormManager.Get<Template2Form<T2>>(Row);
+                Template2Form<Template2T> tf = FormManager.Get<Template2Form<Template2T>>(Row);
                 if (tf != null)
                     tf.Template2 = t.CreateCloneByJson();
             }
@@ -503,7 +499,7 @@ namespace Cliver.ParserTemplateList
                 HashSet<string> templateNames = new HashSet<string>();
                 foreach (DataGridViewRow r in template2s.Rows)
                 {
-                    T2 t = (T2)r.Tag;
+                    Template2T t = (Template2T)r.Tag;
                     if (t == null)
                         continue;
 
@@ -533,7 +529,7 @@ namespace Cliver.ParserTemplateList
                     Loading2Gui?.Invoke();
 
                     template2s.Rows.Clear();
-                    foreach (T2 t in TemplateInfo.Template2s)
+                    foreach (Template2T t in TemplateInfo.Template2s)
                     {
                         if (string.IsNullOrWhiteSpace(t.Template.Name))
                             continue;
