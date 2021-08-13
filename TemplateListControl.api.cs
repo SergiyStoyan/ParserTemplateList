@@ -154,7 +154,7 @@ namespace Cliver.ParserTemplateList
                     if (t == null)
                         continue;
                     bool s = (!activePattern.Enabled || (t.Active == activePattern.Checked))
-                         && (!namePattern.Enabled || (string.IsNullOrEmpty(namePattern.Text) ? string.IsNullOrEmpty(t.Template.Name) : Regex.IsMatch(t.Template.Name, namePattern.Text, RegexOptions.IgnoreCase)))
+                         && (!namePattern.Enabled || (string.IsNullOrEmpty(namePattern.Text) ? string.IsNullOrEmpty(t.Name) : Regex.IsMatch(t.Name, namePattern.Text, RegexOptions.IgnoreCase)))
                          && (!groupPattern.Enabled || (string.IsNullOrEmpty(groupPattern.Text) ? string.IsNullOrEmpty(t.Group) : Regex.IsMatch(t.Group, groupPattern.Text, RegexOptions.IgnoreCase)))
                          && (!commentPattern.Enabled || (string.IsNullOrEmpty(commentPattern.Text) ? string.IsNullOrEmpty(t.Comment) : Regex.IsMatch(t.Comment, commentPattern.Text, RegexOptions.IgnoreCase)))
                          && (!orderWeightPattern2.Enabled || (orderWeight1 <= t.OrderWeight && t.OrderWeight <= orderWeight2));

@@ -37,17 +37,17 @@ namespace Cliver.ParserTemplateList
 
         public TemplateInfo GetInfo(Template2T template2)
         {
-            if (!TemplateNames2TemplateInfo.TryGetValue(template2.Template.Name, out TemplateInfo i))
+            if (!TemplateNames2TemplateInfo.TryGetValue(template2.Name, out TemplateInfo i))
             {
                 i = new TemplateInfo();
-                TemplateNames2TemplateInfo[template2.Template.Name] = i;
+                TemplateNames2TemplateInfo[template2.Name] = i;
             }
             return i;
         }
 
         public void ClearAndSave(TemplateInfoSettings<Template2T> templateInfo)
         {
-            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Template.Name == n).FirstOrDefault() == null).ToList();
+            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Name == n).FirstOrDefault() == null).ToList();
             foreach (string n in deletedTNs)
                 TemplateNames2TemplateInfo.Remove(n);
             Save();

@@ -12,12 +12,14 @@ using System.Reflection;
 
 namespace Cliver.ParserTemplateList
 {
-    public class Template2
+    abstract public class Template2
     {
         public Template2T Clone<Template2T>() where Template2T : Template2
         {
             return (Template2T)Serialization.Json.Clone(typeof(Template2T), this);
         }
+
+        public virtual string Name { get { return Template.Name; } set { Template.Name = value; } }
 
         public virtual Template Template { get; set; }
 
