@@ -12,9 +12,9 @@ using System.Text;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class Template2Form : Form
+    public partial class Template2Form<T2> : Form where T2:Template2
     {
-        public Template2Form(Template2 template2)
+        public Template2Form(T2 template2, TemplateListControl<T2> templateListControl)
         {
             InitializeComponent();
 
@@ -26,6 +26,8 @@ namespace Cliver.ParserTemplateList
                 if (debugForm != null && !debugForm.IsDisposed)
                     debugForm.Close();
             };
+
+            this.templateListControl = templateListControl;
 
             Template2 = template2;
             Active.Checked = template2.Active;
@@ -43,8 +45,9 @@ namespace Cliver.ParserTemplateList
             //DocumentParserClass.DataSource = ds;
             DocumentParserClass.SelectedValue = template2.DocumentParserClass;
         }
+        TemplateListControl<T2> templateListControl;
 
-        virtual public Template2 Template2
+        virtual public T2 Template2
         {
             set
             {
@@ -57,7 +60,7 @@ namespace Cliver.ParserTemplateList
                 return template2;
             }
         }
-        Template2 template2;
+        T2 template2;
 
         virtual protected bool setTemplate2()
         {
@@ -122,13 +125,13 @@ namespace Cliver.ParserTemplateList
             if (setTemplate2())
             {
                 if (debugForm == null || debugForm.IsDisposed)
-                    debugForm = new DebugForm();
+                    debugForm = new DebugForm<T2>(templateListControl);
                 debugForm.Template2 = Template2;
                 debugForm.Show();
                 debugForm.BringToFront();
             }
         }
-        protected DebugForm debugForm = null;
+        protected DebugForm<T2> debugForm = null;
     }
 }
 

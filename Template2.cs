@@ -14,9 +14,9 @@ namespace Cliver.ParserTemplateList
 {
     public class Template2
     {
-        public Template2 Clone()
+        public T2 Clone<T2>() where T2 : Template2
         {
-            return Serialization.Json.Clone(this);
+            return (T2)Serialization.Json.Clone(typeof(T2), this);
         }
 
         public Template Template;
@@ -36,9 +36,8 @@ namespace Cliver.ParserTemplateList
             return ModifiedTime.ToString("yy-MM-dd HH:mm:ss");
         }
 
-        public virtual void Rectify(Template2 initialTemplate)
+        public virtual void Rectify(Template2 t0)
         {
-            Template2 t0 = initialTemplate;
             //for (int i = t.Template.Conditions.Count - 1; i >= 0; i--)
             //    if (t0.Template.Conditions.Find(a => a.Name == t.Template.Conditions[i].Name) == null)
             //        t.Template.Conditions.RemoveAt(i);

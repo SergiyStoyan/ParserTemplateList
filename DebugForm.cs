@@ -10,26 +10,29 @@ using System.Windows.Forms;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class DebugForm : Form
+    public partial class DebugForm<T2> : Form where T2:Template2
     {
-        public DebugForm()
+        public DebugForm(TemplateListControl<T2> templateListControl)
         {
             InitializeComponent();
 
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
-        }
 
-        virtual public Template2 Template2
+            this.templateListControl = templateListControl;
+        }
+        TemplateListControl<T2> templateListControl;
+
+        virtual public T2 Template2
         {
             set
             {
                 template2 = value;
                 Text = Application.ProductName + ": debugging '" + template2.Template.Name + "'";
-                TestFile.Text = Settings.LocalInfo.GetInfo(template2).LastTestFile;
+                TestFile.Text = templateListControl.LocalInfo.GetInfo(template2).LastTestFile;
                 debug();
             }
         }
-        Template2 template2;
+        T2 template2;
 
         virtual protected void debug()
         {
@@ -87,12 +90,12 @@ namespace Cliver.ParserTemplateList
             OpenFileDialog d = new OpenFileDialog();
             if (string.IsNullOrWhiteSpace(TestFile.Text))
             {
-                Template2 t2 = Settings.TemplateInfo.Template2s.OrderByDescending(a => a.ModifiedTime).FirstOrDefault(a =>
+                T2 t2 = templateListControl.TemplateInfo.Template2s.OrderByDescending(a => a.ModifiedTime).FirstOrDefault(a =>
                 {
-                    string tf = Settings.LocalInfo.TemplateNames2TemplateInfo[a.Template.Name].LastTestFile;
+                    string tf = templateListControl.LocalInfo.TemplateNames2TemplateInfo[a.Template.Name].LastTestFile;
                     return tf != null && System.IO.File.Exists(tf);
                 });
-                d.InitialDirectory = t2 != null ? PathRoutines.GetFileDir(Settings.LocalInfo.TemplateNames2TemplateInfo[t2.Template.Name].LastTestFile) : Environment.SpecialFolder.DesktopDirectory.ToString();
+                d.InitialDirectory = t2 != null ? PathRoutines.GetFileDir(templateListControl.LocalInfo.TemplateNames2TemplateInfo[t2.Template.Name].LastTestFile) : Environment.SpecialFolder.DesktopDirectory.ToString();
             }
             else
                 d.InitialDirectory = PathRoutines.GetFileDir(TestFile.Text);
@@ -103,7 +106,7 @@ namespace Cliver.ParserTemplateList
 
         virtual protected void bEdit_Click(object sender, EventArgs e)
         {
-            MainForm.This.EditTemplate(template2.Template.Name);
+            templateListControl.EditTemplate(template2.Template.Name);
         }
 
         virtual protected void bLog_Click(object sender, EventArgs e)

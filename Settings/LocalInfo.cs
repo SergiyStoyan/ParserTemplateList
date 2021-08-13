@@ -10,13 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class Settings
-    {
-        [SettingsAttributes.Config(Optional = true)]
-        public static LocalInfoSettings LocalInfo;
-    }
-
-    abstract public class LocalInfoSettings : Cliver.UserSettings
+    abstract public class LocalInfoSettings<T2> : Cliver.UserSettings where T2 : Template2
     {
         public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo;
 
@@ -31,17 +25,17 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        public void SetLastTestFile(Template2 template2, string lastTestFile)
+        public void SetLastTestFile(T2 template2, string lastTestFile)
         {
             GetInfo(template2).LastTestFile = lastTestFile;
         }
 
-        public void SetUsedTime(Template2 template2)
+        public void SetUsedTime(T2 template2)
         {
             GetInfo(template2).UsedTime = DateTime.Now;
         }
 
-        public TemplateInfo GetInfo(Template2 template2)
+        public TemplateInfo GetInfo(T2 template2)
         {
             if (!TemplateNames2TemplateInfo.TryGetValue(template2.Template.Name, out TemplateInfo i))
             {
@@ -51,9 +45,9 @@ namespace Cliver.ParserTemplateList
             return i;
         }
 
-        public void ClearAndSave()
+        public void ClearAndSave(TemplateInfoSettings<T2> templateInfo)
         {
-            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => Settings.TemplateInfo.Template2s.Where(a => a.Template.Name == n).FirstOrDefault() == null).ToList();
+            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Template.Name == n).FirstOrDefault() == null).ToList();
             foreach (string n in deletedTNs)
                 TemplateNames2TemplateInfo.Remove(n);
             Save();

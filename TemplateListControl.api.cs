@@ -16,11 +16,11 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl
+    public partial class TemplateListControl<T2>
     {
         #region processorThread
 
-        internal bool TryLaunchProcessorThread(string progressTask, Func<bool> preProcessorCode, MethodInvoker processorCode/*, Win.ThreadRoutines.ErrorHandler exceptionCode=null*/, MethodInvoker finallyCode = null)
+        public bool TryLaunchProcessorThread(string progressTask, Func<bool> preProcessorCode, MethodInvoker processorCode/*, Win.ThreadRoutines.ErrorHandler exceptionCode=null*/, MethodInvoker finallyCode = null)
         {
             if (IsPpocessorThreadRunning)
             {
@@ -63,12 +63,12 @@ namespace Cliver.ParserTemplateList
         }
         Thread processorThread = null;
 
-        internal bool RunPpocessorThreadFlag { get; private set; } = false;
+        public bool RunPpocessorThreadFlag { get; private set; } = false;
 
 
         public event Action<bool> PpocessorThreadStateChange;
 
-        internal bool StopPpocessorThread()
+        public bool StopPpocessorThread()
         {
             if (!IsPpocessorThreadRunning)
                 return true;
@@ -85,7 +85,7 @@ namespace Cliver.ParserTemplateList
             return IsPpocessorThreadRunning;
         }
 
-        internal bool IsPpocessorThreadRunning
+        public bool IsPpocessorThreadRunning
         {
             get
             {
@@ -223,21 +223,21 @@ namespace Cliver.ParserTemplateList
                 foreach (DataGridViewRow r in template2s.Rows)
                     if (getBoolValue(r, "Selected"))
                         r.Cells["Active"].Value = activeChange.Checked;
-                Settings.TemplateInfo.Touch();
+                TemplateInfo.Touch();
             };
             applyGroupChange.Click += delegate
             {
                 foreach (DataGridViewRow r in template2s.Rows)
                     if (getBoolValue(r, "Selected"))
                         r.Cells["Group"].Value = groupChange.Text;
-                Settings.TemplateInfo.Touch();
+                TemplateInfo.Touch();
             };
             applyOrderWeightChange.Click += delegate
             {
                 foreach (DataGridViewRow r in template2s.Rows)
                     if (getBoolValue(r, "Selected"))
                         r.Cells["OrderWeight"].Value = (float)orderWeightChange.Value;
-                Settings.TemplateInfo.Touch();
+                TemplateInfo.Touch();
             };
         }
 
