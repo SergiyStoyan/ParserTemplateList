@@ -12,9 +12,9 @@ using System.Text;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class Template2Form<T2> : Form where T2:Template2
+    public partial class Template2Form<T2> : Form where T2 : Template2
     {
-        public Template2Form(T2 template2, TemplateListControl<T2> templateListControl)
+        public Template2Form(T2 template2, List<string> hardcodedDocumentParsers, TemplateListControl<T2> templateListControl)
         {
             InitializeComponent();
 
@@ -40,9 +40,9 @@ namespace Cliver.ParserTemplateList
 
             DocumentParserClass.DisplayMember = "Key";
             DocumentParserClass.ValueMember = "Value";
-            //var ds = Pdf.DocumentParserCompiler.HardcodedDocumentParsers.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
-            //ds.Insert(0, new { Key = "", Value = "" });
-            //DocumentParserClass.DataSource = ds;
+            var ds = hardcodedDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => new { Key = a, Value = a }).ToList();
+            ds.Insert(0, new { Key = "", Value = "" });
+            DocumentParserClass.DataSource = ds;
             DocumentParserClass.SelectedValue = template2.DocumentParserClass;
         }
         TemplateListControl<T2> templateListControl;
@@ -125,7 +125,7 @@ namespace Cliver.ParserTemplateList
             if (setTemplate2())
             {
                 if (debugForm == null || debugForm.IsDisposed)
-                    debugForm = new DebugForm<T2>(templateListControl);
+                    debugForm = templateListControl.NewDebugForm();
                 debugForm.Template2 = Template2;
                 debugForm.Show();
                 debugForm.BringToFront();

@@ -21,16 +21,25 @@ namespace Cliver.ParserTemplateList
         public TemplateListControl()
         {
             InitializeComponent();
+
+            Load += delegate { initialize(); };
         }
 
-        public TemplateInfoSettings<T2> TemplateInfo;
-        public LocalInfoSettings<T2> LocalInfo;
+        public virtual TemplateInfoSettings<T2> TemplateInfo { get; set; }
+        public virtual LocalInfoSettings<T2> LocalInfo { get; set; }
 
-        public void Initialize(TemplateInfoSettings<T2> templateInfo, LocalInfoSettings<T2> localInfo)
+        public virtual DebugForm<T2> NewDebugForm()
         {
-            TemplateInfo = templateInfo;
-            LocalInfo = localInfo;
+            return null;
+        }
 
+        public virtual Template2Form<T2> NewTemplate2Form(T2 template2)
+        {
+            return null;
+        }
+
+        void initialize()
+        {
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {
                 if (e.RowIndex < 0 || e.ColumnIndex < 0)
@@ -54,7 +63,7 @@ namespace Cliver.ParserTemplateList
                     else if (!string.IsNullOrWhiteSpace(Compiler.RemoveComments(t.DocumentParserClassDefinition)))
                         brush = Brushes.LightYellow;
                 }
-                if (e.ColumnIndex == 4)
+                if (e.ColumnIndex == 5)
                 {
                     Template2 t = (Template2)template2s.Rows[e.RowIndex].Tag;
                     if (t == null)
@@ -71,22 +80,6 @@ namespace Cliver.ParserTemplateList
                 e.Paint(e.CellBounds, DataGridViewPaintParts.ContentForeground);
                 e.Handled = true;
             };
-
-            //FormClosing += delegate (object sender, FormClosingEventArgs e)
-            //{
-            //    if (processorThread != null && processorThread.IsAlive)
-            //    {
-            //        string m = "Processing is running. Would you like to abort it?";
-            //        Log.Inform(m);
-            //        if (!Message.YesNo(m, this))
-            //        {
-            //            e.Cancel = true;
-            //            return;
-            //        }
-            //    }
-            //    if (!saveFromGui(true))
-            //        e.Cancel = true;
-            //};
 
             initializeSelectionEngine();
 
@@ -326,7 +319,7 @@ namespace Cliver.ParserTemplateList
                 tf.Activate();
                 return;
             }
-            tf = new Template2Form<T2>(t2.CreateCloneByJson(), this);
+            tf = NewTemplate2Form(t2);
             FormManager.Set(r, tf);
             tf.FormClosed += delegate
             {
@@ -357,7 +350,7 @@ namespace Cliver.ParserTemplateList
                 f.Activate();
                 return;
             }
-            f = new DebugForm<T2>(this);
+            f = NewDebugForm();
             FormManager.Set(r, f);
             f.Show();
             f.Template2 = t2;
@@ -377,7 +370,7 @@ namespace Cliver.ParserTemplateList
         //    //r.Cells["Edit2"].Style.ForeColor = Color.Red;
         //}
 
-        virtual public void EditTemplate(string templateName) 
+        virtual public void EditTemplate(string templateName)
         {
             DataGridViewRow row = null;
             foreach (DataGridViewRow r in template2s.Rows)

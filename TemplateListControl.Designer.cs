@@ -365,9 +365,9 @@
             // progress
             // 
             this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
-            this.progress.Location = new System.Drawing.Point(1, 480);
+            this.progress.Location = new System.Drawing.Point(3, 480);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(1089, 12);
+            this.progress.Size = new System.Drawing.Size(1085, 12);
             this.progress.TabIndex = 43;
             // 
             // lProgress
@@ -388,10 +388,10 @@
             this.flowLayoutPanel4.Controls.Add(this.lProgressTask);
             this.flowLayoutPanel4.Controls.Add(this.lProgress);
             this.flowLayoutPanel4.Controls.Add(this.lProgressCurrentBlock);
-            this.flowLayoutPanel4.Location = new System.Drawing.Point(1, 457);
+            this.flowLayoutPanel4.Location = new System.Drawing.Point(3, 457);
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(1089, 17);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(1085, 17);
             this.flowLayoutPanel4.TabIndex = 44;
             // 
             // lProgressTask
@@ -447,10 +447,11 @@
             this.template2s.Location = new System.Drawing.Point(3, 3);
             this.template2s.MultiSelect = false;
             this.template2s.Name = "template2s";
-            this.template2s.RowHeadersWidth = 102;
+            this.template2s.RowHeadersWidth = 32;
             this.template2s.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.template2s.Size = new System.Drawing.Size(840, 435);
             this.template2s.TabIndex = 45;
+            template2s.RowHeadersVisible = false;
             // 
             // Selected
             // 
