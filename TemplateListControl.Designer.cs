@@ -76,7 +76,6 @@
             this.UsedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ModifiedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.DocumentParserClass = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupChange = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -442,8 +441,8 @@
             this.OrderWeight,
             this.UsedTime,
             this.Comment,
-            this.ModifiedTime,
-            this.DocumentParserClass});
+            this.ModifiedTime
+            });
             this.template2s.Location = new System.Drawing.Point(3, 3);
             this.template2s.MultiSelect = false;
             this.template2s.Name = "template2s";
@@ -562,14 +561,6 @@
             this.ModifiedTime.Name = "ModifiedTime";
             this.ModifiedTime.ReadOnly = true;
             this.ModifiedTime.Width = 72;
-            // 
-            // DocumentParserClass
-            // 
-            this.DocumentParserClass.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.DocumentParserClass.HeaderText = "DocumentParserClass";
-            this.DocumentParserClass.MinimumWidth = 12;
-            this.DocumentParserClass.Name = "DocumentParserClass";
-            this.DocumentParserClass.Width = 136;
             // 
             // groupBox2
             // 
@@ -713,7 +704,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn UsedTime;
         private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
         private System.Windows.Forms.DataGridViewTextBoxColumn ModifiedTime;
-        private System.Windows.Forms.DataGridViewTextBoxColumn DocumentParserClass;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox groupChange;
         private System.Windows.Forms.Label label4;

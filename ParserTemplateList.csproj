@@ -75,6 +75,7 @@
     <EmbeddedResource Include="Template2Form.resx" />
     <EmbeddedResource Include="TemplateListControl.resx">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
