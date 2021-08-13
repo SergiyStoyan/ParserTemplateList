@@ -29,12 +29,11 @@ namespace Cliver.ParserTemplateList
         public TemplateListControl()
         {
             InitializeComponent();
+
+            Load += delegate { initialize(); };
         }
 
-        /// <summary>
-        /// !!!Should not be called from Load because VS Form Designer fails
-        /// </summary>
-        public void Initialize()
+        void initialize()
         {
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {

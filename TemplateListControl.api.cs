@@ -121,12 +121,15 @@ namespace Cliver.ParserTemplateList
             useCommentPattern.CheckedChanged += delegate { commentPattern.Enabled = useCommentPattern.Checked; };
             useOrderWeightPattern.CheckedChanged += delegate { orderWeightPattern1.Enabled = orderWeightPattern2.Enabled = useOrderWeightPattern.Checked; };
 
-            useActivePattern.Checked = Settings.General.UseActiveSelectPattern;
-            useNamePattern.Checked = Settings.General.UseNameSelectPattern;
-            useGroupPattern.Checked = Settings.General.UseGroupSelectPattern;
-            useCommentPattern.Checked = Settings.General.UseCommentSelectPattern;
-            useOrderWeightPattern.Checked = Settings.General.UseOrderWeightPattern;
-            sortSelectedUp.Checked = Settings.General.SortSelectedUp;
+            if (Settings.General != null)//it is NULL when loading in VS Form Designer
+            {
+                useActivePattern.Checked = Settings.General.UseActiveSelectPattern;
+                useNamePattern.Checked = Settings.General.UseNameSelectPattern;
+                useGroupPattern.Checked = Settings.General.UseGroupSelectPattern;
+                useCommentPattern.Checked = Settings.General.UseCommentSelectPattern;
+                useOrderWeightPattern.Checked = Settings.General.UseOrderWeightPattern;
+                sortSelectedUp.Checked = Settings.General.SortSelectedUp;
+            }
 
             void showSelectedCount()
             {
