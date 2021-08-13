@@ -27,7 +27,7 @@ namespace Cliver.ParserTemplateList
             set
             {
                 template2 = value;
-                Text = Application.ProductName + ": debugging '" + template2.Template.Name + "'";
+                Text = Application.ProductName + ": debugging '" + template2.Name + "'";
                 TestFile.Text = templateListControl.LocalInfo.GetInfo(template2).LastTestFile;
                 debug();
             }
@@ -94,10 +94,10 @@ namespace Cliver.ParserTemplateList
             {
                 Template2T t2 = templateListControl.TemplateInfo.Template2s.OrderByDescending(a => a.ModifiedTime).FirstOrDefault(a =>
                 {
-                    string tf = templateListControl.LocalInfo.TemplateNames2TemplateInfo[a.Template.Name].LastTestFile;
+                    string tf = templateListControl.LocalInfo.TemplateNames2TemplateInfo[a.Name].LastTestFile;
                     return tf != null && System.IO.File.Exists(tf);
                 });
-                d.InitialDirectory = t2 != null ? PathRoutines.GetFileDir(templateListControl.LocalInfo.TemplateNames2TemplateInfo[t2.Template.Name].LastTestFile) : Environment.SpecialFolder.DesktopDirectory.ToString();
+                d.InitialDirectory = t2 != null ? PathRoutines.GetFileDir(templateListControl.LocalInfo.TemplateNames2TemplateInfo[t2.Name].LastTestFile) : Environment.SpecialFolder.DesktopDirectory.ToString();
             }
             else
                 d.InitialDirectory = PathRoutines.GetFileDir(TestFile.Text);
@@ -108,7 +108,7 @@ namespace Cliver.ParserTemplateList
 
         virtual protected void bEdit_Click(object sender, EventArgs e)
         {
-            templateListControl.EditTemplate(template2.Template.Name);
+            templateListControl.EditTemplate(template2.Name);
         }
 
         virtual protected void bLog_Click(object sender, EventArgs e)

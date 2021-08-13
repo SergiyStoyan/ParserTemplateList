@@ -19,7 +19,7 @@ namespace Cliver.ParserTemplateList
             InitializeComponent();
 
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
-            Text = Application.ProductName + ": additional properties of '" + template2.Template.Name + "'";
+            Text = Application.ProductName + ": additional properties of '" + template2.Name + "'";
 
             FormClosed += delegate
             {

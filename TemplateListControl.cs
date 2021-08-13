@@ -29,12 +29,11 @@ namespace Cliver.ParserTemplateList
         public TemplateListControl()
         {
             InitializeComponent();
+
+            Load += delegate { initialize(); };
         }
 
-        /// <summary>
-        /// !!!Should not be called from Load because VS Form Designer fails
-        /// </summary>
-        public void Initialize()
+        void initialize()
         {
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {
@@ -172,7 +171,7 @@ namespace Cliver.ParserTemplateList
                     switch (template2s.Columns[e.ColumnIndex].Name)
                     {
                         case "Name_":
-                            t.Template.Name = (string)r.Cells["Name_"].Value;
+                            t.Name = (string)r.Cells["Name_"].Value;
                             break;
                         case "Active":
                             t.Active = (bool)r.Cells["Active"].Value;
@@ -274,13 +273,13 @@ namespace Cliver.ParserTemplateList
                         if (t == null)
                             return;
                         Template2T t2 = t.Clone<Template2T>();
-                        t2.Template.Name = "";
+                        t2.Name = "";
                         //t2.Template.Editor.TestFile = null;
                         LocalInfo.SetLastTestFile(t2, LocalInfo.GetInfo(t).LastTestFile);
                         int i = template2s.Rows.Add(new DataGridViewRow());
                         DataGridViewRow r2 = template2s.Rows[i];
                         r2.Tag = t2;
-                        r2.Cells["Name_"].Value = t2.Template.Name.Trim();
+                        r2.Cells["Name_"].Value = t2.Name.Trim();
                         r2.Cells["Active"].Value = t2.Active;
                         r2.Cells["Group"].Value = t2.Group;
                         r2.Cells["OrderWeight"].Value = t2.OrderWeight;
@@ -374,7 +373,7 @@ namespace Cliver.ParserTemplateList
                 if (r.Tag == null)
                     continue;
                 Template2 t2 = r.Tag as Template2;
-                if (t2.Template.Name == templateName)
+                if (t2.Name == templateName)
                 {
                     row = r;
                     break;
@@ -397,7 +396,7 @@ namespace Cliver.ParserTemplateList
             {
                 t = TemplateInfo.CreateInitialTemplate();
                 if (!string.IsNullOrWhiteSpace((string)r.Cells["Name_"].Value))
-                    t.Template.Name = (string)r.Cells["Name_"].Value;
+                    t.Name = (string)r.Cells["Name_"].Value;
                 r.Tag = t;
             }
             else
@@ -408,7 +407,7 @@ namespace Cliver.ParserTemplateList
 
             string lastTestFile = LocalInfo.GetInfo(t).LastTestFile;
             string testFileDefaultFolder = string.IsNullOrWhiteSpace(lastTestFile) ? TemplateTestFileDefaultFolder : PathRoutines.GetFileDir(lastTestFile);
-            if (string.IsNullOrWhiteSpace(t.Template.Name))//a copy
+            if (string.IsNullOrWhiteSpace(t.Name))//a copy
                 lastTestFile = null;
             TemplateManager tm = new TemplateManager(
                 r,
@@ -447,7 +446,7 @@ namespace Cliver.ParserTemplateList
             override public void Save()
             {
                 Template2T t = (Template2T)Row.Tag;
-                if (firstSave && templateListControl.TemplateInfo.Template2s.Where(a => a != t && a.Template.Name == Template.Name).FirstOrDefault() != null)
+                if (firstSave && templateListControl.TemplateInfo.Template2s.Where(a => a != t && a.Name == Template. Name).FirstOrDefault() != null)
                     throw new Exception("Template '" + Template.Name + "' already exists.");
                 firstSave = false;
 
@@ -471,7 +470,7 @@ namespace Cliver.ParserTemplateList
 
                 templateListControl.TemplateInfo.Touch();
 
-                Row.Cells["Name_"].Value = t.Template.Name;
+                Row.Cells["Name_"].Value = t.Name;
                 Row.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();
 
                 Template2Form<Template2T> tf = FormManager.Get<Template2Form<Template2T>>(Row);
@@ -503,10 +502,10 @@ namespace Cliver.ParserTemplateList
                     if (t == null)
                         continue;
 
-                    if (templateNames.Contains(t.Template.Name))
-                        throw new Exception("Template name '" + t.Template.Name + "' is duplicated!");
+                    if (templateNames.Contains(t.Name))
+                        throw new Exception("Template name '" + t.Name + "' is duplicated!");
                     TemplateInfo.Template2s.Add(t);
-                    templateNames.Add(t.Template.Name);
+                    templateNames.Add(t.Name);
                 }
                 TemplateInfo.Save();
 
@@ -531,11 +530,11 @@ namespace Cliver.ParserTemplateList
                     template2s.Rows.Clear();
                     foreach (Template2T t in TemplateInfo.Template2s)
                     {
-                        if (string.IsNullOrWhiteSpace(t.Template.Name))
+                        if (string.IsNullOrWhiteSpace(t.Name))
                             continue;
                         int i = template2s.Rows.Add(new DataGridViewRow());
                         DataGridViewRow r = template2s.Rows[i];
-                        r.Cells["Name_"].Value = t.Template.Name.Trim();
+                        r.Cells["Name_"].Value = t.Name.Trim();
                         r.Cells["Active"].Value = t.Active;
                         r.Cells["Group"].Value = t.Group;
                         r.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();

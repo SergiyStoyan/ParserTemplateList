@@ -18,7 +18,7 @@ namespace Cliver.ParserTemplateList
 
         protected override void Saving()
         {
-            Template2s.RemoveAll(x => string.IsNullOrWhiteSpace(x.Template.Name));
+            Template2s.RemoveAll(x => string.IsNullOrWhiteSpace(x.Name));
         }
 
         //public void SaveIfTouched()
