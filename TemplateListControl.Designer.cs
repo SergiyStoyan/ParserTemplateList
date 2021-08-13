@@ -364,11 +364,10 @@
             // 
             // progress
             // 
-            this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
             this.progress.Location = new System.Drawing.Point(1, 480);
             this.progress.Name = "progress";
-            this.progress.Size = new System.Drawing.Size(1043, 12);
+            this.progress.Size = new System.Drawing.Size(1089, 12);
             this.progress.TabIndex = 43;
             // 
             // lProgress
@@ -383,7 +382,7 @@
             // 
             // flowLayoutPanel4
             // 
-            this.flowLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.flowLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel4.AutoSize = true;
             this.flowLayoutPanel4.Controls.Add(this.lProgressTask);
@@ -392,7 +391,7 @@
             this.flowLayoutPanel4.Location = new System.Drawing.Point(1, 457);
             this.flowLayoutPanel4.Margin = new System.Windows.Forms.Padding(1);
             this.flowLayoutPanel4.Name = "flowLayoutPanel4";
-            this.flowLayoutPanel4.Size = new System.Drawing.Size(1043, 17);
+            this.flowLayoutPanel4.Size = new System.Drawing.Size(1089, 17);
             this.flowLayoutPanel4.TabIndex = 44;
             // 
             // lProgressTask
@@ -427,8 +426,8 @@
             // 
             // template2s
             // 
-            this.template2s.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.template2s.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.template2s.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.template2s.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
