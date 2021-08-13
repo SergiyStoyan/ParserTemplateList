@@ -19,7 +19,7 @@ namespace Cliver.ParserTemplateList
             return (Template2T)Serialization.Json.Clone(typeof(Template2T), this);
         }
 
-        public virtual string Name { get { return Template.Name; } set { Template.Name = value; } }
+        public string Name { get { return Template.Name; } set { Template.Name = value; } }
 
         public virtual Template Template { get; set; }
 
@@ -31,7 +31,6 @@ namespace Cliver.ParserTemplateList
         public Regex FileFilterRegex = null;
         public string DocumentParserClass = "";
         public string DocumentParserClassDefinition = "";
-        //public string Company;
 
         public string GetModifiedTimeAsString()
         {

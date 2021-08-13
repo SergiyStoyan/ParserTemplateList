@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="TemplateListControl.api.cs">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TemplateListControl.Designer.cs">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
