@@ -87,6 +87,12 @@
     <Compile Include="DebugForm.Designer.cs">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FileFilterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FileFilterForm.Designer.cs">
+      <DependentUpon>FileFilterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Settings\General.cs" />
     <Compile Include="Settings\LocalInfo.cs" />
     <Compile Include="Settings\TemplateInfo.cs" />
@@ -114,6 +120,9 @@
     <EmbeddedResource Include="DebugForm.resx">
       <DependentUpon>DebugForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileFilterForm.resx">
+      <DependentUpon>FileFilterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Template2Form.resx">
       <DependentUpon>Template2Form.cs</DependentUpon>
