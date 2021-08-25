@@ -27,7 +27,7 @@ namespace Cliver.ParserTemplateList
                 Log.Inform(m);
                 if (!Message.YesNo(m, FindForm()))
                     return false;
-                if (!StopPpocessor())
+                if (!StopProcessor())
                     return false;
             }
 
@@ -66,7 +66,7 @@ namespace Cliver.ParserTemplateList
 
         public event Action<bool> ProcessorStateChange;
 
-        public bool StopPpocessor()
+        public bool StopProcessor()
         {
             if (!IsProcessorRunning)
                 return true;
