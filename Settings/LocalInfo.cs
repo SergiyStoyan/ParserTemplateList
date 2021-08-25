@@ -13,7 +13,7 @@ namespace Cliver.ParserTemplateList
 {
     abstract public class LocalInfoSettings<Template2T> : Cliver.UserSettings where Template2T : Template2
     {
-        public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo;
+        public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
 
         public class TemplateInfo
         {

@@ -20,6 +20,7 @@ namespace Cliver.ParserTemplateList
             return (Template2T)Serialization.Json.Clone(typeof(Template2T), this);
         }
 
+        [Newtonsoft.Json.JsonIgnore]
         public string Name { get { return Template.Name; } set { Template.Name = value; } }
 
         public virtual Template Template { get; set; }
