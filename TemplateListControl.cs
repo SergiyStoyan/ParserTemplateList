@@ -219,8 +219,6 @@ namespace Cliver.ParserTemplateList
                 TemplateInfo.Touch();
             };
 
-            TemplateManager.Templates = template2s;
-
             template2s.SelectionChanged += delegate (object sender, EventArgs e)
             {
                 //if (templates.SelectedRows.Count < 1)
@@ -439,8 +437,6 @@ namespace Cliver.ParserTemplateList
                 this.templateListControl = templateListControl;
             }
             TemplateListControl<Template2T> templateListControl;
-
-            static internal DataGridView Templates;
             internal DataGridViewRow Row;
 
             bool firstSave = true;
