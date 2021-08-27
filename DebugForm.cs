@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -56,17 +55,10 @@ namespace Cliver.ParserTemplateList
                     return;
                 }
                 Cursor.Current = Cursors.WaitCursor;
-                debug(out List<List<string>> resultsPages, out string log);
+                debug(out string result, out string log);
+                Result.Text = result;
                 logBox.Text = log;
-                if (resultsPages != null)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    string joinString = Result.WordWrap ? "\r\n\r\n" : "\r\n";
-                    for (int i = 0; i < resultsPages.Count; i++)
-                        sb.Append(">>>>  Page " + i + " >>>>\r\n\r\n" + string.Join(joinString, resultsPages[i]) + "\r\n\r\n");
-                    Result.Text = sb.ToString();
-                }
-                else
+                if (result == null && log == null)
                     logBox.Text = "The template could not parse the test file.";
             }
             catch (Exception e)
@@ -81,7 +73,7 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        abstract protected void debug(out List<List<string>> resultsPages, out string log);
+        abstract protected void debug(out string result, out string log);
 
         virtual protected void bDebug_Click(object sender, EventArgs e)
         {
