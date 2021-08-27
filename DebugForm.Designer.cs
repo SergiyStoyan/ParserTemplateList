@@ -37,7 +37,7 @@
             this.bDebug = new System.Windows.Forms.Button();
             this.bEdit = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.logBox = new System.Windows.Forms.RichTextBox();
+            this.LogBox = new System.Windows.Forms.RichTextBox();
             this.bLog = new System.Windows.Forms.Button();
             this.cWrapLines = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
@@ -148,20 +148,20 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.logBox);
+            this.splitContainer1.Panel2.Controls.Add(this.LogBox);
             this.splitContainer1.Size = new System.Drawing.Size(574, 384);
             this.splitContainer1.SplitterDistance = 339;
             this.splitContainer1.TabIndex = 66;
             // 
-            // logBox
+            // LogBox
             // 
-            this.logBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logBox.Location = new System.Drawing.Point(0, 0);
-            this.logBox.Name = "logBox";
-            this.logBox.ReadOnly = true;
-            this.logBox.Size = new System.Drawing.Size(574, 41);
-            this.logBox.TabIndex = 1;
-            this.logBox.Text = "";
+            this.LogBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.LogBox.Location = new System.Drawing.Point(0, 0);
+            this.LogBox.Name = "LogBox";
+            this.LogBox.ReadOnly = true;
+            this.LogBox.Size = new System.Drawing.Size(574, 41);
+            this.LogBox.TabIndex = 1;
+            this.LogBox.Text = "";
             // 
             // cWrapLines
             // 
@@ -218,7 +218,7 @@
         private System.Windows.Forms.Button bDebug;
         private System.Windows.Forms.Button bEdit;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        protected System.Windows.Forms.RichTextBox logBox;
+        protected System.Windows.Forms.RichTextBox LogBox;
         private System.Windows.Forms.Button bLog;
         protected System.Windows.Forms.CheckBox cWrapLines;
     }
