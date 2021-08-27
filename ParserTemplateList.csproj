@@ -90,6 +90,7 @@
     <Compile Include="DebugForm.Designer.cs">
       <DependentUpon>DebugForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="DocumentParserCompiler.cs" />
     <Compile Include="FileFilterForm.cs">
       <SubType>Form</SubType>
     </Compile>
