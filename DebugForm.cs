@@ -24,6 +24,8 @@ namespace Cliver.ParserTemplateList
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
 
             this.templateListControl = templateListControl;
+
+            cWrapLines_CheckedChanged(null, null);
         }
         TemplateListControl<Template2T> templateListControl;
 

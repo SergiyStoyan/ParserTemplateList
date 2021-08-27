@@ -40,7 +40,7 @@ namespace Cliver.ParserTemplateList
             get
             {
                 if (hardcodedDocumentParsers == null)
-                    hardcodedDocumentParsers = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
+                    hardcodedDocumentParsers = Assembly.GetCallingAssembly().GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
                 return hardcodedDocumentParsers;
             }
         }
