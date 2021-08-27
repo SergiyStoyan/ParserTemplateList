@@ -59,15 +59,15 @@ namespace Cliver.ParserTemplateList
                 Cursor.Current = Cursors.WaitCursor;
                 debug(out string result, out string log);
                 Result.Text = result;
-                logBox.Text = log;
+                LogBox.Text = log;
                 if (result == null && log == null)
-                    logBox.Text = "The template could not parse the test file.";
+                    LogBox.Text = "The template could not parse the test file.";
             }
             catch (Exception e)
             {
                 Log.Error(e);
                 //Message.Error(e);
-                logBox.Text = Log.GetExceptionMessage(e, !(e is Exception2));
+                LogBox.Text = Log.GetExceptionMessage(e, !(e is Exception2));
             }
             finally
             {

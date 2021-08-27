@@ -219,24 +219,6 @@ namespace Cliver.ParserTemplateList
                 TemplateInfo.Touch();
             };
 
-            template2s.SelectionChanged += delegate (object sender, EventArgs e)
-            {
-                //if (templates.SelectedRows.Count < 1)
-                //    return;
-                //var r = templates.SelectedRows[templates.SelectedRows.Count - 1];
-                //if (r.IsNewRow)//hacky forcing commit a newly added row and display the blank row
-                //{
-                //    try
-                //    {
-                //        int i = templates.Rows.Add();
-                //        templates.Rows[i].Selected = true;
-                //        templates.Rows[i].Cells["Active"].Value = true;
-                //        templates.Rows[i].Cells["Group"].Value = "";
-                //    }
-                //    catch { }
-                //}
-            };
-
             template2s.CellClick += delegate (object sender, DataGridViewCellEventArgs e)
             {
                 if (e.RowIndex < 0)
@@ -390,6 +372,7 @@ namespace Cliver.ParserTemplateList
                 tf.Activate();
                 return;
             }
+
             Template2T t = (Template2T)r.Tag;
             if (t == null)
             {

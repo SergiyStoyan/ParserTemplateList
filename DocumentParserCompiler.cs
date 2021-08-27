@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Reflection;
-using Cliver.PdfDocumentParser;
 using System.Text.RegularExpressions;
 
 namespace Cliver.ParserTemplateList
@@ -17,10 +16,10 @@ namespace Cliver.ParserTemplateList
     {
         public Type Compile(string documentParserClassDefinition)
         {
-            Type[] ts = PdfDocumentParser.Compiler.Compile(documentParserClassDefinition);
+            Type[] ts = Compiler.Compile(documentParserClassDefinition);
             if (ts.Length < 1)//to allow commented code string
                 return null;
-            Type t = PdfDocumentParser.Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
+            Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
             if (t == null)
                 throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
             return t;
