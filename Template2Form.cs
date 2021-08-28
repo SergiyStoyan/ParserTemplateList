@@ -84,7 +84,7 @@ namespace Cliver.ParserTemplateList
                             tm.ToolTip = ce.Message;
                             DocumentParserClassDefinition.Document.MarkerStrategy.AddMarker(tm);
                         }
-                        throw ex;
+                        throw;
                     }
                 }
 

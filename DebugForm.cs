@@ -116,7 +116,7 @@ namespace Cliver.ParserTemplateList
             if (System.IO.File.Exists(Log.Main.File))
                 System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + Log.Main.File + "\"");
             else
-                System.Diagnostics.Process.Start(Log.RootDir);
+                ProcessRoutines.Open(Log.RootDir);
         }
 
         private void cWrapLines_CheckedChanged(object sender, EventArgs e)

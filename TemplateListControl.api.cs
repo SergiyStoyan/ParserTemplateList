@@ -38,10 +38,7 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
-            lProgressTask.Invoke(() =>
-            {
-                lProgressTask.Text = progressTask + ":";
-            });
+            SetProgressTask(progressTask + ":", BackColor);
             RunProcessorFlag = true;
             processorThread = Win.ThreadRoutines.StartTry(
                 processorCode,
@@ -54,10 +51,10 @@ namespace Cliver.ParserTemplateList
                 () =>
                 {
                     finallyCode?.Invoke();
-                    ProcessorStateChange?.BeginInvoke(false, null, null);
+                    ProcessorStateChange?.BeginInvoke(false);
                 }
             );
-            ProcessorStateChange?.BeginInvoke(true, null, null);
+            ProcessorStateChange?.BeginInvoke(true);
 
             return true;
         }
@@ -79,7 +76,7 @@ namespace Cliver.ParserTemplateList
                 Log.Inform("TERMINATED");
                 SetProgressTask("TERMINATED", Color.Yellow);
                 ThreadRoutines.Start(() => { Message.Inform("TERMINATED...", FindForm()); });
-                ProcessorStateChange?.BeginInvoke(false, null, null);
+                ProcessorStateChange?.BeginInvoke(false);
             }
             return IsProcessorRunning;
         }
