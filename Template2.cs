@@ -13,6 +13,9 @@ using System.Reflection;
 
 namespace Cliver.ParserTemplateList
 {
+    /// <summary>
+    /// Template container
+    /// </summary>
     abstract public class Template2
     {
         public Template2T Clone<Template2T>() where Template2T : Template2
