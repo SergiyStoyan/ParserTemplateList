@@ -10,7 +10,6 @@ namespace Cliver.ParserTemplateList
 {
     public partial class Settings
     {
-        //[SettingsAttributes.Config(Optional = true)]
         public static GeneralSettings General { get; set; }
     }
 
