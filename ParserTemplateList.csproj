@@ -1,131 +1,90 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B1806527-7726-4214-98D1-E2DE6D248388}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Cliver.ParserTemplateList</RootNamespace>
-    <AssemblyName>ParserTemplateList</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>false</Deterministic>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="ICSharpCode.TextEditor.Extended">
-      <Version>4.2.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>4.0.0-3.final</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
-    </PackageReference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Compiler.cs" />
-    <Compile Include="DebugForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DebugForm.Designer.cs">
-      <DependentUpon>DebugForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DocumentParserCompiler.cs" />
-    <Compile Include="FileFilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FileFilterForm.Designer.cs">
-      <DependentUpon>FileFilterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormManager.cs" />
-    <Compile Include="Settings\General.cs" />
-    <Compile Include="Settings\LocalInfo.cs" />
-    <Compile Include="Settings\TemplateInfo.cs" />
-    <Compile Include="Template2.cs" />
-    <Compile Include="Template2Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Template2Form.Designer.cs">
-      <DependentUpon>Template2Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateListControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TemplateListControl.api.cs">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TemplateListControl.Designer.cs">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-    </Compile>
-    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DebugForm.resx">
-      <DependentUpon>DebugForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FileFilterForm.resx">
-      <DependentUpon>FileFilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Template2Form.resx">
-      <DependentUpon>Template2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TemplateListControl.resx">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PdfDocumentParser\CliverRoutines\CliverRoutines.csproj">
-      <Project>{e88444ba-1b07-40e6-96d1-922d27965f91}</Project>
-      <Name>CliverRoutines</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PdfDocumentParser\CliverWinRoutines\CliverWinRoutines.csproj">
-      <Project>{51f2df13-41f1-4f22-890f-c3b50c813909}</Project>
-      <Name>CliverWinRoutines</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PdfDocumentParser\PdfDocumentParser.csproj">
-      <Project>{b1d7ba69-35aa-45bd-b1d0-d84fd2bc47a0}</Project>
-      <Name>PdfDocumentParser</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-    </PropertyGroup>
-  </Target>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net5.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<RootNamespace>Cliver.ParserTemplateList</RootNamespace>
+		<AssemblyName>ParserTemplateList</AssemblyName>
+		<Deterministic>false</Deterministic>
+		<RepositoryUrl>https://github.com/sergeystoyan/ParserTemplateList</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/sergeystoyan/ParserTemplateList</PackageProjectUrl>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Include="ICSharpCode.TextEditor.Extended">
+			<Version>4.2.4</Version>
+		</PackageReference>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp">
+			<Version>4.0.0-3.final</Version>
+		</PackageReference>
+		<PackageReference Include="Newtonsoft.Json">
+			<Version>13.0.1</Version>
+		</PackageReference>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<Compile Update="Compiler.cs" />
+		<Compile Update="DebugForm.cs">
+			
+		</Compile>
+		<Compile Update="DebugForm.Designer.cs">
+			<DependentUpon>DebugForm.cs</DependentUpon>
+		</Compile>
+		<Compile Update="DocumentParserCompiler.cs" />
+		<Compile Update="FileFilterForm.cs">
+			
+		</Compile>
+		<Compile Update="FileFilterForm.Designer.cs">
+			<DependentUpon>FileFilterForm.cs</DependentUpon>
+		</Compile>
+		<Compile Update="FormManager.cs" />
+		<Compile Update="Settings\General.cs" />
+		<Compile Update="Settings\LocalInfo.cs" />
+		<Compile Update="Settings\TemplateInfo.cs" />
+		<Compile Update="Template2.cs" />
+		<Compile Update="Template2Form.cs">
+			
+		</Compile>
+		<Compile Update="Template2Form.Designer.cs">
+			<DependentUpon>Template2Form.cs</DependentUpon>
+		</Compile>
+		<Compile Update="Properties\AssemblyInfo.cs" />
+		<Compile Update="TemplateListControl.cs">
+			
+		</Compile>
+		<Compile Update="TemplateListControl.api.cs">
+			<DependentUpon>TemplateListControl.cs</DependentUpon>
+			
+		</Compile>
+		<Compile Update="TemplateListControl.Designer.cs">
+			<DependentUpon>TemplateListControl.cs</DependentUpon>
+		</Compile>
+		<Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<EmbeddedResource Update="DebugForm.resx">
+			<DependentUpon>DebugForm.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="FileFilterForm.resx">
+			<DependentUpon>FileFilterForm.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="Template2Form.resx">
+			<DependentUpon>Template2Form.cs</DependentUpon>
+		</EmbeddedResource>
+		<EmbeddedResource Update="TemplateListControl.resx">
+			<DependentUpon>TemplateListControl.cs</DependentUpon>
+		</EmbeddedResource>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<ProjectReference Include="..\PdfDocumentParser\CliverRoutines\CliverRoutines.csproj">
+		</ProjectReference>
+		<ProjectReference Include="..\PdfDocumentParser\CliverWinRoutines\CliverWinRoutines.csproj">
+		</ProjectReference>
+		<ProjectReference Include="..\PdfDocumentParser\PdfDocumentParser.csproj">
+		</ProjectReference>
+	</ItemGroup>
+ 
 </Project>
