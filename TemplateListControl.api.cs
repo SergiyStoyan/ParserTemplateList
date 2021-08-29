@@ -42,23 +42,20 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
-            lProgressTask.Invoke(() =>
-            {
-                lProgressTask.Text = progressTask + ":";
-            });
+            SetProgressTask(progressTask + ":", BackColor);
             processorThread = Win.ThreadRoutines.StartTry(
-                processorCode,
-                (Exception e) =>
-                {
-                    Log.Error(e);
-                    SetProgressTask("ERROR!", Color.Red);
-                    ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
-                },
-                () =>
-                {
-                    finallyCode?.Invoke();
-                    ProcessorStateChange?.BeginInvoke(false);
-                }
+               processorCode,
+               (Exception e) =>
+               {
+                   Log.Error(e);
+                   SetProgressTask("ERROR!", Color.Red);
+                   ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
+               },
+               () =>
+               {
+                   finallyCode?.Invoke();
+                   ProcessorStateChange?.BeginInvoke(false);
+               }
             );
             ProcessorStateChange?.BeginInvoke(true);
 
