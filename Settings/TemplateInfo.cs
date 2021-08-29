@@ -33,7 +33,7 @@ namespace Cliver.ParserTemplateList
             if (touched)
                 return;
             touched = true;
-            TouchedChanged?.BeginInvoke(null, null);
+            TouchedChanged?.BeginInvoke();
         }
         bool touched = false;
         public bool IsTouched()
@@ -48,7 +48,7 @@ namespace Cliver.ParserTemplateList
             if (!touched)
                 return;
             touched = false;
-            TouchedChanged?.BeginInvoke(null, null);
+            TouchedChanged?.BeginInvoke();
         }
 
         abstract public Template2T CreateInitialTemplate();
