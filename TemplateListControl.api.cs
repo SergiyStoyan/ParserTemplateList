@@ -16,20 +16,24 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl<Template2T> 
+    public partial class TemplateListControl<Template2T>
     {
         #region processorThread
+
+        public int ProcessorThreadJoinTimeout = 10000;
 
         public bool TryLaunchProcessorThread(string progressTask, Func<bool> preProcessorCode, MethodInvoker processorCode/*, Win.ThreadRoutines.ErrorHandler exceptionCode=null*/, MethodInvoker finallyCode = null)
         {
             if (IsProcessorRunning)
             {
-                string m = "Processor is running. Would you like to abort it and restart?";
-                Log.Inform(m);
-                if (!Message.YesNo(m, FindForm()))
+                if (!Message.YesNo("Processor is running. Would you like to abort it and restart?", FindForm()))
                     return false;
-                if (!StopProcessor())
+                BegingStopProcessor();
+                if (!processorThread.Join(ProcessorThreadJoinTimeout))
+                {
+                    Message.Error("Processor was requested to stop but it is still running. Try a bit later.");
                     return false;
+                }
             }
 
             if (!SaveFromGui(false))
@@ -39,20 +43,19 @@ namespace Cliver.ParserTemplateList
                 return false;
 
             SetProgressTask(progressTask + ":", BackColor);
-            RunProcessorFlag = true;
             processorThread = Win.ThreadRoutines.StartTry(
-                processorCode,
-                (Exception e) =>
-                {
-                    Log.Error(e);
-                    SetProgressTask("ERROR!", Color.Red);
-                    ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
-                },
-                () =>
-                {
-                    finallyCode?.Invoke();
-                    ProcessorStateChange?.BeginInvoke(false);
-                }
+               processorCode,
+               (Exception e) =>
+               {
+                   Log.Error(e);
+                   SetProgressTask("ERROR!", Color.Red);
+                   ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
+               },
+               () =>
+               {
+                   finallyCode?.Invoke();
+                   ProcessorStateChange?.BeginInvoke(false);
+               }
             );
             ProcessorStateChange?.BeginInvoke(true);
 
@@ -60,26 +63,29 @@ namespace Cliver.ParserTemplateList
         }
         Thread processorThread = null;
 
-        public bool RunProcessorFlag { get; private set; } = false;
-
         public event Action<bool> ProcessorStateChange;
 
-        public bool StopProcessor()
+        public void BegingStopProcessor()
         {
             if (!IsProcessorRunning)
-                return true;
+                return;
             Log.Inform("Stopping processorThread...");
-            RunProcessorFlag = false;
-            if (processorThread.TryAbort(1000))
-            {
-                processorThread = null;
-                Log.Inform("TERMINATED");
-                SetProgressTask("TERMINATED", Color.Yellow);
-                ThreadRoutines.Start(() => { Message.Inform("TERMINATED...", FindForm()); });
-                ProcessorStateChange?.BeginInvoke(false);
-            }
-            return IsProcessorRunning;
+            begingStopProcessor(processorThread);
+            SetProgressTask("Terminating...", Color.LightPink);
+
+            if (processorThreadJoinThread?.IsAlive != true)
+                processorThreadJoinThread = ThreadRoutines.Start(() =>
+                {
+                    processorThread.Join();
+                    ProcessorStateChange?.Invoke(false);
+                    Log.Inform("TERMINATED");
+                    SetProgressTask("TERMINATED", Color.Yellow);
+                    //Message.Inform("TERMINATED...", FindForm());
+                });
         }
+        Thread processorThreadJoinThread;
+        protected abstract void begingStopProcessor(Thread processorThread);
+
 
         public bool IsProcessorRunning
         {
