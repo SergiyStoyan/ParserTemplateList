@@ -42,6 +42,8 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
+            startingProcessor();
+
             SetProgressTask(progressTask + ":", BackColor);
             processorThread = Win.ThreadRoutines.StartTry(
                processorCode,
@@ -62,6 +64,8 @@ namespace Cliver.ParserTemplateList
             return true;
         }
         Thread processorThread = null;
+        protected virtual void startingProcessor()
+        { }
 
         public event Action<bool> ProcessorStateChange;
 
@@ -85,7 +89,6 @@ namespace Cliver.ParserTemplateList
         }
         Thread processorThreadJoinThread;
         protected abstract void begingStopProcessor(Thread processorThread);
-
 
         public bool IsProcessorRunning
         {
