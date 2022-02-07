@@ -278,8 +278,13 @@ namespace Cliver.ParserTemplateList
             });
         }
 
-        public void OnProgress(string unitsName, int processedN, int totalN)
+        public void OnProgress(string unitsName, int processedN, int totalN, string messageSuffix = null)
         {
+            BeginInvoke((MethodInvoker)(() => { onProgress(unitsName, processedN, totalN, messageSuffix); }));
+        }
+        void onProgress(string unitsName, int processedN, int totalN, string messageSuffix = null)
+        {
+            Action f = () => { };
             if (processedN >= 0)
             {
                 if (totalN < 0)
@@ -312,6 +317,8 @@ namespace Cliver.ParserTemplateList
                 {
                     lProgress.Text = "FAILED... (last state: " + lProgress.Text + ")";
                 });
+            if (!string.IsNullOrWhiteSpace(messageSuffix))
+                lProgress.Text += messageSuffix;
         }
 
         #endregion
