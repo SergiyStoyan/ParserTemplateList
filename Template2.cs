@@ -36,6 +36,7 @@ namespace Cliver.ParserTemplateList
         public Regex FileFilterRegex = null;
         public string DocumentParserClass = "";
         public string DocumentParserClassDefinition = "";
+        public bool WrapLinesInDebugger = true;
 
         public string GetModifiedTimeAsString()
         {

@@ -39,7 +39,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.LogBox = new System.Windows.Forms.RichTextBox();
             this.bLog = new System.Windows.Forms.Button();
-            this.cWrapLines = new System.Windows.Forms.CheckBox();
+            this.WrapLines = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -92,7 +92,7 @@
             this.flowLayoutPanel1.Controls.Add(this.bDebug);
             this.flowLayoutPanel1.Controls.Add(this.bEdit);
             this.flowLayoutPanel1.Controls.Add(this.bLog);
-            this.flowLayoutPanel1.Controls.Add(this.cWrapLines);
+            this.flowLayoutPanel1.Controls.Add(this.WrapLines);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 419);
@@ -165,14 +165,14 @@
             // 
             // cWrapLines
             // 
-            this.cWrapLines.AutoSize = true;
-            this.cWrapLines.Location = new System.Drawing.Point(167, 3);
-            this.cWrapLines.Name = "cWrapLines";
-            this.cWrapLines.Size = new System.Drawing.Size(80, 17);
-            this.cWrapLines.TabIndex = 88;
-            this.cWrapLines.Text = "Wrap Lines";
-            this.cWrapLines.UseVisualStyleBackColor = true;
-            this.cWrapLines.CheckedChanged += new System.EventHandler(this.cWrapLines_CheckedChanged);
+            this.WrapLines.AutoSize = true;
+            this.WrapLines.Location = new System.Drawing.Point(167, 3);
+            this.WrapLines.Name = "cWrapLines";
+            this.WrapLines.Size = new System.Drawing.Size(80, 17);
+            this.WrapLines.TabIndex = 88;
+            this.WrapLines.Text = "Wrap Lines";
+            this.WrapLines.UseVisualStyleBackColor = true;
+            this.WrapLines.CheckedChanged += new System.EventHandler(this.cWrapLines_CheckedChanged);
             // 
             // bLog
             // 
@@ -220,6 +220,6 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         protected System.Windows.Forms.RichTextBox LogBox;
         private System.Windows.Forms.Button bLog;
-        protected System.Windows.Forms.CheckBox cWrapLines;
+        protected System.Windows.Forms.CheckBox WrapLines;
     }
 }

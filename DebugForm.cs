@@ -36,6 +36,7 @@ namespace Cliver.ParserTemplateList
                 template2 = value;
                 Text = Application.ProductName + ": debugging '" + template2.Name + "'";
                 TestFile.Text = templateListControl.LocalInfo.GetInfo(template2).LastTestFile;
+                WrapLines.Checked = value.WrapLinesInDebugger;
                 debug();
             }
             protected get { return template2; }
@@ -85,6 +86,9 @@ namespace Cliver.ParserTemplateList
         virtual protected void bClose_Click(object sender, EventArgs e)
         {
             Close();
+
+            if (Template2 != null)
+                Template2.WrapLinesInDebugger = WrapLines.Checked;
         }
 
         virtual protected void bTestFile_Click(object sender, EventArgs e)
@@ -121,7 +125,7 @@ namespace Cliver.ParserTemplateList
 
         private void cWrapLines_CheckedChanged(object sender, EventArgs e)
         {
-            Result.WordWrap = cWrapLines.Checked;
+            Result.WordWrap = WrapLines.Checked;
         }
     }
 }
