@@ -91,6 +91,12 @@ namespace Cliver.ParserTemplateList
                 });
             };
 
+            openTemplatesSettings.Click += delegate
+            {
+                TemplatesSettingsForm<Template2T> f = new TemplatesSettingsForm<Template2T>(TemplateInfo);
+                f.ShowDialog();
+            };
+
             saveTemplates.Enabled = false;
             saveTemplates.Click += delegate
             {

@@ -126,6 +126,12 @@
     <Compile Include="TemplateListControl.Designer.cs">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="TemplatesSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TemplatesSettingsForm.Designer.cs">
+      <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +149,9 @@
     <EmbeddedResource Include="TemplateListControl.resx">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TemplatesSettingsForm.resx">
+      <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

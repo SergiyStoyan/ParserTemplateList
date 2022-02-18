@@ -73,13 +73,14 @@
             this.Name_ = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OrderWeight = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.UsedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ModifiedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.UsedTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupChange = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.openTemplatesSettings = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightChange)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightPattern2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightPattern1)).BeginInit();
@@ -320,7 +321,7 @@
             // 
             // selectAll
             // 
-            this.selectAll.Location = new System.Drawing.Point(17, 206);
+            this.selectAll.Location = new System.Drawing.Point(14, 206);
             this.selectAll.Name = "selectAll";
             this.selectAll.Size = new System.Drawing.Size(60, 23);
             this.selectAll.TabIndex = 26;
@@ -363,7 +364,8 @@
             // 
             // progress
             // 
-            this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.progress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.progress.Location = new System.Drawing.Point(3, 475);
             this.progress.Name = "progress";
             this.progress.Size = new System.Drawing.Size(1087, 12);
@@ -381,7 +383,7 @@
             // 
             // flowLayoutPanel4
             // 
-            this.flowLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+            this.flowLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel4.AutoSize = true;
             this.flowLayoutPanel4.Controls.Add(this.lProgressTask);
@@ -425,8 +427,8 @@
             // 
             // template2s
             // 
-            this.template2s.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.template2s.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.template2s.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.template2s.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -441,16 +443,15 @@
             this.OrderWeight,
             this.ModifiedTime,
             this.Comment,
-            this.UsedTime
-            });
+            this.UsedTime});
             this.template2s.Location = new System.Drawing.Point(3, 3);
             this.template2s.MultiSelect = false;
             this.template2s.Name = "template2s";
+            this.template2s.RowHeadersVisible = false;
             this.template2s.RowHeadersWidth = 32;
             this.template2s.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.template2s.Size = new System.Drawing.Size(840, 435);
             this.template2s.TabIndex = 45;
-            template2s.RowHeadersVisible = false;
             // 
             // Selected
             // 
@@ -537,22 +538,6 @@
             this.OrderWeight.Name = "OrderWeight";
             this.OrderWeight.Width = 58;
             // 
-            // UsedTime
-            // 
-            this.UsedTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.UsedTime.HeaderText = "Used";
-            this.UsedTime.MinimumWidth = 12;
-            this.UsedTime.Name = "UsedTime";
-            this.UsedTime.ReadOnly = true;
-            this.UsedTime.Width = 57;
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.MinimumWidth = 12;
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 250;
-            // 
             // ModifiedTime
             // 
             this.ModifiedTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
@@ -561,6 +546,22 @@
             this.ModifiedTime.Name = "ModifiedTime";
             this.ModifiedTime.ReadOnly = true;
             this.ModifiedTime.Width = 72;
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.MinimumWidth = 12;
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 250;
+            // 
+            // UsedTime
+            // 
+            this.UsedTime.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.UsedTime.HeaderText = "Used";
+            this.UsedTime.MinimumWidth = 12;
+            this.UsedTime.Name = "UsedTime";
+            this.UsedTime.ReadOnly = true;
+            this.UsedTime.Width = 57;
             // 
             // groupBox2
             // 
@@ -628,10 +629,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Select";
             // 
+            // openTemplatesSettings
+            // 
+            this.openTemplatesSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.openTemplatesSettings.AutoSize = true;
+            this.openTemplatesSettings.Location = new System.Drawing.Point(863, 415);
+            this.openTemplatesSettings.Name = "openTemplatesSettings";
+            this.openTemplatesSettings.Size = new System.Drawing.Size(75, 23);
+            this.openTemplatesSettings.TabIndex = 50;
+            this.openTemplatesSettings.Text = "Settings";
+            this.openTemplatesSettings.UseVisualStyleBackColor = true;
+            // 
             // TemplateListControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.openTemplatesSettings);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.flowLayoutPanel4);
             this.Controls.Add(this.saveTemplates);
@@ -708,5 +721,6 @@
         private System.Windows.Forms.TextBox groupChange;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button openTemplatesSettings;
     }
 }
