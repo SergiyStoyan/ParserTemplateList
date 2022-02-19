@@ -631,9 +631,9 @@
             // 
             // openTemplatesSettings
             // 
-            this.openTemplatesSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.openTemplatesSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.openTemplatesSettings.AutoSize = true;
-            this.openTemplatesSettings.Location = new System.Drawing.Point(863, 415);
+            this.openTemplatesSettings.Location = new System.Drawing.Point(930, 415);
             this.openTemplatesSettings.Name = "openTemplatesSettings";
             this.openTemplatesSettings.Size = new System.Drawing.Size(75, 23);
             this.openTemplatesSettings.TabIndex = 50;
@@ -644,13 +644,13 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.openTemplatesSettings);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.flowLayoutPanel4);
             this.Controls.Add(this.saveTemplates);
             this.Controls.Add(this.template2s);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.openTemplatesSettings);
             this.Name = "TemplateListControl";
             this.Size = new System.Drawing.Size(1094, 495);
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightChange)).EndInit();
