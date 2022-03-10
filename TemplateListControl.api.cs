@@ -140,15 +140,17 @@ namespace Cliver.ParserTemplateList
 
             void showSelectedCount()
             {
+                int total = 0;
                 int count = 0;
                 foreach (DataGridViewRow r in template2s.Rows)
                 {
                     if (r.Tag == null)
                         continue;
+                    total++;
                     if (getBoolValue(r, "Selected"))
                         count++;
                 }
-                selectedTemplatesCount.Text = "Selected: " + count + " templates";
+                selectedTemplatesCount.Text = "Selected: " + count + " of " + total;
             };
 
             void select_by_filter(object sender, EventArgs e)

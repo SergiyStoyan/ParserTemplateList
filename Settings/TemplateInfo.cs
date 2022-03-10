@@ -55,7 +55,7 @@ namespace Cliver.ParserTemplateList
                     deactivated = true;
                     t2.Active = false;
                     t2.Group = "obsolete";// since " + DateTime.Now.ToString("yyyy-MM-dd");
-                    Log.Warning2("Template '" + t2.Template.Name + "' has been disactivated as obsolete.");
+                    Log.Warning2("Template '" + t2.Template.Name + "' has been deactivated as obsolete.");
                 }
             if (deactivated)
             {
