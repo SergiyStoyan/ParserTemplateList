@@ -67,19 +67,19 @@
             this.flowLayoutPanel1.Controls.Add(this.bSave);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 216);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 310);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             this.flowLayoutPanel1.Size = new System.Drawing.Size(476, 31);
             this.flowLayoutPanel1.TabIndex = 51;
             // 
             // OcrConfig
             // 
-            this.OcrConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-            | System.Windows.Forms.AnchorStyles.Left)
+            this.OcrConfig.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.OcrConfig.Location = new System.Drawing.Point(27, 71);
+            this.OcrConfig.Location = new System.Drawing.Point(27, 112);
             this.OcrConfig.Name = "OcrConfig";
-            this.OcrConfig.Size = new System.Drawing.Size(422, 126);
+            this.OcrConfig.Size = new System.Drawing.Size(422, 179);
             this.OcrConfig.TabIndex = 60;
             this.OcrConfig.Text = "";
             // 
@@ -94,7 +94,7 @@
             // 
             // DeactivateTemplatesOlderThanDays
             // 
-            this.DeactivateTemplatesOlderThanDays.Location = new System.Drawing.Point(236, 17);
+            this.DeactivateTemplatesOlderThanDays.Location = new System.Drawing.Point(27, 35);
             this.DeactivateTemplatesOlderThanDays.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -107,7 +107,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 55);
+            this.label2.Location = new System.Drawing.Point(24, 96);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 72;
@@ -117,7 +117,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(476, 247);
+            this.ClientSize = new System.Drawing.Size(476, 341);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.OcrConfig);
             this.Controls.Add(this.label1);
