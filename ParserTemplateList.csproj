@@ -126,6 +126,12 @@
     <Compile Include="TemplateListControl.Designer.cs">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="DocumentParserClassDefinitionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DocumentParserClassDefinitionsForm.Designer.cs">
+      <DependentUpon>DocumentParserClassDefinitionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TemplatesSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,6 +155,9 @@
     <EmbeddedResource Include="TemplateListControl.resx">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DocumentParserClassDefinitionsForm.resx">
+      <DependentUpon>DocumentParserClassDefinitionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TemplatesSettingsForm.resx">
       <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>

@@ -13,9 +13,9 @@ using System.Text;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public partial class Template2Form<Template2T> : Form where Template2T : Template2
+    public partial class Template2Form<Template2T, DocumentParserT> : Form where Template2T : Template2 where DocumentParserT : class
     {
-        public Template2Form(Template2T template2, List<string> hardcodedDocumentParsers, TemplateListControl<Template2T> templateListControl)
+        public Template2Form(Template2T template2, TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             InitializeComponent();
 
@@ -41,12 +41,14 @@ namespace Cliver.ParserTemplateList
 
             DocumentParserClass.DisplayMember = "Key";
             DocumentParserClass.ValueMember = "Value";
-            var ds = hardcodedDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => new { Key = a, Value = a }).ToList();
+            var ds = templateListControl.Compiler.HardcodedDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a.Name)).Select(a => new { Key = a.Name, Value = a.Name }).ToList();
+            ds.AddRange(templateListControl.TemplateInfo.DocumentParserClassNames.Select(a => new { Key = a, Value = a }));
+            //ds.AddRange(templateListControl.CommonDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a.Name)).Select(a => new { Key = a.Name, Value = a.Name }));
             ds.Insert(0, new { Key = "", Value = "" });
             DocumentParserClass.DataSource = ds;
             DocumentParserClass.SelectedValue = template2.DocumentParserClass;
         }
-        TemplateListControl<Template2T> templateListControl;
+        TemplateListControl<Template2T, DocumentParserT> templateListControl;
 
         virtual public Template2T Template2
         {
@@ -72,7 +74,7 @@ namespace Cliver.ParserTemplateList
                     DocumentParserClassDefinition.Document.MarkerStrategy.RemoveAll(marker => true);
                     try
                     {
-                        bool documentParserClassDefinitionIsSet = null != compile(DocumentParserClassDefinition.Text);//checking
+                        bool documentParserClassDefinitionIsSet = null != templateListControl.Compiler.CompileSingleType(DocumentParserClassDefinition.Text);//checking
                         if (documentParserClassDefinitionIsSet && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
                             throw new Exception("DocumentParser class and its definition cannot be specified at the same time.");
                     }
@@ -107,8 +109,6 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        abstract protected Type compile(string documentParserClassDefinition);
-
         virtual protected void bOK_Click(object sender, EventArgs e)
         {
             if (!setTemplate2())
@@ -134,7 +134,7 @@ namespace Cliver.ParserTemplateList
                 debugForm.BringToFront();
             }
         }
-        protected DebugForm<Template2T> debugForm = null;
+        protected DebugForm<Template2T, DocumentParserT> debugForm = null;
     }
 }
 

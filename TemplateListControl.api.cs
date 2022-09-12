@@ -16,7 +16,7 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplateListControl<Template2T>
+    public partial class TemplateListControl<Template2T, DocumentParserT>
     {
         #region processorThread
 

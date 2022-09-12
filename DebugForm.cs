@@ -15,9 +15,9 @@ using System.Windows.Forms;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public partial class DebugForm<Template2T> : Form where Template2T : Template2
+    abstract public partial class DebugForm<Template2T, DocumentParserT> : Form where Template2T : Template2 where DocumentParserT : class
     {
-        public DebugForm(TemplateListControl<Template2T> templateListControl)
+        public DebugForm(TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             InitializeComponent();
 
@@ -27,7 +27,7 @@ namespace Cliver.ParserTemplateList
 
             cWrapLines_CheckedChanged(null, null);
         }
-        TemplateListControl<Template2T> templateListControl;
+        TemplateListControl<Template2T, DocumentParserT> templateListControl;
 
         virtual public Template2T Template2
         {

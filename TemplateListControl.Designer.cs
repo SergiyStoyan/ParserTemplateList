@@ -1,6 +1,6 @@
 ﻿namespace Cliver.ParserTemplateList
 {
-    partial class TemplateListControl<Template2T>
+    partial class TemplateListControl<Template2T, DocumentParserT>
     {
         /// <summary> 
         /// Required designer variable.
@@ -81,6 +81,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.openTemplatesSettings = new System.Windows.Forms.Button();
+            this.openDocumentParserClassDefinitions = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightChange)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightPattern2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderWeightPattern1)).BeginInit();
@@ -633,17 +634,29 @@
             // 
             this.openTemplatesSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.openTemplatesSettings.AutoSize = true;
-            this.openTemplatesSettings.Location = new System.Drawing.Point(930, 415);
+            this.openTemplatesSettings.Location = new System.Drawing.Point(915, 415);
             this.openTemplatesSettings.Name = "openTemplatesSettings";
-            this.openTemplatesSettings.Size = new System.Drawing.Size(75, 23);
+            this.openTemplatesSettings.Size = new System.Drawing.Size(60, 23);
             this.openTemplatesSettings.TabIndex = 50;
             this.openTemplatesSettings.Text = "Settings";
             this.openTemplatesSettings.UseVisualStyleBackColor = true;
+            // 
+            // openDocumentParserClassDefinitions
+            // 
+            this.openDocumentParserClassDefinitions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.openDocumentParserClassDefinitions.AutoSize = true;
+            this.openDocumentParserClassDefinitions.Location = new System.Drawing.Point(849, 415);
+            this.openDocumentParserClassDefinitions.Name = "openDocumentParserClassDefinitions";
+            this.openDocumentParserClassDefinitions.Size = new System.Drawing.Size(60, 23);
+            this.openDocumentParserClassDefinitions.TabIndex = 51;
+            this.openDocumentParserClassDefinitions.Text = "Parsers";
+            this.openDocumentParserClassDefinitions.UseVisualStyleBackColor = true;
             // 
             // TemplateListControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.openDocumentParserClassDefinitions);
             this.Controls.Add(this.progress);
             this.Controls.Add(this.flowLayoutPanel4);
             this.Controls.Add(this.saveTemplates);
@@ -722,5 +735,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button openTemplatesSettings;
+        private System.Windows.Forms.Button openDocumentParserClassDefinitions;
     }
 }

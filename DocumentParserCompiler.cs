@@ -13,9 +13,26 @@ using Cliver.PdfDocumentParser;
 
 namespace Cliver.ParserTemplateList
 {
-    public class DocumentParserCompiler<DocumentParserT> where DocumentParserT : class
+    public class DocumentParserCompiler<Template2T, DocumentParserT> where Template2T : Template2 where DocumentParserT : class
     {
-        public Type Compile(string documentParserClassDefinition)
+        public DocumentParserCompiler(Assembly hardcodedDocumentParsersAssembly, TemplateListControl<Template2T, DocumentParserT> templateListControl)
+        {
+            this.hardcodedDocumentParsersAssembly = hardcodedDocumentParsersAssembly;
+            this.templateListControl = templateListControl;
+        }
+        TemplateListControl<Template2T, DocumentParserT> templateListControl;
+        Assembly hardcodedDocumentParsersAssembly;
+
+        public List<Type> CompileMultipleTypes(string documentParserClassDefinitions)
+        {
+            Type[] ts = Compiler.Compile(documentParserClassDefinitions, Assembly.GetEntryAssembly());
+            Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
+            if (t == null)
+                throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
+            return ts.ToList();
+        }
+
+        public Type CompileSingleType(string documentParserClassDefinition)
         {
             Type[] ts = Compiler.Compile(documentParserClassDefinition, Assembly.GetEntryAssembly());
             if (ts.Length < 1)//to allow commented code string
@@ -26,10 +43,10 @@ namespace Cliver.ParserTemplateList
             return t;
         }
 
-        public DocumentParserT Create(Template2 template2)
+        public DocumentParserT CreateSingleParser(Template2 template2)
         {
             Log.Inform("Compiling '" + template2.Template.Name + "' DocumentParser...");
-            Type documentParserType = Compile(template2.DocumentParserClassDefinition);
+            Type documentParserType = CompileSingleType(template2.DocumentParserClassDefinition);
             if (documentParserType == null)//allow commented code string
                 return null;
             return (DocumentParserT)Activator.CreateInstance(documentParserType);
@@ -40,10 +57,25 @@ namespace Cliver.ParserTemplateList
             get
             {
                 if (hardcodedDocumentParsers == null)
-                    hardcodedDocumentParsers = Assembly.GetCallingAssembly().GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
+                    hardcodedDocumentParsers = hardcodedDocumentParsersAssembly.GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
                 return hardcodedDocumentParsers;
             }
         }
         List<Type> hardcodedDocumentParsers = null;
+
+        public List<Type> CommonDocumentParsers
+        {
+            get
+            {
+                if (commonDocumentParsers == null)
+                    commonDocumentParsers = CompileMultipleTypes(templateListControl.TemplateInfo.DocumentParserClassDefinitions);
+                return commonDocumentParsers;
+            }
+            set
+            {
+                commonDocumentParsers = value;
+            }
+        }
+        List<Type> commonDocumentParsers = null;
     }
 }

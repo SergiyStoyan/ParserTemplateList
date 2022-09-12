@@ -17,15 +17,27 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public partial class TemplateListControl<Template2T> : UserControl where Template2T : Template2
+    abstract public partial class TemplateListControl<Template2T, DocumentParserT> : UserControl where Template2T : Template2 where DocumentParserT : class
     {
         public abstract TemplateInfoSettings<Template2T> TemplateInfo { get; }
 
         public abstract LocalInfoSettings<Template2T> LocalInfo { get; }
 
-        public abstract DebugForm<Template2T> NewDebugForm();
+        public abstract DebugForm<Template2T, DocumentParserT> NewDebugForm();
 
-        public abstract Template2Form<Template2T> NewTemplate2Form(Template2T template2);
+        //public abstract List<Type> HardcodedDocumentParsers { get; }
+
+        //public abstract List<Type> CommonDocumentParsers { get; }
+
+        //public abstract DocumentParserClassDefinitionsForm<Template2T, DocumentParserT> NewDocumentParserClassDefinitionsForm();
+
+        //public abstract Template2Form<Template2T, DocumentParserT> NewTemplate2Form(Template2T template2);
+
+        //public abstract Type CompileSingleType(string documentParserClassDefinition);
+
+        //public abstract Type CompileMultipleTypes(string documentParserClassDefinitions);
+
+        public abstract DocumentParserCompiler<Template2T, DocumentParserT> Compiler { get; }
 
         public TemplateListControl()
         {
@@ -56,7 +68,7 @@ namespace Cliver.ParserTemplateList
                         return;
                     if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
                         brush = Brushes.LightCyan;
-                    else if (!string.IsNullOrWhiteSpace(Compiler.RemoveComments(t.DocumentParserClassDefinition)))
+                    else if (!string.IsNullOrWhiteSpace(Cliver.PdfDocumentParser.Compiler.RemoveComments(t.DocumentParserClassDefinition)))
                         brush = Brushes.LightYellow;
                 }
                 if (e.ColumnIndex == 5)
@@ -94,6 +106,12 @@ namespace Cliver.ParserTemplateList
             openTemplatesSettings.Click += delegate
             {
                 TemplatesSettingsForm<Template2T> f = new TemplatesSettingsForm<Template2T>(TemplateInfo);
+                f.ShowDialog();
+            };
+
+            openDocumentParserClassDefinitions.Click += delegate
+            {
+                DocumentParserClassDefinitionsForm<Template2T, DocumentParserT> f = new DocumentParserClassDefinitionsForm<Template2T, DocumentParserT>(this);
                 f.ShowDialog();
             };
 
@@ -282,11 +300,6 @@ namespace Cliver.ParserTemplateList
             };
 
             progress.Maximum = 10000;
-
-            Load += delegate
-            {
-                //Load2Gui();
-            };
         }
 
         virtual protected void edit2Template(DataGridViewRow r)
@@ -295,13 +308,13 @@ namespace Cliver.ParserTemplateList
             if (t2 == null)
                 return;
 
-            Template2Form<Template2T> tf = FormManager.Get<Template2Form<Template2T>>(r);
+            Template2Form<Template2T, DocumentParserT> tf = FormManager.Get<Template2Form<Template2T, DocumentParserT>>(r);
             if (tf != null)
             {
                 tf.Activate();
                 return;
             }
-            tf = NewTemplate2Form(t2);
+            tf = new Template2Form<Template2T, DocumentParserT>(t2, this);
             FormManager.Set(r, tf);
             tf.FormClosed += delegate
             {
@@ -326,7 +339,7 @@ namespace Cliver.ParserTemplateList
             if (t2 == null)
                 return;
 
-            DebugForm<Template2T> f = FormManager.Get<DebugForm<Template2T>>(r);
+            DebugForm<Template2T, DocumentParserT> f = FormManager.Get<DebugForm<Template2T, DocumentParserT>>(r);
             if (f != null)
             {
                 f.Activate();
@@ -420,19 +433,19 @@ namespace Cliver.ParserTemplateList
 
         public class TemplateManager : TemplateForm.TemplateManager
         {
-            public TemplateManager(DataGridViewRow row, Template template, string lastTestFile, string testFileDefaultFolder, TemplateListControl<Template2T> templateListControl) : base(template, lastTestFile, testFileDefaultFolder)
+            public TemplateManager(DataGridViewRow row, Template template, string lastTestFile, string testFileDefaultFolder, TemplateListControl<Template2T, DocumentParserT> templateListControl) : base(template, lastTestFile, testFileDefaultFolder)
             {
                 Row = row;
                 this.templateListControl = templateListControl;
             }
-            TemplateListControl<Template2T> templateListControl;
+            TemplateListControl<Template2T, DocumentParserT> templateListControl;
             internal DataGridViewRow Row;
 
             bool firstSave = true;
             override public void Save()
             {
                 Template2T t = (Template2T)Row.Tag;
-                if (firstSave && templateListControl.TemplateInfo.Template2s.Where(a => a != t && a.Name == Template. Name).FirstOrDefault() != null)
+                if (firstSave && templateListControl.TemplateInfo.Template2s.Where(a => a != t && a.Name == Template.Name).FirstOrDefault() != null)
                     throw new Exception("Template '" + Template.Name + "' already exists.");
                 firstSave = false;
 
@@ -459,7 +472,7 @@ namespace Cliver.ParserTemplateList
                 Row.Cells["Name_"].Value = t.Name;
                 Row.Cells["ModifiedTime"].Value = t.GetModifiedTimeAsString();
 
-                Template2Form<Template2T> tf = FormManager.Get<Template2Form<Template2T>>(Row);
+                Template2Form<Template2T, DocumentParserT> tf = FormManager.Get<Template2Form<Template2T, DocumentParserT>>(Row);
                 if (tf != null)
                     tf.Template2 = t.CreateCloneByJson();
             }

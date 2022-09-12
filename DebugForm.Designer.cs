@@ -1,6 +1,6 @@
 ﻿namespace Cliver.ParserTemplateList
 {
-    partial class DebugForm<Template2T>
+    partial class DebugForm<Template2T, DocumentParserT>
     {
         /// <summary>
         /// Required designer variable.

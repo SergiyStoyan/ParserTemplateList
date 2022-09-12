@@ -16,6 +16,8 @@ namespace Cliver.ParserTemplateList
     abstract public class TemplateInfoSettings<Template2T> : Cliver.UserSettings where Template2T : Template2
     {
         public List<Template2T> Template2s = new List<Template2T>();
+        public string DocumentParserClassDefinitions;
+        public List<string> DocumentParserClassNames = new List<string>();
 
         public Ocr.Config OcrConfig;
         public string PdfDocumentParserVersion;
