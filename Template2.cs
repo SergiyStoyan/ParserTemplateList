@@ -16,9 +16,9 @@ namespace Cliver.ParserTemplateList
     /// <summary>
     /// Template container
     /// </summary>
-    abstract public class Template2
+    abstract public class Template2<DocumentParserT> where DocumentParserT : class
     {
-        public Template2T Clone<Template2T>() where Template2T : Template2
+        public Template2T Clone<Template2T>() where Template2T : Template2<DocumentParserT>
         {
             return (Template2T)Serialization.Json.Clone(typeof(Template2T), this);
         }
@@ -34,16 +34,84 @@ namespace Cliver.ParserTemplateList
         public string Comment = "";
         public float OrderWeight = 1f;
         public Regex FileFilterRegex = null;
+        /// <summary>
+        /// (!)If the string starts with # then it is the name of the own class defined in DocumentParserClassDefinition
+        /// </summary>
         public string DocumentParserClass = "";
         public string DocumentParserClassDefinition = "";
         public bool WrapLinesInDebugger = true;
+
+
+        [Newtonsoft.Json.JsonIgnore]
+        virtual public Type DocumentParserType
+        {
+            get
+            {
+                if (documentParserType == null)
+                {
+                    if (!string.IsNullOrWhiteSpace(DocumentParserClass))
+                    {
+                        if (DocumentParserClass.StartsWith("#"))//own definition
+                        {
+                            documentParserType = Compiler.CompileSingleType(DocumentParserClassDefinition);
+                            if (documentParserType == null)//a non-empty definition can be a commented code string
+                                throw new Exception2("There is no class '" + DocumentParserClass + "' defined in DocumentParserClassDefinition");
+                        }
+                        else
+                        {
+                            documentParserType = Compiler.HardcodedDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
+                            if (documentParserType == null)
+                            {
+                                Template2<DocumentParserT> t = FindTemplate("#" + DocumentParserClass);
+                                if (t != null)
+                                    documentParserType = t.DocumentParserType;
+                                else
+                                {
+                                    documentParserType = Compiler.CommonDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
+                                    if (documentParserType == null)
+                                        throw new Exception2("There is no hardcoded nor hot-compiled class '" + DocumentParserClass + "'");
+                                }
+                            }
+                        }
+                    }
+                    else
+                        documentParserType = Compiler.DefaultDocumentParserType;
+                }
+                return documentParserType;
+            }
+            set
+            {
+                documentParserType = value;
+                documentParser = null;
+            }
+        }
+        protected Type documentParserType = null;
+
+        [Newtonsoft.Json.JsonIgnore]
+        virtual public DocumentParserT DocumentParser
+        {
+            get
+            {
+                if (documentParser == null)
+                {
+                    documentParser = (DocumentParserT)Activator.CreateInstance(DocumentParserType);
+                    //documentParser.Template2 = this;
+                }
+                return documentParser;
+            }
+        }
+        DocumentParserT documentParser = null;
+
+        abstract public DocumentParserCompiler<DocumentParserT> Compiler { get; }
+
+        abstract public Template2<DocumentParserT> FindTemplate(string name);
 
         public string GetModifiedTimeAsString()
         {
             return ModifiedTime.ToString("yy-MM-dd HH:mm:ss");
         }
 
-        public virtual void Rectify(Template2 t0)
+        public virtual void Rectify(Template2<DocumentParserT> t0)
         {
             //for (int i = t.Template.Conditions.Count - 1; i >= 0; i--)
             //    if (t0.Template.Conditions.Find(a => a.Name == t.Template.Conditions[i].Name) == null)

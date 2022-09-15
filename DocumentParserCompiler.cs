@@ -13,14 +13,15 @@ using Cliver.PdfDocumentParser;
 
 namespace Cliver.ParserTemplateList
 {
-    public class DocumentParserCompiler<Template2T, DocumentParserT> where Template2T : Template2 where DocumentParserT : class
+    public class DocumentParserCompiler<DocumentParserT> where DocumentParserT : class
     {
-        public DocumentParserCompiler(Assembly hardcodedDocumentParsersAssembly, TemplateListControl<Template2T, DocumentParserT> templateListControl)
+        public DocumentParserCompiler(Assembly hardcodedDocumentParsersAssembly, string documentParserClassDefinitions, Type defaultDocumentParserType)
         {
             this.hardcodedDocumentParsersAssembly = hardcodedDocumentParsersAssembly;
-            this.templateListControl = templateListControl;
+            this.documentParserClassDefinitions = documentParserClassDefinitions;
+            DefaultDocumentParserType = defaultDocumentParserType;
         }
-        TemplateListControl<Template2T, DocumentParserT> templateListControl;
+        string documentParserClassDefinitions;
         Assembly hardcodedDocumentParsersAssembly;
 
         public List<Type> CompileMultipleTypes(string documentParserClassDefinitions)
@@ -43,39 +44,41 @@ namespace Cliver.ParserTemplateList
             return t;
         }
 
-        public DocumentParserT CreateSingleParser(Template2 template2)
-        {
-            Log.Inform("Compiling '" + template2.Template.Name + "' DocumentParser...");
-            Type documentParserType = CompileSingleType(template2.DocumentParserClassDefinition);
-            if (documentParserType == null)//allow commented code string
-                return null;
-            return (DocumentParserT)Activator.CreateInstance(documentParserType);
-        }
+        //public DocumentParserT CreateSingleParser(Template2 template2)
+        //{
+        //    Log.Inform("Compiling '" + template2.Template.Name + "' DocumentParser...");
+        //    Type documentParserType = CompileSingleType(template2.DocumentParserClassDefinition);
+        //    if (documentParserType == null)//allow commented code string
+        //        return null;
+        //    return (DocumentParserT)Activator.CreateInstance(documentParserType);
+        //}
 
-        public List<Type> HardcodedDocumentParsers
+        public List<Type> HardcodedDocumentParserTypes
         {
             get
             {
-                if (hardcodedDocumentParsers == null)
-                    hardcodedDocumentParsers = hardcodedDocumentParsersAssembly.GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
-                return hardcodedDocumentParsers;
+                if (hardcodedDocumentParserTypes == null)
+                    hardcodedDocumentParserTypes = hardcodedDocumentParsersAssembly.GetTypes().Where(t => t.BaseType == typeof(DocumentParserT)).ToList();
+                return hardcodedDocumentParserTypes;
             }
         }
-        List<Type> hardcodedDocumentParsers = null;
+        List<Type> hardcodedDocumentParserTypes = null;
 
-        public List<Type> CommonDocumentParsers
+        public List<Type> CommonDocumentParserTypes
         {
             get
             {
-                if (commonDocumentParsers == null)
-                    commonDocumentParsers = CompileMultipleTypes(templateListControl.TemplateInfo.DocumentParserClassDefinitions);
-                return commonDocumentParsers;
+                if (commonDocumentParserTypes == null)
+                    commonDocumentParserTypes = CompileMultipleTypes(documentParserClassDefinitions);
+                return commonDocumentParserTypes;
             }
             set
             {
-                commonDocumentParsers = value;
+                commonDocumentParserTypes = value;
             }
         }
-        List<Type> commonDocumentParsers = null;
+        List<Type> commonDocumentParserTypes = null;
+
+        public Type DefaultDocumentParserType { get; }
     }
 }

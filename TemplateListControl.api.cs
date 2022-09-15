@@ -159,7 +159,7 @@ namespace Cliver.ParserTemplateList
                 float orderWeight2 = (float)orderWeightPattern2.Value;
                 foreach (DataGridViewRow r in template2s.Rows)
                 {
-                    Template2 t = (Template2)r.Tag;
+                    Template2<DocumentParserT> t = (Template2<DocumentParserT>)r.Tag;
                     if (t == null)
                         continue;
                     bool s = (!activePattern.Enabled || (t.Active == activePattern.Checked))

@@ -13,7 +13,7 @@ using Cliver.PdfDocumentParser;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public class TemplateInfoSettings<Template2T> : Cliver.UserSettings where Template2T : Template2
+    abstract public class TemplateInfoSettings<Template2T, DocumentParserT> : Cliver.UserSettings where Template2T : Template2<DocumentParserT> where DocumentParserT:class
     {
         public List<Template2T> Template2s = new List<Template2T>();
         public string DocumentParserClassDefinitions;
@@ -45,7 +45,7 @@ namespace Cliver.ParserTemplateList
             Template2s.RemoveAll(x => string.IsNullOrWhiteSpace(x.Name));
         }
 
-        virtual public bool DeactivateObsoleteTemplates(LocalInfoSettings<Template2T> localInfo)
+        virtual public bool DeactivateObsoleteTemplates(LocalInfoSettings<Template2T, DocumentParserT> localInfo)
         {
             if (DeactivateTemplatesOlderThanDays < 1)
                 return false;

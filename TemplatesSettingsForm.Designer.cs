@@ -1,6 +1,6 @@
 ﻿namespace Cliver.ParserTemplateList
 {
-    partial class TemplatesSettingsForm<Template2T> : System.Windows.Forms.Form where Template2T : Template2
+    partial class TemplatesSettingsForm<Template2T, DocumentParserT> 
     {
         /// <summary>
         /// Required designer variable.

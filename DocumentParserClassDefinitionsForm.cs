@@ -14,7 +14,7 @@ using System.Collections.Generic;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class DocumentParserClassDefinitionsForm<Template2T, DocumentParserT> : Form where Template2T : Template2 where DocumentParserT : class
+    public partial class DocumentParserClassDefinitionsForm<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
         public DocumentParserClassDefinitionsForm(TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
@@ -51,15 +51,15 @@ namespace Cliver.ParserTemplateList
                         DocumentParserClassDefinitions.Document.MarkerStrategy.RemoveAll(marker => true);
                         try
                         {
-                            List<Type> commonDocumentParsers2 = templateListControl.Compiler.CompileMultipleTypes(DocumentParserClassDefinitions.Text);
-                            List<string> documentParserClassNames2 = commonDocumentParsers2.Select(a => a.Name).ToList();
-                            List<string> ns = templateListControl.TemplateInfo.Template2s.Where(a => !string.IsNullOrWhiteSpace(a.DocumentParserClass)).Select(a => a.DocumentParserClass).Distinct().Except(templateListControl.Compiler.HardcodedDocumentParsers.Select(a => a.Name)).Except(documentParserClassNames2).ToList();
+                            List<Type> commonDocumentParserTypes2 = templateListControl.Compiler.CompileMultipleTypes(DocumentParserClassDefinitions.Text);
+                            List<string> documentParserClassNames2 = commonDocumentParserTypes2.Select(a => a.Name).ToList();
+                            List<string> ns = templateListControl.TemplateInfo.Template2s.Where(a => !string.IsNullOrWhiteSpace(a.DocumentParserClass)).Select(a => a.DocumentParserClass).Distinct().Except(templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => a.Name)).Except(documentParserClassNames2).ToList();
                             if (ns.Count > 0)
                                 throw new Exception2("The following templates link not defined parsers:" +
                                     string.Join("\r\n", templateListControl.TemplateInfo.Template2s.Where(a => ns.Contains(a.DocumentParserClass)).Select(a => a.Name + " => " + a.DocumentParserClass))
                                     );
                             templateListControl.TemplateInfo.DocumentParserClassNames = documentParserClassNames2;
-                            templateListControl.Compiler.CommonDocumentParsers = commonDocumentParsers2;
+                            templateListControl.Compiler.CommonDocumentParserTypes = commonDocumentParserTypes2;
                         }
                         catch (PdfDocumentParser.Compiler.Exception ex)
                         {

@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class Template2Form<Template2T, DocumentParserT> : Form where Template2T : Template2 where DocumentParserT : class
+    public partial class Template2Form<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
         public Template2Form(Template2T template2, TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
@@ -41,12 +41,30 @@ namespace Cliver.ParserTemplateList
 
             DocumentParserClass.DisplayMember = "Key";
             DocumentParserClass.ValueMember = "Value";
-            var ds = templateListControl.Compiler.HardcodedDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a.Name)).Select(a => new { Key = a.Name, Value = a.Name }).ToList();
+            var ds = templateListControl.Compiler.HardcodedDocumentParserTypes.Where(a => !string.IsNullOrWhiteSpace(a.Name)).Select(a => new { Key = a.Name, Value = a.Name }).ToList();
             ds.AddRange(templateListControl.TemplateInfo.DocumentParserClassNames.Select(a => new { Key = a, Value = a }));
-            //ds.AddRange(templateListControl.CommonDocumentParsers.Where(a => !string.IsNullOrWhiteSpace(a.Name)).Select(a => new { Key = a.Name, Value = a.Name }));
+            List<Template2T> template2s = templateListControl.GetTemplatesFromGui().Where(a => a.Name != template2.Name).ToList();
+            ds.AddRange(template2s.Where(a => true == a.DocumentParserClass?.StartsWith("#")).Select(a => a.DocumentParserClass.Remove(0, 1)).Select(a => new { Key = a, Value = a }));
             ds.Insert(0, new { Key = "", Value = "" });
             DocumentParserClass.DataSource = ds;
-            DocumentParserClass.SelectedValue = template2.DocumentParserClass;
+            if (!string.IsNullOrWhiteSpace(template2.DocumentParserClass))
+                DocumentParserClass.SelectedValue = template2.DocumentParserClass;
+
+            TemplatesHavingThisDocumentParserClass.DisplayMember = "Key";
+            TemplatesHavingThisDocumentParserClass.ValueMember = "Value";
+            if (!string.IsNullOrWhiteSpace(template2.DocumentParserClass))
+            {
+                string documentParserClass = template2.DocumentParserClass?.TrimStart('#');
+                ds = template2s.Where(a => a.DocumentParserClass == "#" + documentParserClass).Select(a => new { Key = ">>> " + a.Name, Value = a.Name }).ToList();
+                ds.AddRange(template2s.Where(a => a.DocumentParserClass == documentParserClass).Select(a => new { Key = a.Name, Value = a.Name }));
+                TemplatesHavingThisDocumentParserClass.DataSource = ds;
+                TemplatesHavingThisDocumentParserClass.SelectedItem = TemplatesHavingThisDocumentParserClass.Items.Count > 0 ? TemplatesHavingThisDocumentParserClass.Items[0] : null;
+            }
+            bOpenTemplateHavingThisDocumentParserClass.Click += delegate
+            {
+                if (!string.IsNullOrWhiteSpace((string)TemplatesHavingThisDocumentParserClass.SelectedValue))
+                    templateListControl.Edit2Template((string)TemplatesHavingThisDocumentParserClass.SelectedValue);
+            };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
 
@@ -69,14 +87,25 @@ namespace Cliver.ParserTemplateList
         {
             try
             {
+                Type documentParserType = null;
+                string documentParserTypeName = null;
                 if (!string.IsNullOrWhiteSpace(DocumentParserClassDefinition.Text))
                 {
                     DocumentParserClassDefinition.Document.MarkerStrategy.RemoveAll(marker => true);
                     try
                     {
-                        bool documentParserClassDefinitionIsSet = null != templateListControl.Compiler.CompileSingleType(DocumentParserClassDefinition.Text);//checking
-                        if (documentParserClassDefinitionIsSet && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
-                            throw new Exception("DocumentParser class and its definition cannot be specified at the same time.");
+                        documentParserType = templateListControl.Compiler.CompileSingleType(DocumentParserClassDefinition.Text);//checking
+                        if (documentParserType != null)
+                        {
+                            if (!string.IsNullOrWhiteSpace(DocumentParserClass.Text))
+                                throw new Exception("DocumentParser class and its definition cannot be specified at the same time.");
+                            documentParserTypeName = "#" + documentParserType.Name;
+                            Template2T t = templateListControl.GetTemplatesFromGui().Find(a => a.Name != template2.Name && a.DocumentParserClass == documentParserTypeName);
+                            if (t != null)
+                                throw new Exception("Template '" + t.Name + "' already defines class '" + documentParserTypeName + "'.");
+                            if (null != templateListControl.TemplateInfo.DocumentParserClassNames.Find(a => a == documentParserType.Name))
+                                throw new Exception("Class '" + documentParserTypeName + "' is already defined in the common document parsers.");
+                        }
                     }
                     catch (PdfDocumentParser.Compiler.Exception ex)
                     {
@@ -89,17 +118,25 @@ namespace Cliver.ParserTemplateList
                         throw;
                     }
                 }
+                if (documentParserType == null && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
+                {
+                    documentParserTypeName = DocumentParserClass.Text;
+                    Template2T t = templateListControl.GetTemplatesFromGui().Find(a => a.DocumentParserClass == "#" + documentParserTypeName);
+                    if (t == null)
+                        throw new Exception("No template defines class '" + DocumentParserClass.Text + "'.");
+                }
 
                 //if (string.IsNullOrWhiteSpace(Company.Text))
                 //    throw new Exception2("Company cannot be empty");
 
-                Template2.DocumentParserClassDefinition = DocumentParserClassDefinition.Text;
                 Template2.Active = Active.Checked;
                 Template2.Group = Group.Text;
                 Template2.Comment = Comment.Text;
                 Template2.OrderWeight = (float)OrderWeight.Value;
                 //template2.Company = Company.Text;
-                Template2.DocumentParserClass = DocumentParserClass.Text;
+                Template2.DocumentParserClassDefinition = DocumentParserClassDefinition.Text;
+                Template2.DocumentParserClass = documentParserTypeName;
+                Template2.DocumentParserType = documentParserType;
                 return true;
             }
             catch (Exception ex)

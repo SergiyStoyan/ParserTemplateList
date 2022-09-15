@@ -11,7 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public class LocalInfoSettings<Template2T> : Cliver.UserSettings where Template2T : Template2
+    abstract public class LocalInfoSettings<Template2T,DocumentParserT> : Cliver.UserSettings where Template2T : Template2<DocumentParserT> where DocumentParserT:class
     {
         public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
 
@@ -46,7 +46,7 @@ namespace Cliver.ParserTemplateList
             return i;
         }
 
-        public void ClearAndSave(TemplateInfoSettings<Template2T> templateInfo)
+        public void ClearAndSave(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
         {
             var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Name == n).FirstOrDefault() == null).ToList();
             foreach (string n in deletedTNs)

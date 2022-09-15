@@ -12,9 +12,9 @@ using Newtonsoft.Json.Linq;
 
 namespace Cliver.ParserTemplateList
 {
-    public partial class TemplatesSettingsForm<Template2T> : Form where Template2T : Template2
+    public partial class TemplatesSettingsForm<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT:class
     {
-        public TemplatesSettingsForm(TemplateInfoSettings<Template2T> templateInfo)
+        public TemplatesSettingsForm(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace Cliver.ParserTemplateList
             this.templateInfo = templateInfo;
             load_settings();
         }
-        TemplateInfoSettings<Template2T> templateInfo;
+        TemplateInfoSettings<Template2T, DocumentParserT> templateInfo;
 
         void load_settings()
         {
