@@ -72,7 +72,7 @@ namespace Cliver.ParserTemplateList
                     commonDocumentParserTypes = CompileMultipleTypes(documentParserClassDefinitions);
                 return commonDocumentParserTypes;
             }
-            set
+            internal set
             {
                 commonDocumentParserTypes = value;
             }
@@ -80,5 +80,11 @@ namespace Cliver.ParserTemplateList
         List<Type> commonDocumentParserTypes = null;
 
         public Type DefaultDocumentParserType { get; }
+
+        //public Type GetDocumentParserType(string templateName)
+        //{
+
+        //}
+        //Dictionary<string,Type> templateNames2documentParserType = new Dictionary<string, Type>();
     }
 }

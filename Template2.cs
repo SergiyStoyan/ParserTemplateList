@@ -62,7 +62,7 @@ namespace Cliver.ParserTemplateList
                             documentParserType = Compiler.HardcodedDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
                             if (documentParserType == null)
                             {
-                                Template2<DocumentParserT> t = FindTemplate("#" + DocumentParserClass);
+                                Template2<DocumentParserT> t = GetTemplate2s().Find(a => a.DocumentParserClass == "#" + DocumentParserClass);
                                 if (t != null)
                                     documentParserType = t.DocumentParserType;
                                 else
@@ -81,6 +81,12 @@ namespace Cliver.ParserTemplateList
             }
             set
             {
+                if (DocumentParserClass?.StartsWith("#") == true)
+                {
+                    var ts = GetTemplate2s().Where(a => a.DocumentParserClass == DocumentParserClass.TrimStart('#'));
+                    foreach (Template2<DocumentParserT> t in ts)
+                        t.DocumentParserType = null;
+                }
                 documentParserType = value;
                 documentParser = null;
             }
@@ -100,11 +106,11 @@ namespace Cliver.ParserTemplateList
                 return documentParser;
             }
         }
-        DocumentParserT documentParser = null;
+        protected DocumentParserT documentParser = null;
 
         abstract public DocumentParserCompiler<DocumentParserT> Compiler { get; }
 
-        abstract public Template2<DocumentParserT> FindTemplate(string name);
+        abstract public List<Template2<DocumentParserT>> GetTemplate2s();
 
         public string GetModifiedTimeAsString()
         {
