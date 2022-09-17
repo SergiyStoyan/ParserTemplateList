@@ -15,30 +15,31 @@ namespace Cliver.ParserTemplateList
 {
     public partial class Template2Form<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
-        public Template2Form(DataGridViewRow r, TemplateListControl<Template2T, DocumentParserT> templateListControl)
+        public Template2Form(DataGridViewRow template2Row, TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             InitializeComponent();
 
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
-            Template2T template2 = (Template2T)r.Tag;
-            Text = Application.ProductName + ": additional properties of '" + template2.Name + "'";
+            Template2T t2 = (Template2T)template2Row.Tag;
+            Template2 = t2.CreateCloneByJson();
+            Text = Application.ProductName + ": additional properties of '" + Template2.Name + "'";
 
             FormClosed += delegate
             {
+                DebugForm<Template2T, DocumentParserT> debugForm = FormManager.Get<DebugForm<Template2T, DocumentParserT>>(template2Row);
                 if (debugForm != null && !debugForm.IsDisposed)
                     debugForm.Close();
             };
 
             this.templateListControl = templateListControl;
-            this.template2Row = r;
+            this.template2Row = template2Row;
 
-            Template2 = template2.CreateCloneByJson();
-            Active.Checked = template2.Active;
-            Group.Text = template2.Group;
-            Comment.Text = template2.Comment;
-            OrderWeight.Value = (decimal)template2.OrderWeight;
+            Active.Checked = Template2.Active;
+            Group.Text = Template2.Group;
+            Comment.Text = Template2.Comment;
+            OrderWeight.Value = (decimal)Template2.OrderWeight;
             //Company.Text = t.Company;
-            DocumentParserClassDefinition.Text = template2.DocumentParserClassDefinition;
+            DocumentParserClassDefinition.Text = Template2.DocumentParserClassDefinition;
             DocumentParserClassDefinition.SetHighlighting("C#");
 
             DocumentParserClass.DisplayMember = "Key";
@@ -46,18 +47,18 @@ namespace Cliver.ParserTemplateList
             var ds = templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
             //ds.AddRange(templateListControl.Compiler.CommonDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }));
             ds.AddRange(templateListControl.TemplateInfo.DocumentParserClassNames.Select(a => new { Key = a, Value = a }));
-            List<Template2T> template2s = templateListControl.GetTemplatesFromGui().Where(a => a.Name != template2.Name).ToList();
+            List<Template2T> template2s = templateListControl.GetTemplatesFromGui().Where(a => a.Name != Template2.Name).ToList();
             ds.AddRange(template2s.Where(a => true == a.DocumentParserClass?.StartsWith("#")).Select(a => a.DocumentParserClass.Remove(0, 1)).Select(a => new { Key = a, Value = a }));
             ds.Insert(0, new { Key = "", Value = "" });
             DocumentParserClass.DataSource = ds;
-            if (!string.IsNullOrWhiteSpace(template2.DocumentParserClass))
-                DocumentParserClass.SelectedValue = template2.DocumentParserClass;
+            if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
+                DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
 
             TemplatesHavingThisDocumentParserClass.DisplayMember = "Key";
             TemplatesHavingThisDocumentParserClass.ValueMember = "Value";
-            if (!string.IsNullOrWhiteSpace(template2.DocumentParserClass))
+            if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
             {
-                string documentParserClass = template2.DocumentParserClass?.TrimStart('#');
+                string documentParserClass = Template2.DocumentParserClass?.TrimStart('#');
                 ds = template2s.Where(a => a.DocumentParserClass == "#" + documentParserClass).Select(a => new { Key = ">>> " + a.Name, Value = a.Name }).ToList();
                 ds.AddRange(template2s.Where(a => a.DocumentParserClass == documentParserClass).Select(a => new { Key = a.Name, Value = a.Name }));
                 TemplatesHavingThisDocumentParserClass.DataSource = ds;
@@ -77,6 +78,7 @@ namespace Cliver.ParserTemplateList
             set
             {
                 template2 = value;
+                DebugForm<Template2T, DocumentParserT> debugForm = FormManager.Get<DebugForm<Template2T, DocumentParserT>>(template2Row);
                 if (debugForm?.CanFocus == true)
                     debugForm.Template2 = template2;
             }
@@ -86,6 +88,7 @@ namespace Cliver.ParserTemplateList
             }
         }
         Template2T template2;
+        //public readonly Template2T Template2;// { get; protected set; }
 
         virtual protected bool setTemplate2()
         {
@@ -107,7 +110,7 @@ namespace Cliver.ParserTemplateList
                             documentParserTypeName = "#" + documentParserType.Name;
                             if (template2s == null)
                                 template2s = templateListControl.GetTemplatesFromGui();
-                            Template2T t = template2s.Find(a => a.Name != template2.Name && a.DocumentParserClass == documentParserTypeName);
+                            Template2T t = template2s.Find(a => a.Name != Template2.Name && a.DocumentParserClass == documentParserTypeName);
                             if (t != null)
                                 throw new Exception("Template '" + t.Name + "' already defines class '" + documentParserType.Name + "'.");
                             if (null != templateListControl.TemplateInfo.DocumentParserClassNames.Find(a => a == documentParserType.Name))
@@ -154,7 +157,7 @@ namespace Cliver.ParserTemplateList
                 Template2.Group = Group.Text;
                 Template2.Comment = Comment.Text;
                 Template2.OrderWeight = (float)OrderWeight.Value;
-                //template2.Company = Company.Text;
+                //Template2.Company = Company.Text;
                 Template2.DocumentParserClassDefinition = DocumentParserClassDefinition.Text;
                 Template2.DocumentParserClass = documentParserTypeName;
                 Template2.DocumentParserType = documentParserType;
@@ -196,14 +199,13 @@ namespace Cliver.ParserTemplateList
                     debugForm.Activate();
                 else
                 {
-                    debugForm = templateListControl.NewDebugForm();
+                    debugForm = templateListControl.NewDebugForm(template2Row);
                     FormManager.Set<DebugForm<Template2T, DocumentParserT>>(template2Row, debugForm);
                     debugForm.Show();
                 }
                 debugForm.Template2 = Template2;
             }
         }
-        protected DebugForm<Template2T, DocumentParserT> debugForm = null;
     }
 }
 

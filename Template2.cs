@@ -83,7 +83,7 @@ namespace Cliver.ParserTemplateList
             {
                 if (DocumentParserClass?.StartsWith("#") == true)
                 {
-                   var ts = GetTemplate2s().Where(a => a.DocumentParserClass == DocumentParserClass.TrimStart('#'));
+                    var ts = GetTemplate2s().Where(a => a.DocumentParserClass == DocumentParserClass.TrimStart('#'));
                     foreach (Template2<DocumentParserT> t in ts)
                         t.DocumentParserType = null;
                 }
@@ -106,7 +106,7 @@ namespace Cliver.ParserTemplateList
                 return documentParser;
             }
         }
-        DocumentParserT documentParser = null;
+        protected DocumentParserT documentParser = null;
 
         abstract public DocumentParserCompiler<DocumentParserT> Compiler { get; }
 

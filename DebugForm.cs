@@ -17,17 +17,19 @@ namespace Cliver.ParserTemplateList
 {
     abstract public partial class DebugForm<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
-        public DebugForm(TemplateListControl<Template2T, DocumentParserT> templateListControl)
+        public DebugForm(TemplateListControl<Template2T, DocumentParserT> templateListControl, DataGridViewRow template2Row)
         {
             InitializeComponent();
 
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
 
             this.templateListControl = templateListControl;
+            this.template2Row = template2Row;
 
             cWrapLines_CheckedChanged(null, null);
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
+        DataGridViewRow template2Row;
 
         virtual public Template2T Template2
         {
@@ -126,6 +128,11 @@ namespace Cliver.ParserTemplateList
         private void cWrapLines_CheckedChanged(object sender, EventArgs e)
         {
             Result.WordWrap = WrapLines.Checked;
+        }
+
+        private void bEdit2_Click(object sender, EventArgs e)
+        {
+            templateListControl.Edit2Template(template2Row);
         }
     }
 }

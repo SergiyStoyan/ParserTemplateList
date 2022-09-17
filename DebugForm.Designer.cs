@@ -36,10 +36,11 @@
             this.bClose = new System.Windows.Forms.Button();
             this.bDebug = new System.Windows.Forms.Button();
             this.bEdit = new System.Windows.Forms.Button();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.LogBox = new System.Windows.Forms.RichTextBox();
             this.bLog = new System.Windows.Forms.Button();
             this.WrapLines = new System.Windows.Forms.CheckBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.LogBox = new System.Windows.Forms.RichTextBox();
+            this.bEdit2 = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -90,6 +91,7 @@
             // 
             this.flowLayoutPanel1.Controls.Add(this.bClose);
             this.flowLayoutPanel1.Controls.Add(this.bDebug);
+            this.flowLayoutPanel1.Controls.Add(this.bEdit2);
             this.flowLayoutPanel1.Controls.Add(this.bEdit);
             this.flowLayoutPanel1.Controls.Add(this.bLog);
             this.flowLayoutPanel1.Controls.Add(this.WrapLines);
@@ -125,13 +127,35 @@
             // bEdit
             // 
             this.bEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bEdit.Location = new System.Drawing.Point(334, 3);
+            this.bEdit.Location = new System.Drawing.Point(253, 3);
             this.bEdit.Name = "bEdit";
             this.bEdit.Size = new System.Drawing.Size(75, 23);
             this.bEdit.TabIndex = 86;
             this.bEdit.Text = "Edit";
             this.bEdit.UseVisualStyleBackColor = true;
             this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
+            // 
+            // bLog
+            // 
+            this.bLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bLog.Location = new System.Drawing.Point(172, 3);
+            this.bLog.Name = "bLog";
+            this.bLog.Size = new System.Drawing.Size(75, 23);
+            this.bLog.TabIndex = 87;
+            this.bLog.Text = "Log";
+            this.bLog.UseVisualStyleBackColor = true;
+            this.bLog.Click += new System.EventHandler(this.bLog_Click);
+            // 
+            // WrapLines
+            // 
+            this.WrapLines.AutoSize = true;
+            this.WrapLines.Location = new System.Drawing.Point(86, 3);
+            this.WrapLines.Name = "WrapLines";
+            this.WrapLines.Size = new System.Drawing.Size(80, 17);
+            this.WrapLines.TabIndex = 88;
+            this.WrapLines.Text = "Wrap Lines";
+            this.WrapLines.UseVisualStyleBackColor = true;
+            this.WrapLines.CheckedChanged += new System.EventHandler(this.cWrapLines_CheckedChanged);
             // 
             // splitContainer1
             // 
@@ -163,27 +187,16 @@
             this.LogBox.TabIndex = 1;
             this.LogBox.Text = "";
             // 
-            // cWrapLines
+            // bEdit2
             // 
-            this.WrapLines.AutoSize = true;
-            this.WrapLines.Location = new System.Drawing.Point(167, 3);
-            this.WrapLines.Name = "cWrapLines";
-            this.WrapLines.Size = new System.Drawing.Size(80, 17);
-            this.WrapLines.TabIndex = 88;
-            this.WrapLines.Text = "Wrap Lines";
-            this.WrapLines.UseVisualStyleBackColor = true;
-            this.WrapLines.CheckedChanged += new System.EventHandler(this.cWrapLines_CheckedChanged);
-            // 
-            // bLog
-            // 
-            this.bLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bLog.Location = new System.Drawing.Point(253, 3);
-            this.bLog.Name = "bLog";
-            this.bLog.Size = new System.Drawing.Size(75, 23);
-            this.bLog.TabIndex = 87;
-            this.bLog.Text = "Log";
-            this.bLog.UseVisualStyleBackColor = true;
-            this.bLog.Click += new System.EventHandler(this.bLog_Click);
+            this.bEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bEdit2.Location = new System.Drawing.Point(334, 3);
+            this.bEdit2.Name = "bEdit2";
+            this.bEdit2.Size = new System.Drawing.Size(75, 23);
+            this.bEdit2.TabIndex = 89;
+            this.bEdit2.Text = "Edit2";
+            this.bEdit2.UseVisualStyleBackColor = true;
+            this.bEdit2.Click += new System.EventHandler(this.bEdit2_Click);
             // 
             // DebugForm
             // 
@@ -198,6 +211,7 @@
             this.Name = "DebugForm";
             this.Text = "DebugForm";
             this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -221,5 +235,6 @@
         protected System.Windows.Forms.RichTextBox LogBox;
         private System.Windows.Forms.Button bLog;
         protected System.Windows.Forms.CheckBox WrapLines;
+        private System.Windows.Forms.Button bEdit2;
     }
 }

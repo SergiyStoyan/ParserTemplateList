@@ -23,7 +23,7 @@ namespace Cliver.ParserTemplateList
 
         public abstract LocalInfoSettings<Template2T, DocumentParserT> LocalInfo { get; }
 
-        public abstract DebugForm<Template2T, DocumentParserT> NewDebugForm();
+        public abstract DebugForm<Template2T, DocumentParserT> NewDebugForm(DataGridViewRow row);
 
         public abstract DocumentParserCompiler<DocumentParserT> Compiler { get; }
 
@@ -300,7 +300,7 @@ namespace Cliver.ParserTemplateList
                         editTemplate(r2);
                         break;
                     case "Edit2":
-                        edit2Template(r);
+                        Edit2Template(r);
                         break;
                     case "Debug":
                         debugTemplate(r);
@@ -311,7 +311,7 @@ namespace Cliver.ParserTemplateList
             progress.Maximum = 10000;
         }
 
-        virtual protected void edit2Template(DataGridViewRow r)
+        internal void Edit2Template(DataGridViewRow r)
         {
             Template2T t2 = (Template2T)r.Tag;
             if (t2 == null)
@@ -354,7 +354,7 @@ namespace Cliver.ParserTemplateList
                 f.Activate();
                 return;
             }
-            f = NewDebugForm();
+            f = NewDebugForm(r);
             FormManager.Set<DebugForm<Template2T, DocumentParserT>>(r, f);
             f.Show();
             f.Template2 = t2;
@@ -455,7 +455,7 @@ namespace Cliver.ParserTemplateList
                 }
             }
             if (row != null)
-                edit2Template(row);
+                Edit2Template(row);
         }
 
         public class TemplateManager : TemplateForm.TemplateManager
