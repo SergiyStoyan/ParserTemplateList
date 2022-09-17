@@ -21,8 +21,7 @@ namespace Cliver.ParserTemplateList
 
             this.Icon = Win.AssemblyRoutines.GetAppIcon();
             Template2T t2 = (Template2T)template2Row.Tag;
-            Template2 = t2.CreateCloneByJson();
-            Text = Application.ProductName + ": additional properties of '" + Template2.Name + "'";
+            Text = Application.ProductName + ": additional properties of '" + t2.Name + "'";
 
             FormClosed += delegate
             {
@@ -33,6 +32,7 @@ namespace Cliver.ParserTemplateList
 
             this.templateListControl = templateListControl;
             this.template2Row = template2Row;
+            Template2 = t2.CreateCloneByJson();
 
             Active.Checked = Template2.Active;
             Group.Text = Template2.Group;
