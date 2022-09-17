@@ -53,7 +53,7 @@ namespace Cliver.ParserTemplateList
                         {
                             List<Type> commonDocumentParserTypes2 = templateListControl.Compiler.CompileMultipleTypes(DocumentParserClassDefinitions.Text);
                             List<string> documentParserClassNames2 = commonDocumentParserTypes2.Select(a => a.Name).ToList();
-                            List<string> ns = templateListControl.TemplateInfo.Template2s.Where(a => !string.IsNullOrWhiteSpace(a.DocumentParserClass)).Select(a => a.DocumentParserClass).Distinct().Except(templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => a.Name)).Except(documentParserClassNames2).ToList();
+                            List<string> ns = templateListControl.GetTemplatesFromGui().Where(a => !string.IsNullOrWhiteSpace(a.DocumentParserClass)).Select(a => a.DocumentParserClass).Distinct().Except(templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => a.Name)).Except(documentParserClassNames2).ToList();
                             if (ns.Count > 0)
                                 throw new Exception2("The following templates link not defined parsers:" +
                                     string.Join("\r\n", templateListControl.TemplateInfo.Template2s.Where(a => ns.Contains(a.DocumentParserClass)).Select(a => a.Name + " => " + a.DocumentParserClass))

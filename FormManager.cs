@@ -74,37 +74,54 @@ namespace Cliver.ParserTemplateList
     public class FormManager
     {
         static Dictionary<Type, Dictionary<DataGridViewRow, Form>> formTypes2rows2form = new Dictionary<Type, Dictionary<DataGridViewRow, Form>>();
+        static object lockObject = new object();
 
         static public T Get<T>(DataGridViewRow row) where T : Form
         {
-            Dictionary<DataGridViewRow, Form> rows2form = getRows2form(typeof(T));
-            rows2form.TryGetValue(row, out Form form);
-            if (form?.IsDisposed == true)
+            lock (lockObject)
             {
-                rows2form.Remove(row);
-                form = null;
+                Dictionary<DataGridViewRow, Form> rows2form = getRows2form(typeof(T));
+                rows2form.TryGetValue(row, out Form form);
+                if (form?.IsDisposed == true)
+                {
+                    rows2form.TryGetValue(row, out Form f);
+                    if (f == form)
+                        rows2form.Remove(row);
+                    form = null;
+                }
+                return (T)form;
             }
-            return (T)form;
         }
 
         static Dictionary<DataGridViewRow, Form> getRows2form(Type formType)
         {
-            if (!formTypes2rows2form.TryGetValue(formType, out Dictionary<DataGridViewRow, Form> rows2form))
+            lock (lockObject)
             {
-                rows2form = new Dictionary<DataGridViewRow, Form>();
-                formTypes2rows2form[formType] = rows2form;
+                if (!formTypes2rows2form.TryGetValue(formType, out Dictionary<DataGridViewRow, Form> rows2form))
+                {
+                    rows2form = new Dictionary<DataGridViewRow, Form>();
+                    formTypes2rows2form[formType] = rows2form;
+                }
+                return rows2form;
             }
-            return rows2form;
         }
 
-        static public void Set(DataGridViewRow row, Form form)
+        static public void Set<T>(DataGridViewRow row, Form form) where T : Form
         {
-            Dictionary<DataGridViewRow, Form> rows2form = getRows2form(form.GetType());
-            form.FormClosed += delegate
+            lock (lockObject)
             {
-                rows2form.Remove(row);
-            };
-            rows2form[row] = form;
+                Dictionary<DataGridViewRow, Form> rows2form = getRows2form(typeof(T));
+                form.FormClosed += delegate
+                {
+                    lock (lockObject)
+                    {
+                        rows2form.TryGetValue(row, out Form f);
+                        if (f == form)
+                            rows2form.Remove(row);
+                    }
+                };
+                rows2form[row] = form;
+            }
         }
     }
 }

@@ -323,8 +323,8 @@ namespace Cliver.ParserTemplateList
                 tf.Activate();
                 return;
             }
-            tf = new Template2Form<Template2T, DocumentParserT>(t2, this);
-            FormManager.Set(r, tf);
+            tf = new Template2Form<Template2T, DocumentParserT>(r, this);
+            FormManager.Set<Template2Form<Template2T, DocumentParserT>>(r, tf);
             tf.FormClosed += delegate
             {
                 if (tf.DialogResult != DialogResult.OK)
@@ -342,7 +342,7 @@ namespace Cliver.ParserTemplateList
             tf.Show();
         }
 
-        virtual protected void debugTemplate(DataGridViewRow r)
+        void debugTemplate(DataGridViewRow r)
         {
             Template2T t2 = (Template2T)r.Tag;
             if (t2 == null)
@@ -355,7 +355,7 @@ namespace Cliver.ParserTemplateList
                 return;
             }
             f = NewDebugForm();
-            FormManager.Set(r, f);
+            FormManager.Set<DebugForm<Template2T, DocumentParserT>>(r, f);
             f.Show();
             f.Template2 = t2;
         }
@@ -428,7 +428,7 @@ namespace Cliver.ParserTemplateList
             );
 
             tf = new TemplateForm(tm);
-            FormManager.Set(r, tf);
+            FormManager.Set<TemplateForm>(r, tf);
             tf.FormClosed += delegate
             {
                 if (tm.LastTestFile != null)
