@@ -59,6 +59,11 @@ namespace Cliver.ParserTemplateList
                             brush = Brushes.LightCyan;
                         else
                             brush = Brushes.LightYellow;
+                    //if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
+                    //    brush = Brushes.LightCyan;
+                    //else if (!string.IsNullOrWhiteSpace(Cliver.PdfDocumentParser.Compiler.RemoveComments(t.DocumentParserClassDefinition)))
+                    //    brush = Brushes.LightYellow;
+
                 }
                 if (e.ColumnIndex == 5)
                 {
