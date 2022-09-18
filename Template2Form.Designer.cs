@@ -44,9 +44,6 @@
             this.DocumentParserClass = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.DocumentParserClassDefinition = new ICSharpCode.TextEditor.TextEditorControl();
-            this.label4 = new System.Windows.Forms.Label();
-            this.TemplatesHavingThisDocumentParserClass = new System.Windows.Forms.ComboBox();
-            this.bOpenTemplateHavingThisDocumentParserClass = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderWeight)).BeginInit();
             this.SuspendLayout();
@@ -214,44 +211,11 @@
             this.DocumentParserClassDefinition.Size = new System.Drawing.Size(940, 340);
             this.DocumentParserClassDefinition.TabIndex = 85;
             // 
-            // label4
-            // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(426, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(261, 13);
-            this.label4.TabIndex = 87;
-            this.label4.Text = "Other Templates Having This Document Parser Class:";
-            // 
-            // TemplatesHavingThisDocumentParserClass
-            // 
-            this.TemplatesHavingThisDocumentParserClass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TemplatesHavingThisDocumentParserClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.TemplatesHavingThisDocumentParserClass.FormattingEnabled = true;
-            this.TemplatesHavingThisDocumentParserClass.Location = new System.Drawing.Point(693, 35);
-            this.TemplatesHavingThisDocumentParserClass.Name = "TemplatesHavingThisDocumentParserClass";
-            this.TemplatesHavingThisDocumentParserClass.Size = new System.Drawing.Size(194, 21);
-            this.TemplatesHavingThisDocumentParserClass.TabIndex = 86;
-            // 
-            // bOpenTemplateHavingThisDocumentParserClass
-            // 
-            this.bOpenTemplateHavingThisDocumentParserClass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.bOpenTemplateHavingThisDocumentParserClass.Location = new System.Drawing.Point(892, 34);
-            this.bOpenTemplateHavingThisDocumentParserClass.Name = "bOpenTemplateHavingThisDocumentParserClass";
-            this.bOpenTemplateHavingThisDocumentParserClass.Size = new System.Drawing.Size(45, 23);
-            this.bOpenTemplateHavingThisDocumentParserClass.TabIndex = 88;
-            this.bOpenTemplateHavingThisDocumentParserClass.Text = "Open";
-            this.bOpenTemplateHavingThisDocumentParserClass.UseVisualStyleBackColor = true;
-            // 
             // Template2Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(940, 430);
-            this.Controls.Add(this.bOpenTemplateHavingThisDocumentParserClass);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.TemplatesHavingThisDocumentParserClass);
             this.Controls.Add(this.DocumentParserClassDefinition);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.DocumentParserClass);
@@ -292,8 +256,5 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button bDebug;
         private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinition;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox TemplatesHavingThisDocumentParserClass;
-        private System.Windows.Forms.Button bOpenTemplateHavingThisDocumentParserClass;
     }
 }

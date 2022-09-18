@@ -28,23 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.DocumentParserClassDefinitions = new ICSharpCode.TextEditor.TextEditorControl();
+            this.bOK = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // bSave
-            // 
-            this.bSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bSave.Location = new System.Drawing.Point(866, 3);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(75, 23);
-            this.bSave.TabIndex = 49;
-            this.bSave.Text = "Save";
-            this.bSave.UseVisualStyleBackColor = true;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
             // 
             // bCancel
             // 
@@ -60,7 +49,7 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.bCancel);
-            this.flowLayoutPanel1.Controls.Add(this.bSave);
+            this.flowLayoutPanel1.Controls.Add(this.bOK);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 403);
@@ -83,6 +72,17 @@
             this.DocumentParserClassDefinitions.Size = new System.Drawing.Size(1024, 403);
             this.DocumentParserClassDefinitions.TabIndex = 87;
             // 
+            // bOK
+            // 
+            this.bOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bOK.Location = new System.Drawing.Point(866, 3);
+            this.bOK.Name = "bOK";
+            this.bOK.Size = new System.Drawing.Size(75, 23);
+            this.bOK.TabIndex = 51;
+            this.bOK.Text = "OK";
+            this.bOK.UseVisualStyleBackColor = true;
+            this.bOK.Click += new System.EventHandler(this.bOK_Click);
+            // 
             // DocumentParserClassDefinitionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -98,9 +98,9 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button bSave;
         private System.Windows.Forms.Button bCancel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinitions;
+        private System.Windows.Forms.Button bOK;
     }
 }

@@ -63,7 +63,6 @@ namespace Cliver.ParserTemplateList
                     //    brush = Brushes.LightCyan;
                     //else if (!string.IsNullOrWhiteSpace(Cliver.PdfDocumentParser.Compiler.RemoveComments(t.DocumentParserClassDefinition)))
                     //    brush = Brushes.LightYellow;
-
                 }
                 if (e.ColumnIndex == 5)
                 {
@@ -240,16 +239,6 @@ namespace Cliver.ParserTemplateList
                 Template2T t = (Template2T)r.Tag;
                 if (t == null)
                     return;
-                if (t.DocumentParserClass?.StartsWith("#") == true)
-                {
-                    List<Template2T> template2s = GetTemplatesFromGui();
-                    List<string> tns = template2s.Where(a => a.DocumentParserClass == t.DocumentParserClass.TrimStart('#')).Select(a => a.Name).ToList();
-                    if (tns.Any())
-                    {
-                        Message.Error("This template cannot be deleted as its document parser class definition is used by the following templates:\r\n" + string.Join("\r\n", tns));
-                        e.Cancel = true;
-                    }
-                }
             };
 
             template2s.UserDeletedRow += delegate (object sender, DataGridViewRowEventArgs e)

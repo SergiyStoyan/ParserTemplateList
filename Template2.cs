@@ -62,15 +62,9 @@ namespace Cliver.ParserTemplateList
                             documentParserType = Compiler.HardcodedDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
                             if (documentParserType == null)
                             {
-                                Template2<DocumentParserT> t = GetTemplate2s().Find(a => a.DocumentParserClass == "#" + DocumentParserClass);
-                                if (t != null)
-                                    documentParserType = t.DocumentParserType;
-                                else
-                                {
-                                    documentParserType = Compiler.CommonDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
-                                    if (documentParserType == null)
-                                        throw new Exception2("There is no hardcoded nor hot-compiled class '" + DocumentParserClass + "'");
-                                }
+                                documentParserType = Compiler.CommonDocumentParserTypes.FirstOrDefault(a => a.Name == DocumentParserClass);
+                                if (documentParserType == null)
+                                    throw new Exception2("There is no hardcoded nor hot-compiled class '" + DocumentParserClass + "'");
                             }
                         }
                     }
@@ -81,12 +75,6 @@ namespace Cliver.ParserTemplateList
             }
             set
             {
-                if (DocumentParserClass?.StartsWith("#") == true)
-                {
-                    var ts = GetTemplate2s().Where(a => a.DocumentParserClass == DocumentParserClass.TrimStart('#'));
-                    foreach (Template2<DocumentParserT> t in ts)
-                        t.DocumentParserType = null;
-                }
                 documentParserType = value;
                 documentParser = null;
             }
@@ -109,8 +97,6 @@ namespace Cliver.ParserTemplateList
         protected DocumentParserT documentParser = null;
 
         abstract public DocumentParserCompiler<DocumentParserT> Compiler { get; }
-
-        abstract public List<Template2<DocumentParserT>> GetTemplate2s();
 
         public string GetModifiedTimeAsString()
         {
