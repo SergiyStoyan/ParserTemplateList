@@ -47,28 +47,10 @@ namespace Cliver.ParserTemplateList
             var ds = templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
             //ds.AddRange(templateListControl.Compiler.CommonDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }));
             ds.AddRange(templateListControl.TemplateInfo.DocumentParserClassNames.Select(a => new { Key = a, Value = a }));
-            List<Template2T> template2s = templateListControl.GetTemplatesFromGui().Where(a => a.Name != Template2.Name).ToList();
-            ds.AddRange(template2s.Where(a => true == a.DocumentParserClass?.StartsWith("#")).Select(a => a.DocumentParserClass.Remove(0, 1)).Select(a => new { Key = a, Value = a }));
             ds.Insert(0, new { Key = "", Value = "" });
             DocumentParserClass.DataSource = ds;
             if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
                 DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
-
-            TemplatesHavingThisDocumentParserClass.DisplayMember = "Key";
-            TemplatesHavingThisDocumentParserClass.ValueMember = "Value";
-            if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
-            {
-                string documentParserClass = Template2.DocumentParserClass?.TrimStart('#');
-                ds = template2s.Where(a => a.DocumentParserClass == "#" + documentParserClass).Select(a => new { Key = ">>> " + a.Name, Value = a.Name }).ToList();
-                ds.AddRange(template2s.Where(a => a.DocumentParserClass == documentParserClass).Select(a => new { Key = a.Name, Value = a.Name }));
-                TemplatesHavingThisDocumentParserClass.DataSource = ds;
-                TemplatesHavingThisDocumentParserClass.SelectedItem = TemplatesHavingThisDocumentParserClass.Items.Count > 0 ? TemplatesHavingThisDocumentParserClass.Items[0] : null;
-            }
-            bOpenTemplateHavingThisDocumentParserClass.Click += delegate
-            {
-                if (!string.IsNullOrWhiteSpace((string)TemplatesHavingThisDocumentParserClass.SelectedValue))
-                    templateListControl.Edit2Template((string)TemplatesHavingThisDocumentParserClass.SelectedValue);
-            };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
         DataGridViewRow template2Row;
@@ -96,7 +78,6 @@ namespace Cliver.ParserTemplateList
             {
                 Type documentParserType = null;
                 string documentParserTypeName = null;
-                List<Template2T> template2s = null;
                 if (!string.IsNullOrWhiteSpace(DocumentParserClassDefinition.Text))
                 {
                     DocumentParserClassDefinition.Document.MarkerStrategy.RemoveAll(marker => true);
@@ -108,9 +89,7 @@ namespace Cliver.ParserTemplateList
                             if (!string.IsNullOrWhiteSpace(DocumentParserClass.Text))
                                 throw new Exception("Document parser class and its definition cannot be specified at the same time.");
                             documentParserTypeName = "#" + documentParserType.Name;
-                            if (template2s == null)
-                                template2s = templateListControl.GetTemplatesFromGui();
-                            Template2T t = template2s.Find(a => a.Name != Template2.Name && a.DocumentParserClass == documentParserTypeName);
+                            Template2T t = templateListControl.GetTemplatesFromGui().Find(a => a.Name != Template2.Name && a.DocumentParserClass == documentParserTypeName);
                             if (t != null)
                                 throw new Exception("Template '" + t.Name + "' already defines class '" + documentParserType.Name + "'.");
                             if (null != templateListControl.TemplateInfo.DocumentParserClassNames.Find(a => a == documentParserType.Name))
@@ -133,21 +112,10 @@ namespace Cliver.ParserTemplateList
                 if (documentParserType == null && !string.IsNullOrWhiteSpace(DocumentParserClass.Text))
                 {
                     documentParserTypeName = DocumentParserClass.Text;
-                    if (template2s == null)
-                        template2s = templateListControl.GetTemplatesFromGui();
-                    if (template2s.Find(a => a.DocumentParserClass == "#" + documentParserTypeName) == null
-                        && templateListControl.Compiler.HardcodedDocumentParserTypes.Find(a => a.Name == documentParserTypeName) == null
+                    if (templateListControl.Compiler.HardcodedDocumentParserTypes.Find(a => a.Name == documentParserTypeName) == null
                         && templateListControl.Compiler.CommonDocumentParserTypes.Find(a => a.Name == documentParserTypeName) == null
                         )
                         throw new Exception("Class '" + DocumentParserClass.Text + "' is not defined as neither hardcoded nor hot-compiled.");
-                }
-                if (Template2.DocumentParserClass?.StartsWith("#") == true && Template2.DocumentParserClass != documentParserTypeName)
-                {
-                    string documentParserClass0 = Template2.DocumentParserClass.TrimStart('#');
-                    if (template2s == null)
-                        template2s = templateListControl.GetTemplatesFromGui();
-                    if (template2s.Where(a => a.DocumentParserClass == documentParserClass0).Any())
-                        throw new Exception2("Document parser class name cannot be changed because it is used by other templates.");
                 }
 
                 //if (string.IsNullOrWhiteSpace(Company.Text))
@@ -188,12 +156,6 @@ namespace Cliver.ParserTemplateList
         {
             if (setTemplate2())
             {
-                //if (debugForm == null || debugForm.IsDisposed)
-                //    debugForm = templateListControl.NewDebugForm();
-                //debugForm.Template2 = Template2;
-                //debugForm.Show();
-                //debugForm.BringToFront();
-
                 DebugForm<Template2T, DocumentParserT> debugForm = FormManager.Get<DebugForm<Template2T, DocumentParserT>>(template2Row);
                 if (debugForm != null)
                     debugForm.Activate();
