@@ -15,13 +15,13 @@ namespace Cliver.ParserTemplateList
 {
     public class DocumentParserCompiler<DocumentParserT> where DocumentParserT : class
     {
-        public DocumentParserCompiler(Assembly hardcodedDocumentParsersAssembly, string documentParserClassDefinitions, Type defaultDocumentParserType)
+        public DocumentParserCompiler(Assembly hardcodedDocumentParsersAssembly, string documentCommonParserClassDefinitions, string defaultCommonDocumentParserName)
         {
             this.hardcodedDocumentParsersAssembly = hardcodedDocumentParsersAssembly;
-            this.documentParserClassDefinitions = documentParserClassDefinitions;
-            DefaultDocumentParserType = defaultDocumentParserType;
+            this.documentCommonParserClassDefinitions = documentCommonParserClassDefinitions;
+            DefaultCommonDocumentParserName = defaultCommonDocumentParserName;
         }
-        string documentParserClassDefinitions;
+        string documentCommonParserClassDefinitions;
         Assembly hardcodedDocumentParsersAssembly;
 
         public List<Type> CompileMultipleTypes(string documentParserClassDefinitions)
@@ -64,12 +64,20 @@ namespace Cliver.ParserTemplateList
         }
         List<Type> hardcodedDocumentParserTypes = null;
 
+        public List<string> HardcodedDocumentParserNames
+        {
+            get
+            {
+                return HardcodedDocumentParserTypes.Select(a => a.Name).ToList();
+            }
+        }
+
         public List<Type> CommonDocumentParserTypes
         {
             get
             {
                 if (commonDocumentParserTypes == null)
-                    commonDocumentParserTypes = CompileMultipleTypes(documentParserClassDefinitions);
+                    commonDocumentParserTypes = CompileMultipleTypes(documentCommonParserClassDefinitions);
                 return commonDocumentParserTypes;
             }
             internal set
@@ -79,7 +87,38 @@ namespace Cliver.ParserTemplateList
         }
         List<Type> commonDocumentParserTypes = null;
 
-        public Type DefaultDocumentParserType { get; }
+        public List<string> CommonDocumentParserNames
+        {
+            get
+            {
+                return CommonDocumentParserTypes.Select(a => a.Name).ToList();
+            }
+        }
+
+        public Type DefaultDocumentParserType
+        {
+            get
+            {
+                if (defaultDocumentParserType == null)
+                    defaultDocumentParserType = DefaultCommonDocumentParserName != null ? CommonDocumentParserTypes.Find(a => a.Name == DefaultCommonDocumentParserName) : typeof(DocumentParserT);
+                return defaultDocumentParserType;
+            }
+        }
+        Type defaultDocumentParserType;
+
+        internal string DefaultCommonDocumentParserName
+        {
+            get
+            {
+                return _defaultCommonDocumentParserName;
+            }
+            set
+            {
+                _defaultCommonDocumentParserName = value;
+                defaultDocumentParserType = null;
+            }
+        }
+        string _defaultCommonDocumentParserName;
 
         //public Type GetDocumentParserType(string templateName)
         //{

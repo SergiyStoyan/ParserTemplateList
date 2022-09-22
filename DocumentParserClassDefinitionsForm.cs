@@ -11,9 +11,16 @@ using System.IO;
 using System.Linq;
 using Cliver.PdfDocumentParser;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
+    /*TBD
+    - do class names of individual template parsers need to be stored? - now they are only used to make sure that they are unique which is not a necessity.
+    - when class name is selected in the dropbox, the compiler editor must be scrolled to have it in the top; 
+     
+     
+     */
     public partial class DocumentParserClassDefinitionsForm<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
         public DocumentParserClassDefinitionsForm(TemplateListControl<Template2T, DocumentParserT> templateListControl)
@@ -29,6 +36,52 @@ namespace Cliver.ParserTemplateList
             {
                 load_settings();
             };
+
+            documentParserClasses.SelectedIndexChanged += delegate
+            {
+                try
+                {
+                    string documentParserClass = (string)documentParserClasses.SelectedValue;
+                    if (documentParserClass == null)
+                        return;
+                    SelectedDocumentParserClassIsDefault.Checked = documentParserClass == defaultDocumentParserClass;
+                    List<Template2T> template2s = templateListControl.GetTemplatesFromGui();
+                    templatesUsingSelectedDocumentParserClass.DataSource = documentParserClass != defaultDocumentParserClass ?
+                        template2s.Where(a => a.DocumentParserClass == documentParserClass).Select(a => a.Name).ToList() :
+                        template2s.Where(a => string.IsNullOrWhiteSpace(a.DocumentParserClass) || a.DocumentParserClass == documentParserClass).Select(a => a.Name).ToList();
+                    Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\s?class\s+" + Regex.Escape(documentParserClass) + @"(\s.*)?$", RegexOptions.Multiline);
+                    if (!m.Success)
+                        throw new Exception2("There is no class '" + documentParserClass + "'.");
+                    var p = DocumentParserClassDefinitions.Document.OffsetToPosition(m.Index);
+                    DocumentParserClassDefinitions.ActiveTextAreaControl.ScrollTo(p.Line, p.Column);
+                }
+                catch (Exception e)
+                {
+                    Message.Error(e);
+                }
+            };
+
+            bOpenSelectedTemplate.Click += delegate
+            {
+                if (templatesUsingSelectedDocumentParserClass.SelectedValue == null)
+                    return;
+                templateListControl.Edit2Template((string)templatesUsingSelectedDocumentParserClass.SelectedValue);
+            };
+
+            bValidate.Click += delegate
+            {
+                validate();
+            };
+
+            SelectedDocumentParserClassIsDefault.Click += delegate
+            {
+                if (documentParserClasses.SelectedValue == null)
+                {
+                    SelectedDocumentParserClassIsDefault.Checked = false;
+                    return;
+                }
+                defaultDocumentParserClass = SelectedDocumentParserClassIsDefault.Checked ? (string)documentParserClasses.SelectedValue : null;
+            };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
 
@@ -36,23 +89,34 @@ namespace Cliver.ParserTemplateList
         {
             DocumentParserClassDefinitions.Text = templateListControl.TemplateInfo.DocumentParserClassDefinitions;
             DocumentParserClassDefinitions.SetHighlighting("C#");
-            markUnusedClasses();
+
+            defaultDocumentParserClass = templateListControl.TemplateInfo.DefaultDocumentParserClass;
+
+            validate();
         }
 
-        void markUnusedClasses()
+        void markClasses()
         {
-            List<string> ns = templateListControl.TemplateInfo.DocumentParserClassNames.Except(templateListControl.GetTemplatesFromGui().Select(a => a.DocumentParserClass).Distinct()).ToList();
-            //if (ns.Count > 0)
-            //    throw new Exception2("The following document parser classes are not used:\r\n" + string.Join("\r\n", ns));
-            foreach (string n in ns)
+            DocumentParserClassDefinitions.Document.MarkerStrategy.RemoveAll(a => true);
+            List<string> templateDocumentParserClassNames = templateListControl.GetTemplatesFromGui().Where(a => a.DocumentParserClass != templateListControl.TemplateInfo.DefaultDocumentParserClass).Select(a => a.DocumentParserClass).ToList();
+            for (Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\s?class\s+(?'Class'\w+).*?$", RegexOptions.Multiline); m.Success; m = m.NextMatch())
             {
-                for (Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\sclass\s+" + Regex.Escape(n) + ".*?$", RegexOptions.Multiline); m.Success; m = m.NextMatch())
-                {
-                    ICSharpCode.TextEditor.Document.TextMarker marker = new ICSharpCode.TextEditor.Document.TextMarker(m.Index, m.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock, System.Drawing.Color.Cyan);
-                    DocumentParserClassDefinitions.Document.MarkerStrategy.AddMarker(marker);
-                }
+                Color c;
+                string documentParserClass = m.Groups["Class"].Value;
+                if (documentParserClass == templateListControl.TemplateInfo.DefaultDocumentParserClass)
+                    c = Color.Gold;
+                else if (templateDocumentParserClassNames.Contains(documentParserClass))
+                    c = Color.Cyan;
+                else
+                    c = Color.Gray;
+                ICSharpCode.TextEditor.Document.TextMarker marker = new ICSharpCode.TextEditor.Document.TextMarker(m.Index, m.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock, c);
+                DocumentParserClassDefinitions.Document.MarkerStrategy.AddMarker(marker);
             }
+            DocumentParserClassDefinitions.Refresh();
         }
+
+        string defaultDocumentParserClass;
+        List<Type> documentParserTypes;
 
         private void bCancel_Click(object sender, EventArgs e)
         {
@@ -60,9 +124,8 @@ namespace Cliver.ParserTemplateList
             DialogResult = DialogResult.Cancel;
         }
 
-        private bool save()
+        private bool validate()
         {
-            List<Type> commonDocumentParserTypes = null;
             try
             {
                 if (!string.IsNullOrWhiteSpace(DocumentParserClassDefinitions.Text))
@@ -71,15 +134,15 @@ namespace Cliver.ParserTemplateList
                     try
                     {
                         List<Template2T> template2s = templateListControl.GetTemplatesFromGui();
-                        commonDocumentParserTypes = templateListControl.Compiler.CompileMultipleTypes(DocumentParserClassDefinitions.Text);
+                        documentParserTypes = templateListControl.Compiler.CompileMultipleTypes(DocumentParserClassDefinitions.Text);
                         List<string> ns = template2s.Where(a => !string.IsNullOrWhiteSpace(a.DocumentParserClass) && !a.DocumentParserClass.StartsWith("#")).Select(a => a.DocumentParserClass).Distinct()
                             .Except(templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => a.Name))
-                            .Except(commonDocumentParserTypes.Select(a => a.Name).ToList())
+                            .Except(documentParserTypes.Select(a => a.Name).ToList())
                             .Except(template2s.Where(a => a.DocumentParserClass?.StartsWith("#") == true).Select(a => a.DocumentParserClass.TrimStart('#')))
                             .ToList();
                         if (ns.Count > 0)
                             throw new Exception2("The following templates would link not defined parsers:\r\n" +
-                                string.Join("\r\n", templateListControl.TemplateInfo.Template2s.Where(a => ns.Contains(a.DocumentParserClass)).Select(a => a.Name + " => " + a.DocumentParserClass))
+                                string.Join("\r\n", template2s.Where(a => ns.Contains(a.DocumentParserClass)).Select(a => a.Name + " => " + a.DocumentParserClass))
                                 );
                     }
                     catch (PdfDocumentParser.Compiler.Exception ex)
@@ -93,12 +156,28 @@ namespace Cliver.ParserTemplateList
                         throw;
                     }
                 }
-                markUnusedClasses();
 
-                templateListControl.TemplateInfo.DocumentParserClassNames = commonDocumentParserTypes.Select(a => a.Name).ToList();
-                templateListControl.Compiler.CommonDocumentParserTypes = commonDocumentParserTypes;
-                templateListControl.TemplateInfo.DocumentParserClassDefinitions = DocumentParserClassDefinitions.Text;
-                templateListControl.TemplateInfo.Touch();
+                markClasses();
+
+                string selectedClass = (string)documentParserClasses.SelectedValue;
+                documentParserClasses.DisplayMember = "Key";
+                documentParserClasses.ValueMember = "Value";
+                documentParserClasses.DataSource = documentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
+                if (selectedClass != null)
+                    documentParserClasses.SelectedValue = selectedClass;
+                else if (documentParserClasses.Items.Count > 0)
+                    documentParserClasses.SelectedIndex = 0;
+
+                if (!documentParserTypes.Exists(a => a.Name == defaultDocumentParserClass))
+                    defaultDocumentParserClass = null;
+                else
+                {
+                    if (documentParserClasses.SelectedValue != null)
+                        SelectedDocumentParserClassIsDefault.Checked = defaultDocumentParserClass == (string)documentParserClasses.SelectedValue;
+                    else
+                        SelectedDocumentParserClassIsDefault.Checked = false;
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -110,8 +189,18 @@ namespace Cliver.ParserTemplateList
 
         private void bOK_Click(object sender, EventArgs e)
         {
-            if (!save())
+            if (!validate())
                 return;
+
+            if (string.IsNullOrWhiteSpace(defaultDocumentParserClass) && !Message.YesNo("No default document parser class is set! Proceed?", this, Message.Icons.Warning))
+                return;
+
+            //templateListControl.TemplateInfo.DocumentParserClassNames = documentParserTypes.Select(a => a.Name).ToList();
+            templateListControl.Compiler.CommonDocumentParserTypes = documentParserTypes;
+            templateListControl.Compiler.DefaultCommonDocumentParserName = defaultDocumentParserClass;
+            templateListControl.TemplateInfo.DocumentParserClassDefinitions = DocumentParserClassDefinitions.Text;
+            templateListControl.TemplateInfo.DefaultDocumentParserClass = defaultDocumentParserClass;
+            templateListControl.TemplateInfo.Touch();
             DialogResult = DialogResult.OK;
             Close();
         }

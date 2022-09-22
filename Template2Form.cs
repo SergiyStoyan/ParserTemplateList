@@ -30,27 +30,30 @@ namespace Cliver.ParserTemplateList
                     debugForm.Close();
             };
 
-            this.templateListControl = templateListControl;
-            this.template2Row = template2Row;
-            Template2 = t2.CreateCloneByJson();
+            Load += delegate
+            {
+                this.templateListControl = templateListControl;
+                this.template2Row = template2Row;
+                Template2 = t2.CreateCloneByJson();
 
-            Active.Checked = Template2.Active;
-            Group.Text = Template2.Group;
-            Comment.Text = Template2.Comment;
-            OrderWeight.Value = (decimal)Template2.OrderWeight;
-            //Company.Text = t.Company;
-            DocumentParserClassDefinition.Text = Template2.DocumentParserClassDefinition;
-            DocumentParserClassDefinition.SetHighlighting("C#");
+                Active.Checked = Template2.Active;
+                Group.Text = Template2.Group;
+                Comment.Text = Template2.Comment;
+                OrderWeight.Value = (decimal)Template2.OrderWeight;
+                //Company.Text = t.Company;
+                DocumentParserClassDefinition.Text = Template2.DocumentParserClassDefinition;
+                DocumentParserClassDefinition.SetHighlighting("C#");
 
-            DocumentParserClass.DisplayMember = "Key";
-            DocumentParserClass.ValueMember = "Value";
-            var ds = templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
-            //ds.AddRange(templateListControl.Compiler.CommonDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }));
-            ds.AddRange(templateListControl.TemplateInfo.DocumentParserClassNames.Select(a => new { Key = a, Value = a }));
-            ds.Insert(0, new { Key = "", Value = "" });
-            DocumentParserClass.DataSource = ds;
-            if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
-                DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
+                DocumentParserClass.DisplayMember = "Key";
+                DocumentParserClass.ValueMember = "Value";
+                var ds = templateListControl.Compiler.HardcodedDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
+                //ds.AddRange(templateListControl.Compiler.CommonDocumentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }));
+                ds.AddRange(templateListControl.Compiler.CommonDocumentParserNames.Where(a => a != templateListControl.TemplateInfo.DefaultDocumentParserClass).Select(a => new { Key = a, Value = a }));
+                ds.Insert(0, new { Key = "", Value = "" });
+                DocumentParserClass.DataSource = ds;
+                if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
+                    DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
+            };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
         DataGridViewRow template2Row;
@@ -92,7 +95,7 @@ namespace Cliver.ParserTemplateList
                             Template2T t = templateListControl.GetTemplatesFromGui().Find(a => a.Name != Template2.Name && a.DocumentParserClass == documentParserTypeName);
                             if (t != null)
                                 throw new Exception("Template '" + t.Name + "' already defines class '" + documentParserType.Name + "'.");
-                            if (null != templateListControl.TemplateInfo.DocumentParserClassNames.Find(a => a == documentParserType.Name))
+                            if (null != templateListControl.Compiler.CommonDocumentParserNames.Find(a => a == documentParserType.Name))
                                 throw new Exception("Class '" + documentParserType.Name + "' is already defined in the common document parsers.");
                             if (null != templateListControl.Compiler.HardcodedDocumentParserTypes.Find(a => a.Name == documentParserType.Name))
                                 throw new Exception("Class '" + documentParserType.Name + "' is already defined in the common document parsers.");

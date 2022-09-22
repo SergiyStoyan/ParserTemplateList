@@ -634,7 +634,7 @@
             // 
             this.openTemplatesSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.openTemplatesSettings.AutoSize = true;
-            this.openTemplatesSettings.Location = new System.Drawing.Point(915, 415);
+            this.openTemplatesSettings.Location = new System.Drawing.Point(930, 415);
             this.openTemplatesSettings.Name = "openTemplatesSettings";
             this.openTemplatesSettings.Size = new System.Drawing.Size(60, 23);
             this.openTemplatesSettings.TabIndex = 50;
@@ -645,7 +645,7 @@
             // 
             this.openDocumentParserClassDefinitions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.openDocumentParserClassDefinitions.AutoSize = true;
-            this.openDocumentParserClassDefinitions.Location = new System.Drawing.Point(849, 415);
+            this.openDocumentParserClassDefinitions.Location = new System.Drawing.Point(863, 415);
             this.openDocumentParserClassDefinitions.Name = "openDocumentParserClassDefinitions";
             this.openDocumentParserClassDefinitions.Size = new System.Drawing.Size(60, 23);
             this.openDocumentParserClassDefinitions.TabIndex = 51;
