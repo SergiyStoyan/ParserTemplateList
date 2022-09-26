@@ -28,7 +28,7 @@ namespace Cliver.ParserTemplateList
         {
             Type[] ts = Compiler.Compile(documentParserClassDefinitions, Assembly.GetEntryAssembly());
             Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
-            if (t == null)
+            if (ts.Any() && t == null)
                 throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
             return ts.ToList();
         }

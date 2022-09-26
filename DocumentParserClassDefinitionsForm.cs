@@ -93,6 +93,8 @@ namespace Cliver.ParserTemplateList
             defaultDocumentParserClass = templateListControl.TemplateInfo.DefaultDocumentParserClass;
 
             validate();
+            if (documentParserClasses.SelectedIndex < 0 && documentParserClasses.Items.Count > 0)
+                documentParserClasses.SelectedIndex = 0;
         }
 
         void markClasses()
@@ -116,7 +118,7 @@ namespace Cliver.ParserTemplateList
         }
 
         string defaultDocumentParserClass;
-        List<Type> documentParserTypes;
+        List<Type> documentParserTypes = new List<Type>();
 
         private void bCancel_Click(object sender, EventArgs e)
         {
@@ -165,8 +167,6 @@ namespace Cliver.ParserTemplateList
                 documentParserClasses.DataSource = documentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
                 if (selectedClass != null)
                     documentParserClasses.SelectedValue = selectedClass;
-                else if (documentParserClasses.Items.Count > 0)
-                    documentParserClasses.SelectedIndex = 0;
 
                 if (!documentParserTypes.Exists(a => a.Name == defaultDocumentParserClass))
                     defaultDocumentParserClass = null;

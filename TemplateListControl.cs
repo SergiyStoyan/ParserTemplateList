@@ -54,15 +54,15 @@ namespace Cliver.ParserTemplateList
                     Template2<DocumentParserT> t = (Template2<DocumentParserT>)template2s.Rows[e.RowIndex].Tag;
                     if (t == null)
                         return;
+                    //if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
+                    //    brush = Brushes.LightCyan;
+                    //else if (!string.IsNullOrWhiteSpace(Cliver.PdfDocumentParser.Compiler.RemoveComments(t.DocumentParserClassDefinition)))
+                    //    brush = Brushes.LightYellow;
                     if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
                         if (!t.DocumentParserClass.StartsWith("#"))
                             brush = Brushes.LightCyan;
                         else
                             brush = Brushes.LightYellow;
-                    //if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
-                    //    brush = Brushes.LightCyan;
-                    //else if (!string.IsNullOrWhiteSpace(Cliver.PdfDocumentParser.Compiler.RemoveComments(t.DocumentParserClassDefinition)))
-                    //    brush = Brushes.LightYellow;
                 }
                 if (e.ColumnIndex == 5)
                 {
