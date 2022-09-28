@@ -26,23 +26,46 @@ namespace Cliver.ParserTemplateList
 
         public List<Type> CompileMultipleTypes(string documentParserClassDefinitions)
         {
-            Type[] ts = Compiler.Compile(documentParserClassDefinitions, Assembly.GetEntryAssembly());
-            Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
-            if (ts.Any() && t == null)
-                throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
-            return ts.ToList();
+            System.Windows.Forms.Cursor cursor0 = System.Windows.Forms.Cursor.Current;
+            try
+            {
+                System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+                Type[] ts = Compiler.Compile(documentParserClassDefinitions, Assembly.GetEntryAssembly());
+                Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
+                if (ts.Any() && t == null)
+                    throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
+                return ts.ToList();
+            }
+            finally
+            {
+                System.Windows.Forms.Cursor.Current = cursor0;
+            }
         }
 
         public Type CompileSingleType(string documentParserClassDefinition)
         {
-            Type[] ts = Compiler.Compile(documentParserClassDefinition, Assembly.GetEntryAssembly());
-            if (ts.Length < 1)//to allow commented code string
-                return null;
-            Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
-            if (t == null)
-                throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
-            return t;
+            System.Windows.Forms.Cursor cursor0 = System.Windows.Forms.Cursor.Current;
+            try
+            {
+                if (!compilerIsLoaded)
+                {
+                    System.Windows.Forms.Cursor.Current = System.Windows.Forms.Cursors.WaitCursor;
+                    compilerIsLoaded = true;
+                }
+                Type[] ts = Compiler.Compile(documentParserClassDefinition, Assembly.GetEntryAssembly());
+                if (ts.Length < 1)//to allow commented code string
+                    return null;
+                Type t = Compiler.FindSubTypes(typeof(DocumentParserT), ts).FirstOrDefault();
+                if (t == null)
+                    throw new Exception("No sub-type of '" + typeof(DocumentParserT).Name + "' was found in the hot-compiled type definition.");
+                return t;
+            }
+            finally
+            {
+                System.Windows.Forms.Cursor.Current = cursor0;
+            }
         }
+        bool compilerIsLoaded = false;
 
         //public DocumentParserT CreateSingleParser(Template2 template2)
         //{
