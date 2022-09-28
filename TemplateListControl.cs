@@ -274,7 +274,7 @@ namespace Cliver.ParserTemplateList
                 switch (template2s.Columns[e.ColumnIndex].Name)
                 {
                     case "Edit":
-                        editTemplate(r);
+                        EditTemplate(r);
                         break;
                     case "Copy":
                         Template2T t = (Template2T)r.Tag;
@@ -291,7 +291,7 @@ namespace Cliver.ParserTemplateList
                         r2.Cells["Active"].Value = t2.Active;
                         r2.Cells["Group"].Value = t2.Group;
                         r2.Cells["OrderWeight"].Value = t2.OrderWeight;
-                        editTemplate(r2);
+                        EditTemplate(r2);
                         break;
                     case "Edit2":
                         Edit2Template(r);
@@ -305,36 +305,19 @@ namespace Cliver.ParserTemplateList
             progress.Maximum = 10000;
         }
 
-        internal void Edit2Template(DataGridViewRow r)
-        {
-            Template2T t2 = (Template2T)r.Tag;
-            if (t2 == null)
-                return;
-
-            Template2Form<Template2T, DocumentParserT> tf = FormManager.Get<Template2Form<Template2T, DocumentParserT>>(r);
-            if (tf != null)
-            {
-                tf.Activate();
-                return;
-            }
-            tf = new Template2Form<Template2T, DocumentParserT>(r, this);
-            FormManager.Set<Template2Form<Template2T, DocumentParserT>>(r, tf);
-            tf.FormClosed += delegate
-            {
-                if (tf.DialogResult != DialogResult.OK)
-                    return;
-                t2 = tf.Template2;
-                r.Tag = t2;
-                r.Cells["Active"].Value = t2.Active;
-                r.Cells["Group"].Value = t2.Group;
-                r.Cells["Comment"].Value = t2.Comment;
-                r.Cells["OrderWeight"].Value = t2.OrderWeight;
-
-                TemplateInfo.Touch();
-                //setButtonColor(r);
-            };
-            tf.Show();
-        }
+        //void setButtonColor(DataGridViewRow r)
+        //{
+        //    Template2 t = (Template2)r.Tag;
+        //    if (t == null)
+        //        return;
+        //    if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
+        //        r.Cells["Edit2"].Style.BackColor = Color.LightCyan;
+        //    else if (!string.IsNullOrWhiteSpace(Compiler.GetOnlyCode(t.DocumentParserClassDefinition)))
+        //        r.Cells["Edit2"].Style.BackColor = Color.LightYellow;
+        //    else
+        //        r.Cells["Edit2"].Style.BackColor = SystemColors.ButtonFace;
+        //    //r.Cells["Edit2"].Style.ForeColor = Color.Red;
+        //}
 
         void debugTemplate(DataGridViewRow r)
         {
@@ -354,39 +337,14 @@ namespace Cliver.ParserTemplateList
             f.Template2 = t2;
         }
 
-        //void setButtonColor(DataGridViewRow r)
-        //{
-        //    Template2 t = (Template2)r.Tag;
-        //    if (t == null)
-        //        return;
-        //    if (!string.IsNullOrWhiteSpace(t.DocumentParserClass))
-        //        r.Cells["Edit2"].Style.BackColor = Color.LightCyan;
-        //    else if (!string.IsNullOrWhiteSpace(Compiler.GetOnlyCode(t.DocumentParserClassDefinition)))
-        //        r.Cells["Edit2"].Style.BackColor = Color.LightYellow;
-        //    else
-        //        r.Cells["Edit2"].Style.BackColor = SystemColors.ButtonFace;
-        //    //r.Cells["Edit2"].Style.ForeColor = Color.Red;
-        //}
-
-        virtual public void EditTemplate(string templateName)
+        internal void EditTemplate(string templateName)
         {
-            DataGridViewRow row = null;
-            foreach (DataGridViewRow r in template2s.Rows)
-            {
-                if (r.Tag == null)
-                    continue;
-                Template2<DocumentParserT> t2 = r.Tag as Template2<DocumentParserT>;
-                if (t2.Name == templateName)
-                {
-                    row = r;
-                    break;
-                }
-            }
+            DataGridViewRow row = getRowByTemplateName(templateName);
             if (row != null)
-                editTemplate(row);
+                EditTemplate(row);
         }
 
-        virtual protected void editTemplate(DataGridViewRow r)
+        internal void EditTemplate(DataGridViewRow r)
         {
             TemplateForm tf = FormManager.Get<TemplateForm>(r);
             if (tf != null)
@@ -434,7 +392,38 @@ namespace Cliver.ParserTemplateList
             tf.Show();
         }
 
-        virtual public void Edit2Template(string templateName)
+        internal void Edit2Template(DataGridViewRow r)
+        {
+            Template2T t2 = (Template2T)r.Tag;
+            if (t2 == null)
+                return;
+
+            Template2Form<Template2T, DocumentParserT> tf = FormManager.Get<Template2Form<Template2T, DocumentParserT>>(r);
+            if (tf != null)
+            {
+                tf.Activate();
+                return;
+            }
+            tf = new Template2Form<Template2T, DocumentParserT>(r, this);
+            FormManager.Set<Template2Form<Template2T, DocumentParserT>>(r, tf);
+            tf.FormClosed += delegate
+            {
+                if (tf.DialogResult != DialogResult.OK)
+                    return;
+                t2 = tf.Template2;
+                r.Tag = t2;
+                r.Cells["Active"].Value = t2.Active;
+                r.Cells["Group"].Value = t2.Group;
+                r.Cells["Comment"].Value = t2.Comment;
+                r.Cells["OrderWeight"].Value = t2.OrderWeight;
+
+                TemplateInfo.Touch();
+                //setButtonColor(r);
+            };
+            tf.Show();
+        }
+
+        DataGridViewRow getRowByTemplateName(string templateName)
         {
             DataGridViewRow row = null;
             foreach (DataGridViewRow r in template2s.Rows)
@@ -448,6 +437,12 @@ namespace Cliver.ParserTemplateList
                     break;
                 }
             }
+            return row;
+        }
+
+        internal void Edit2Template(string templateName)
+        {
+            DataGridViewRow row = getRowByTemplateName(templateName);
             if (row != null)
                 Edit2Template(row);
         }

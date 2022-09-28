@@ -114,7 +114,7 @@ namespace Cliver.ParserTemplateList
 
         virtual protected void bEdit_Click(object sender, EventArgs e)
         {
-            templateListControl.EditTemplate(template2.Name);
+            templateListControl.EditTemplate(template2Row);
         }
 
         virtual protected void bLog_Click(object sender, EventArgs e)

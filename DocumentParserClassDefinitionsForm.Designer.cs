@@ -37,10 +37,11 @@
             this.SelectedDocumentParserClassIsDefault = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.templatesUsingSelectedDocumentParserClass = new System.Windows.Forms.ComboBox();
-            this.bOpenSelectedTemplate = new System.Windows.Forms.Button();
+            this.bSelectedTemplateEdit2 = new System.Windows.Forms.Button();
             this.bValidate = new System.Windows.Forms.Button();
             this.DocumentParserClassDefinitions = new ICSharpCode.TextEditor.TextEditorControl();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.bSelectedTemplateEdit = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -62,6 +63,7 @@
             this.flowLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.flowLayoutPanel1.Controls.Add(this.bCancel);
             this.flowLayoutPanel1.Controls.Add(this.bOK);
+            this.flowLayoutPanel1.Controls.Add(this.bValidate);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(754, 1);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -86,8 +88,8 @@
             this.flowLayoutPanel2.Controls.Add(this.SelectedDocumentParserClassIsDefault);
             this.flowLayoutPanel2.Controls.Add(this.label2);
             this.flowLayoutPanel2.Controls.Add(this.templatesUsingSelectedDocumentParserClass);
-            this.flowLayoutPanel2.Controls.Add(this.bOpenSelectedTemplate);
-            this.flowLayoutPanel2.Controls.Add(this.bValidate);
+            this.flowLayoutPanel2.Controls.Add(this.bSelectedTemplateEdit);
+            this.flowLayoutPanel2.Controls.Add(this.bSelectedTemplateEdit2);
             this.flowLayoutPanel2.Location = new System.Drawing.Point(0, 1);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             this.flowLayoutPanel2.Size = new System.Drawing.Size(732, 27);
@@ -140,20 +142,20 @@
             this.templatesUsingSelectedDocumentParserClass.Size = new System.Drawing.Size(144, 21);
             this.templatesUsingSelectedDocumentParserClass.TabIndex = 54;
             // 
-            // bOpenSelectedTemplate
+            // bSelectedTemplateEdit2
             // 
-            this.bOpenSelectedTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bOpenSelectedTemplate.Location = new System.Drawing.Point(532, 3);
-            this.bOpenSelectedTemplate.Name = "bOpenSelectedTemplate";
-            this.bOpenSelectedTemplate.Size = new System.Drawing.Size(75, 23);
-            this.bOpenSelectedTemplate.TabIndex = 52;
-            this.bOpenSelectedTemplate.Text = "Open";
-            this.bOpenSelectedTemplate.UseVisualStyleBackColor = true;
+            this.bSelectedTemplateEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bSelectedTemplateEdit2.Location = new System.Drawing.Point(613, 3);
+            this.bSelectedTemplateEdit2.Name = "bSelectedTemplateEdit2";
+            this.bSelectedTemplateEdit2.Size = new System.Drawing.Size(75, 23);
+            this.bSelectedTemplateEdit2.TabIndex = 52;
+            this.bSelectedTemplateEdit2.Text = "Edit2";
+            this.bSelectedTemplateEdit2.UseVisualStyleBackColor = true;
             // 
             // bValidate
             // 
             this.bValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bValidate.Location = new System.Drawing.Point(613, 3);
+            this.bValidate.Location = new System.Drawing.Point(31, 3);
             this.bValidate.Name = "bValidate";
             this.bValidate.Size = new System.Drawing.Size(75, 23);
             this.bValidate.TabIndex = 58;
@@ -183,6 +185,16 @@
             this.panel1.Size = new System.Drawing.Size(1025, 33);
             this.panel1.TabIndex = 88;
             // 
+            // bSelectedTemplateEdit
+            // 
+            this.bSelectedTemplateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bSelectedTemplateEdit.Location = new System.Drawing.Point(532, 3);
+            this.bSelectedTemplateEdit.Name = "bSelectedTemplateEdit";
+            this.bSelectedTemplateEdit.Size = new System.Drawing.Size(75, 23);
+            this.bSelectedTemplateEdit.TabIndex = 58;
+            this.bSelectedTemplateEdit.Text = "Edit";
+            this.bSelectedTemplateEdit.UseVisualStyleBackColor = true;
+            // 
             // DocumentParserClassDefinitionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -211,8 +223,9 @@
         private System.Windows.Forms.CheckBox SelectedDocumentParserClassIsDefault;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox templatesUsingSelectedDocumentParserClass;
-        private System.Windows.Forms.Button bOpenSelectedTemplate;
+        private System.Windows.Forms.Button bSelectedTemplateEdit2;
         private System.Windows.Forms.Button bValidate;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button bSelectedTemplateEdit;
     }
 }

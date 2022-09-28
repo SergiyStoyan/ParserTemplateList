@@ -171,6 +171,11 @@ namespace Cliver.ParserTemplateList
                 debugForm.Template2 = Template2;
             }
         }
+
+        private void bEdit_Click(object sender, EventArgs e)
+        {
+            templateListControl.EditTemplate(template2Row);
+        }
     }
 }
 

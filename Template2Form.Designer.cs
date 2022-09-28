@@ -44,6 +44,7 @@
             this.DocumentParserClass = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.DocumentParserClassDefinition = new ICSharpCode.TextEditor.TextEditorControl();
+            this.bEdit = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderWeight)).BeginInit();
             this.SuspendLayout();
@@ -102,6 +103,7 @@
             this.flowLayoutPanel1.Controls.Add(this.bCancel);
             this.flowLayoutPanel1.Controls.Add(this.bOK);
             this.flowLayoutPanel1.Controls.Add(this.bDebug);
+            this.flowLayoutPanel1.Controls.Add(this.bEdit);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 399);
@@ -211,6 +213,17 @@
             this.DocumentParserClassDefinition.Size = new System.Drawing.Size(940, 340);
             this.DocumentParserClassDefinition.TabIndex = 85;
             // 
+            // bEdit
+            // 
+            this.bEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bEdit.Location = new System.Drawing.Point(619, 3);
+            this.bEdit.Name = "bEdit";
+            this.bEdit.Size = new System.Drawing.Size(75, 23);
+            this.bEdit.TabIndex = 86;
+            this.bEdit.Text = "Edit";
+            this.bEdit.UseVisualStyleBackColor = true;
+            this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
+            // 
             // Template2Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -256,5 +269,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button bDebug;
         private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinition;
+        private System.Windows.Forms.Button bEdit;
     }
 }

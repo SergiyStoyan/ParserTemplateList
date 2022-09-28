@@ -61,7 +61,14 @@ namespace Cliver.ParserTemplateList
                 }
             };
 
-            bOpenSelectedTemplate.Click += delegate
+            bSelectedTemplateEdit.Click += delegate
+            {
+                if (templatesUsingSelectedDocumentParserClass.SelectedValue == null)
+                    return;
+                templateListControl.EditTemplate((string)templatesUsingSelectedDocumentParserClass.SelectedValue);
+            };
+
+            bSelectedTemplateEdit2.Click += delegate
             {
                 if (templatesUsingSelectedDocumentParserClass.SelectedValue == null)
                     return;
