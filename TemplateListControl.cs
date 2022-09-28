@@ -15,6 +15,9 @@ using System.Threading;
 using Cliver.PdfDocumentParser;
 using System.Drawing;
 
+/*TBD:
+ * - why are templates kept in rows unti save? Can editing templates be kept directly in TemplateInfo?
+ * */
 namespace Cliver.ParserTemplateList
 {
     abstract public partial class TemplateListControl<Template2T, DocumentParserT> : UserControl where Template2T : Template2<DocumentParserT> where DocumentParserT : class

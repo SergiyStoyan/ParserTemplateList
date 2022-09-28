@@ -41,17 +41,17 @@ namespace Cliver.ParserTemplateList
             {
                 try
                 {
-                    string documentParserClass = (string)documentParserClasses.SelectedValue;
-                    if (documentParserClass == null)
+                    if (documentParserClasses.SelectedItem == null)
                         return;
-                    SelectedDocumentParserClassIsDefault.Checked = documentParserClass == defaultDocumentParserClass;
+                    DocumentParserClassItem documentParserClassItem = (DocumentParserClassItem)documentParserClasses.SelectedItem;
+                    SelectedDocumentParserClassIsDefault.Checked = documentParserClassItem.Class == defaultDocumentParserClass;
                     List<Template2T> template2s = templateListControl.GetTemplatesFromGui();
-                    templatesUsingSelectedDocumentParserClass.DataSource = documentParserClass != defaultDocumentParserClass ?
-                        template2s.Where(a => a.DocumentParserClass == documentParserClass).Select(a => a.Name).ToList() :
-                        template2s.Where(a => string.IsNullOrWhiteSpace(a.DocumentParserClass) || a.DocumentParserClass == documentParserClass).Select(a => a.Name).ToList();
-                    Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\s?class\s+" + Regex.Escape(documentParserClass) + @"(\s.*)?$", RegexOptions.Multiline);
+                    templatesUsingSelectedDocumentParserClass.DataSource = documentParserClassItem.Class != defaultDocumentParserClass ?
+                        template2s.Where(a => a.DocumentParserClass == documentParserClassItem.Class).Select(a => a.Name).ToList() :
+                        template2s.Where(a => string.IsNullOrWhiteSpace(a.DocumentParserClass) || a.DocumentParserClass == documentParserClassItem.Class).Select(a => a.Name).ToList();
+                    Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\s?class\s+" + Regex.Escape(documentParserClassItem.Class) + @"(\s.*)?$", RegexOptions.Multiline);
                     if (!m.Success)
-                        throw new Exception2("There is no class '" + documentParserClass + "'.");
+                        throw new Exception2("There is no class '" + documentParserClassItem.Class + "'.");
                     var p = DocumentParserClassDefinitions.Document.OffsetToPosition(m.Index);
                     DocumentParserClassDefinitions.ActiveTextAreaControl.ScrollTo(p.Line, p.Column);
                 }
@@ -82,12 +82,40 @@ namespace Cliver.ParserTemplateList
 
             SelectedDocumentParserClassIsDefault.Click += delegate
             {
-                if (documentParserClasses.SelectedValue == null)
+                if (documentParserClasses.SelectedItem == null)
                 {
                     SelectedDocumentParserClassIsDefault.Checked = false;
                     return;
                 }
-                defaultDocumentParserClass = SelectedDocumentParserClassIsDefault.Checked ? (string)documentParserClasses.SelectedValue : null;
+                defaultDocumentParserClass = SelectedDocumentParserClassIsDefault.Checked ? ((DocumentParserClassItem)documentParserClasses.SelectedItem).Class : null;
+            };
+
+            //documentParserClasses.DrawMode = DrawMode.OwnerDrawFixed;//!!!turn this on to paint items with colors
+            documentParserClasses.BackColor = SystemColors.Control;//!!!not the right color
+            documentParserClasses.DrawItem += delegate (object sender, DrawItemEventArgs e)
+            {
+                //e.DrawBackground();
+                DocumentParserClassItem item = (DocumentParserClassItem)documentParserClasses.Items[e.Index];
+                Color c;
+                if (e.State.HasFlag(DrawItemState.ComboBoxEdit)/*|| e.State.HasFlag(DrawItemState.NoFocusRect)*/)
+                    c = BackColor;
+                else if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.HotLight) || e.State.HasFlag(DrawItemState.Selected))
+                    c = e.BackColor;
+                else
+                    c = item.Color;
+                //using (var pen = new Pen(c))
+                //{
+                //    e.Graphics.DrawRectangle(pen, e.Bounds);
+                //}
+                using (var brush = new SolidBrush(c))
+                {
+                    e.Graphics.FillRectangle(brush, e.Bounds);
+                }
+                using (var brush = new SolidBrush(item.FontColor))
+                {
+                    e.Graphics.DrawString(item.Class, e.Font, brush, e.Bounds);
+                }
+                e.DrawFocusRectangle();
             };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
@@ -104,8 +132,9 @@ namespace Cliver.ParserTemplateList
                 documentParserClasses.SelectedIndex = 0;
         }
 
-        void markClasses()
+        void markClasses(out Dictionary<string, DocumentParserClassItem> documentParserClassNames2Item)
         {
+            documentParserClassNames2Item = new Dictionary<string, DocumentParserClassItem>();
             DocumentParserClassDefinitions.Document.MarkerStrategy.RemoveAll(a => true);
             List<string> templateDocumentParserClassNames = templateListControl.GetTemplatesFromGui().Where(a => a.DocumentParserClass != templateListControl.TemplateInfo.DefaultDocumentParserClass).Select(a => a.DocumentParserClass).ToList();
             for (Match m = Regex.Match(DocumentParserClassDefinitions.Text, @"^.*?\s?class\s+(?'Class'\w+).*?$", RegexOptions.Multiline); m.Success; m = m.NextMatch())
@@ -113,16 +142,21 @@ namespace Cliver.ParserTemplateList
                 Color c;
                 string documentParserClass = m.Groups["Class"].Value;
                 if (documentParserClass == templateListControl.TemplateInfo.DefaultDocumentParserClass)
-                    c = Color.Gold;
+                    c = defaultClassColor;
                 else if (templateDocumentParserClassNames.Contains(documentParserClass))
-                    c = Color.Cyan;
+                    c = usedClassColor;
                 else
-                    c = Color.Gray;
+                    c = notUsedClassColor;
                 ICSharpCode.TextEditor.Document.TextMarker marker = new ICSharpCode.TextEditor.Document.TextMarker(m.Index, m.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock, c);
                 DocumentParserClassDefinitions.Document.MarkerStrategy.AddMarker(marker);
+                documentParserClassNames2Item[documentParserClass] = new DocumentParserClassItem { Class = documentParserClass, Color = c };
             }
             DocumentParserClassDefinitions.Refresh();
         }
+
+        readonly Color defaultClassColor = Color.Gold;
+        readonly Color usedClassColor = Color.Cyan;
+        readonly Color notUsedClassColor = Color.Gray;
 
         string defaultDocumentParserClass;
         List<Type> documentParserTypes = new List<Type>();
@@ -166,21 +200,21 @@ namespace Cliver.ParserTemplateList
                     }
                 }
 
-                markClasses();
+                markClasses(out Dictionary<string, DocumentParserClassItem> documentParserClassNames2Item);
 
-                string selectedClass = (string)documentParserClasses.SelectedValue;
-                documentParserClasses.DisplayMember = "Key";
-                documentParserClasses.ValueMember = "Value";
-                documentParserClasses.DataSource = documentParserTypes.Select(a => new { Key = a.Name, Value = a.Name }).ToList();
-                if (selectedClass != null)
-                    documentParserClasses.SelectedValue = selectedClass;
+                string selectedClass0 = ((DocumentParserClassItem)documentParserClasses.SelectedItem)?.Class;
+                documentParserClasses.DisplayMember = "Class";
+                documentParserClasses.ValueMember = "Color";
+                documentParserClasses.DataSource = documentParserTypes.Select(a => documentParserClassNames2Item[a.Name]).ToList();
+                if (selectedClass0 != null && documentParserClassNames2Item.TryGetValue(selectedClass0, out DocumentParserClassItem selectedDocumentParserClassItem))
+                    documentParserClasses.SelectedItem = selectedDocumentParserClassItem;
 
                 if (!documentParserTypes.Exists(a => a.Name == defaultDocumentParserClass))
                     defaultDocumentParserClass = null;
                 else
                 {
                     if (documentParserClasses.SelectedValue != null)
-                        SelectedDocumentParserClassIsDefault.Checked = defaultDocumentParserClass == (string)documentParserClasses.SelectedValue;
+                        SelectedDocumentParserClassIsDefault.Checked = defaultDocumentParserClass == ((DocumentParserClassItem)documentParserClasses.SelectedItem).Class;
                     else
                         SelectedDocumentParserClassIsDefault.Checked = false;
                 }
@@ -192,6 +226,47 @@ namespace Cliver.ParserTemplateList
                 Message.Error2(ex, this);
                 return false;
             }
+        }
+
+        //public class ComboBoxE : System.Windows.Forms.ComboBox
+        //{
+        //    public ComboBoxE()
+        //    {
+        //        DropDownStyle = ComboBoxStyle.DropDownList;
+        //        //DrawMode = DrawMode.OwnerDrawFixed;//!!!turn this on to paint items with colors
+        //        BackColor = SystemColors.Control;//!!!not the right color
+        //    }
+
+        //    protected override void OnDrawItem(DrawItemEventArgs e)
+        //    {
+        //        //e.DrawBackground();
+        //        DocumentParserClassItem item = (DocumentParserClassItem)Items[e.Index];
+        //        Color c;
+        //        if (e.State.HasFlag(DrawItemState.ComboBoxEdit)/*|| e.State.HasFlag(DrawItemState.NoFocusRect)*/)
+        //            c = BackColor;
+        //        else if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.HotLight) || e.State.HasFlag(DrawItemState.Selected))
+        //            c = e.BackColor;
+        //        else
+        //            c = item.Color;
+        //        using (var brush = new SolidBrush(c))
+        //        {
+        //            e.Graphics.FillRectangle(brush, e.Bounds);
+        //        }
+        //        using (var brush = new SolidBrush(item.FontColor))
+        //        {
+        //            e.Graphics.DrawString(item.Class, e.Font, brush, e.Bounds);
+        //        }
+        //        e.DrawFocusRectangle();
+        //        //base.OnDrawItem(e);
+        //    }
+        //}
+
+        public class DocumentParserClassItem
+        {
+            public string Class { get; set; }
+            //public DocumentParserClassItemValue Value;
+            public Color Color { get; set; }
+            public Color FontColor { get; set; } = SystemColors.ControlText;
         }
 
         private void bOK_Click(object sender, EventArgs e)

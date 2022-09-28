@@ -31,17 +31,17 @@
             this.bCancel = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bOK = new System.Windows.Forms.Button();
+            this.bValidate = new System.Windows.Forms.Button();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.documentParserClasses = new System.Windows.Forms.ComboBox();
             this.SelectedDocumentParserClassIsDefault = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.templatesUsingSelectedDocumentParserClass = new System.Windows.Forms.ComboBox();
+            this.bSelectedTemplateEdit = new System.Windows.Forms.Button();
             this.bSelectedTemplateEdit2 = new System.Windows.Forms.Button();
-            this.bValidate = new System.Windows.Forms.Button();
             this.DocumentParserClassDefinitions = new ICSharpCode.TextEditor.TextEditorControl();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.bSelectedTemplateEdit = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -81,6 +81,16 @@
             this.bOK.UseVisualStyleBackColor = true;
             this.bOK.Click += new System.EventHandler(this.bOK_Click);
             // 
+            // bValidate
+            // 
+            this.bValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bValidate.Location = new System.Drawing.Point(31, 3);
+            this.bValidate.Name = "bValidate";
+            this.bValidate.Size = new System.Drawing.Size(75, 23);
+            this.bValidate.TabIndex = 58;
+            this.bValidate.Text = "Check";
+            this.bValidate.UseVisualStyleBackColor = true;
+            // 
             // flowLayoutPanel2
             // 
             this.flowLayoutPanel2.Controls.Add(this.label1);
@@ -107,6 +117,7 @@
             // 
             // documentParserClasses
             // 
+            this.documentParserClasses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.documentParserClasses.FormattingEnabled = true;
             this.documentParserClasses.Location = new System.Drawing.Point(55, 3);
             this.documentParserClasses.Name = "documentParserClasses";
@@ -123,6 +134,8 @@
             this.SelectedDocumentParserClassIsDefault.Text = "Default";
             this.SelectedDocumentParserClassIsDefault.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.SelectedDocumentParserClassIsDefault.UseVisualStyleBackColor = true;
+            //this.SelectedDocumentParserClassIsDefault.FlatStyle = System.Windows.Forms.FlatStyle.System;
+
             // 
             // label2
             // 
@@ -136,11 +149,22 @@
             // 
             // templatesUsingSelectedDocumentParserClass
             // 
+            this.templatesUsingSelectedDocumentParserClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.templatesUsingSelectedDocumentParserClass.FormattingEnabled = true;
             this.templatesUsingSelectedDocumentParserClass.Location = new System.Drawing.Point(382, 3);
             this.templatesUsingSelectedDocumentParserClass.Name = "templatesUsingSelectedDocumentParserClass";
             this.templatesUsingSelectedDocumentParserClass.Size = new System.Drawing.Size(144, 21);
             this.templatesUsingSelectedDocumentParserClass.TabIndex = 54;
+            // 
+            // bSelectedTemplateEdit
+            // 
+            this.bSelectedTemplateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bSelectedTemplateEdit.Location = new System.Drawing.Point(532, 3);
+            this.bSelectedTemplateEdit.Name = "bSelectedTemplateEdit";
+            this.bSelectedTemplateEdit.Size = new System.Drawing.Size(75, 23);
+            this.bSelectedTemplateEdit.TabIndex = 58;
+            this.bSelectedTemplateEdit.Text = "Edit";
+            this.bSelectedTemplateEdit.UseVisualStyleBackColor = true;
             // 
             // bSelectedTemplateEdit2
             // 
@@ -151,16 +175,6 @@
             this.bSelectedTemplateEdit2.TabIndex = 52;
             this.bSelectedTemplateEdit2.Text = "Edit2";
             this.bSelectedTemplateEdit2.UseVisualStyleBackColor = true;
-            // 
-            // bValidate
-            // 
-            this.bValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bValidate.Location = new System.Drawing.Point(31, 3);
-            this.bValidate.Name = "bValidate";
-            this.bValidate.Size = new System.Drawing.Size(75, 23);
-            this.bValidate.TabIndex = 58;
-            this.bValidate.Text = "Check";
-            this.bValidate.UseVisualStyleBackColor = true;
             // 
             // DocumentParserClassDefinitions
             // 
@@ -184,16 +198,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1025, 33);
             this.panel1.TabIndex = 88;
-            // 
-            // bSelectedTemplateEdit
-            // 
-            this.bSelectedTemplateEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bSelectedTemplateEdit.Location = new System.Drawing.Point(532, 3);
-            this.bSelectedTemplateEdit.Name = "bSelectedTemplateEdit";
-            this.bSelectedTemplateEdit.Size = new System.Drawing.Size(75, 23);
-            this.bSelectedTemplateEdit.TabIndex = 58;
-            this.bSelectedTemplateEdit.Text = "Edit";
-            this.bSelectedTemplateEdit.UseVisualStyleBackColor = true;
             // 
             // DocumentParserClassDefinitionsForm
             // 
