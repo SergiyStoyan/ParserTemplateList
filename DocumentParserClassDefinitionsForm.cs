@@ -9,7 +9,6 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.IO;
 using System.Linq;
-using Cliver.PdfDocumentParser;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -91,14 +90,25 @@ namespace Cliver.ParserTemplateList
             };
 
             //documentParserClasses.DrawMode = DrawMode.OwnerDrawFixed;//!!!turn this on to paint items with colors
-            documentParserClasses.BackColor = SystemColors.Control;//!!!not the right color
-            documentParserClasses.DrawItem += delegate (object sender, DrawItemEventArgs e)
+            //documentParserClasses.BackColor = SystemColors.ControlLight;
+            documentParserClasses.DrawItem += delegate (object sender, DrawItemEventArgs e)//!!!could not paint the edit box area properly
             {
+                if (e.Index < 0)
+                    return;
                 //e.DrawBackground();
                 DocumentParserClassItem item = (DocumentParserClassItem)documentParserClasses.Items[e.Index];
                 Color c;
                 if (e.State.HasFlag(DrawItemState.ComboBoxEdit)/*|| e.State.HasFlag(DrawItemState.NoFocusRect)*/)
-                    c = BackColor;
+                {
+                    c = documentParserClasses.BackColor; 
+                    //e.DrawBackground();
+                    //using (var brush = new SolidBrush(item.FontColor))
+                    //{
+                    //    e.Graphics.DrawString(item.Class, e.Font, brush, e.Bounds);
+                    //}
+                    //e.DrawFocusRectangle();
+                    //return;
+                }
                 else if (e.State.HasFlag(DrawItemState.Focus) || e.State.HasFlag(DrawItemState.HotLight) || e.State.HasFlag(DrawItemState.Selected))
                     c = e.BackColor;
                 else
