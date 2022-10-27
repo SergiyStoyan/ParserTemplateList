@@ -14,6 +14,7 @@ namespace Cliver.ParserTemplateList
     abstract public class LocalInfoSettings<Template2T,DocumentParserT> : Cliver.UserSettings where Template2T : Template2<DocumentParserT> where DocumentParserT:class
     {
         public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
+        public DateTime TemplateDeactivationLastTime = DateTime.MinValue;
 
         public class TemplateInfo
         {

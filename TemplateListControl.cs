@@ -39,6 +39,13 @@ namespace Cliver.ParserTemplateList
 
         void initialize()
         {
+            if (LocalInfo.TemplateDeactivationLastTime.AddDays(30) < DateTime.Now)
+            {
+                TemplateInfo.DeactivateObsoleteTemplates(LocalInfo);
+                LocalInfo.TemplateDeactivationLastTime = DateTime.Now;
+                LocalInfo.ClearAndSave(TemplateInfo);
+            }
+
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {
                 if (e.RowIndex < 0 || e.ColumnIndex < 0)
