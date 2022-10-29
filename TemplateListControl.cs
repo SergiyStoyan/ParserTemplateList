@@ -1,7 +1,7 @@
 ﻿//********************************************************************************************
-//Author: Sergey Stoyan
-//        sergey.stoyan@gmail.com
-//        sergey.stoyan@hotmail.com
+//Author: Sergiy Stoyan
+//        systoyan@gmail.com
+//        sergiy.stoyan@outlook.com
 //        http://www.cliversoft.com
 //********************************************************************************************
 using System;
@@ -39,10 +39,10 @@ namespace Cliver.ParserTemplateList
 
         void initialize()
         {
-            if (LocalInfo.TemplateDeactivationLastTime.AddDays(30) < DateTime.Now)
+            if (LocalInfo.DoTemplateDeactivationEveryDays >= 0 && LocalInfo.NextTemplateDeactivationTime < DateTime.Now)
             {
-                TemplateInfo.DeactivateObsoleteTemplates(LocalInfo);
-                LocalInfo.TemplateDeactivationLastTime = DateTime.Now;
+                LocalInfo.DeactivateObsoleteTemplates(TemplateInfo);
+                LocalInfo.NextTemplateDeactivationTime = DateTime.Now.AddDays(LocalInfo.DoTemplateDeactivationEveryDays);
                 LocalInfo.ClearAndSave(TemplateInfo);
             }
 
@@ -108,7 +108,7 @@ namespace Cliver.ParserTemplateList
 
             openTemplatesSettings.Click += delegate
             {
-                TemplatesSettingsForm<Template2T, DocumentParserT> f = new TemplatesSettingsForm<Template2T, DocumentParserT>(TemplateInfo);
+                TemplatesSettingsForm<Template2T, DocumentParserT> f = new TemplatesSettingsForm<Template2T, DocumentParserT>(TemplateInfo, LocalInfo);
                 f.ShowDialog();
             };
 

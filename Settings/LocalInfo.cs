@@ -1,7 +1,7 @@
 //********************************************************************************************
-//Author: Sergey Stoyan
-//        sergey.stoyan@gmail.com
-//        sergey.stoyan@hotmail.com
+//Author: Sergiy Stoyan
+//        systoyan@gmail.com
+//        sergiy.stoyan@outlook.com
 //        http://www.cliversoft.com
 //********************************************************************************************
 using System;
@@ -11,10 +11,12 @@ using System.Text.RegularExpressions;
 
 namespace Cliver.ParserTemplateList
 {
-    abstract public class LocalInfoSettings<Template2T,DocumentParserT> : Cliver.UserSettings where Template2T : Template2<DocumentParserT> where DocumentParserT:class
+    abstract public class LocalInfoSettings<Template2T, DocumentParserT> : Cliver.UserSettings where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
         public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
-        public DateTime TemplateDeactivationLastTime = DateTime.MinValue;
+        public int DeactivateTemplatesOlderThanDays = 390;
+        public DateTime NextTemplateDeactivationTime = DateTime.MinValue;
+        public int DoTemplateDeactivationEveryDays = 30;
 
         public class TemplateInfo
         {
@@ -46,6 +48,29 @@ namespace Cliver.ParserTemplateList
             }
             return i;
         }
+
+        virtual public bool DeactivateObsoleteTemplates(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        {
+            if (DeactivateTemplatesOlderThanDays < 1)
+                return false;
+            DateTime obsoleteTime = DateTime.Now.AddDays(-DeactivateTemplatesOlderThanDays);
+            bool deactivated = false;
+            foreach (Template2T t2 in templateInfo.Template2s.Where(a => a.Active))
+                if (t2.ModifiedTime < obsoleteTime && GetInfo(t2)?.UsedTime < obsoleteTime)
+                {
+                    deactivated = true;
+                    t2.Active = false;
+                    t2.Group = "obsolete";// since " + DateTime.Now.ToString("yyyy-MM-dd");
+                    Log.Warning2("Template '" + t2.Template.Name + "' has been deactivated as obsolete.");
+                }
+            if (deactivated)
+            {
+                templateInfo.Save();
+                Message.Inform("Some templates were deactivated as obsolete.\r\nSee the log for details.");
+            }
+            return deactivated;
+        }
+
 
         public void ClearAndSave(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
         {

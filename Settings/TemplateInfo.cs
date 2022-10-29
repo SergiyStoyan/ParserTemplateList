@@ -1,7 +1,7 @@
 //********************************************************************************************
-//Author: Sergey Stoyan
-//        sergey.stoyan@gmail.com
-//        sergey.stoyan@hotmail.com
+//Author: Sergiy Stoyan
+//        systoyan@gmail.com
+//        sergiy.stoyan@outlook.com
 //        http://www.cliversoft.com
 //********************************************************************************************
 using System.Collections.Generic;
@@ -22,7 +22,6 @@ namespace Cliver.ParserTemplateList
 
         public Ocr.Config OcrConfig;
         public string PdfDocumentParserVersion;
-        public int DeactivateTemplatesOlderThanDays = 390;
 
         protected override void Loaded()
         {
@@ -44,28 +43,6 @@ namespace Cliver.ParserTemplateList
         {
             PdfDocumentParserVersion = PdfDocumentParser.Program.Version.ToString();
             Template2s.RemoveAll(x => string.IsNullOrWhiteSpace(x.Name));
-        }
-
-        virtual public bool DeactivateObsoleteTemplates(LocalInfoSettings<Template2T, DocumentParserT> localInfo)
-        {
-            if (DeactivateTemplatesOlderThanDays < 1)
-                return false;
-            DateTime obsoleteTime = DateTime.Now.AddDays(-DeactivateTemplatesOlderThanDays);
-            bool deactivated = false;
-            foreach (Template2T t2 in Template2s.Where(a => a.Active))
-                if (t2.ModifiedTime < obsoleteTime && localInfo.GetInfo(t2)?.UsedTime < obsoleteTime)
-                {
-                    deactivated = true;
-                    t2.Active = false;
-                    t2.Group = "obsolete";// since " + DateTime.Now.ToString("yyyy-MM-dd");
-                    Log.Warning2("Template '" + t2.Template.Name + "' has been deactivated as obsolete.");
-                }
-            if (deactivated)
-            {
-                Save();
-                Message.Inform("Some templates were deactivated as obsolete.\r\nSee the log for details.");
-            }
-            return deactivated;
         }
 
         //public void SaveIfTouched()
