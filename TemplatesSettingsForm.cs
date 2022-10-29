@@ -32,8 +32,8 @@ namespace Cliver.ParserTemplateList
         void load_settings()
         {
             DeactivateTemplatesOlderThanDays.Value = localInfo.DeactivateTemplatesOlderThanDays;
-            DoTemplateDeactivationEveryDays.Value = localInfo.DoTemplateDeactivationEveryDays;
-            NextTemplateDeactivationTime.Value = localInfo.NextTemplateDeactivationTime < NextTemplateDeactivationTime.MinDate ? NextTemplateDeactivationTime.MinDate : localInfo.NextTemplateDeactivationTime;
+            DoCleaningEveryDays.Value = localInfo.DoCleaningEveryDays;
+            NextCleaningTime.Value = localInfo.NextCleaningTime < NextCleaningTime.MinDate ? NextCleaningTime.MinDate : localInfo.NextCleaningTime;
 
             OcrConfig.Text = templateInfo.OcrConfig.ToStringByJson();
         }
@@ -51,8 +51,8 @@ namespace Cliver.ParserTemplateList
                     throw new Exception("OcrConfig is empty.");
 
                 localInfo.DeactivateTemplatesOlderThanDays = (int)DeactivateTemplatesOlderThanDays.Value;
-                localInfo.DoTemplateDeactivationEveryDays = (int)DoTemplateDeactivationEveryDays.Value;
-                localInfo.NextTemplateDeactivationTime = NextTemplateDeactivationTime.Value;
+                localInfo.DoCleaningEveryDays = (int)DoCleaningEveryDays.Value;
+                localInfo.NextCleaningTime = NextCleaningTime.Value;
                 localInfo.Save();
 
                 templateInfo.OcrConfig = Serialization.Json.Deserialize<PdfDocumentParser.Ocr.Config>(OcrConfig.Text);

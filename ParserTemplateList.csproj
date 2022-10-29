@@ -126,11 +126,15 @@
     <Compile Include="TemplateListControl.Designer.cs">
       <DependentUpon>TemplateListControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="DocumentParserClassDefinitionsForm.cs" />
+    <Compile Include="DocumentParserClassDefinitionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="DocumentParserClassDefinitionsForm.Designer.cs">
       <DependentUpon>DocumentParserClassDefinitionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="TemplatesSettingsForm.cs" />
+    <Compile Include="TemplatesSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="TemplatesSettingsForm.Designer.cs">
       <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>
     </Compile>

@@ -15,8 +15,8 @@ namespace Cliver.ParserTemplateList
     {
         public Dictionary<string, TemplateInfo> TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
         public int DeactivateTemplatesOlderThanDays = 390;
-        public DateTime NextTemplateDeactivationTime = DateTime.MinValue;
-        public int DoTemplateDeactivationEveryDays = 30;
+        public DateTime NextCleaningTime = DateTime.MinValue;
+        public int DoCleaningEveryDays = 30;
 
         public class TemplateInfo
         {
@@ -49,10 +49,24 @@ namespace Cliver.ParserTemplateList
             return i;
         }
 
-        virtual public bool DeactivateObsoleteTemplates(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        internal bool CleanObsoleteData(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        {
+            if (NextCleaningTime <= DateTime.Now)
+            {
+                NextCleaningTime = DateTime.Now.AddDays(DoCleaningEveryDays);
+                deactivateObsoleteTemplates(templateInfo);
+                removeObsoleteData(templateInfo);
+                Save();
+                return true;
+            }
+            return false;
+        }
+
+        bool deactivateObsoleteTemplates(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
         {
             if (DeactivateTemplatesOlderThanDays < 1)
                 return false;
+            Log.Inform("Deactivating obsolete templates...");
             DateTime obsoleteTime = DateTime.Now.AddDays(-DeactivateTemplatesOlderThanDays);
             bool deactivated = false;
             foreach (Template2T t2 in templateInfo.Template2s.Where(a => a.Active))
@@ -71,13 +85,12 @@ namespace Cliver.ParserTemplateList
             return deactivated;
         }
 
-
-        public void ClearAndSave(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        void removeObsoleteData(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
         {
+            Log.Inform("Removing obsolete data from LocalInfo...");
             var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Name == n).FirstOrDefault() == null).ToList();
             foreach (string n in deletedTNs)
                 TemplateNames2TemplateInfo.Remove(n);
-            Save();
         }
 
         protected override void Loaded()
