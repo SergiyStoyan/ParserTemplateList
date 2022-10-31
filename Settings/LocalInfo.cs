@@ -49,27 +49,32 @@ namespace Cliver.ParserTemplateList
             return i;
         }
 
-        internal bool CleanObsoleteData(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        /// <summary>
+        /// It must called before loading templates to the table. Otherwise the changes might be rewritten.
+        /// </summary>
+        /// <param name="templateListControl"></param>
+        /// <returns></returns>
+        internal bool CleanObsoleteData(TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             if (NextCleaningTime <= DateTime.Now)
             {
                 NextCleaningTime = DateTime.Now.AddDays(DoCleaningEveryDays);
-                deactivateObsoleteTemplates(templateInfo);
-                removeObsoleteData(templateInfo);
+                deactivateObsoleteTemplates(templateListControl);
+                removeObsoleteData(templateListControl);
                 Save();
                 return true;
             }
             return false;
         }
 
-        bool deactivateObsoleteTemplates(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        bool deactivateObsoleteTemplates(TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             if (DeactivateTemplatesOlderThanDays < 1)
                 return false;
             Log.Inform("Deactivating obsolete templates...");
             DateTime obsoleteTime = DateTime.Now.AddDays(-DeactivateTemplatesOlderThanDays);
             bool deactivated = false;
-            foreach (Template2T t2 in templateInfo.Template2s.Where(a => a.Active))
+            foreach (Template2T t2 in templateListControl.TemplateInfo.Template2s.Where(a => a.Active))
                 if (t2.ModifiedTime < obsoleteTime && GetInfo(t2)?.UsedTime < obsoleteTime)
                 {
                     deactivated = true;
@@ -79,16 +84,16 @@ namespace Cliver.ParserTemplateList
                 }
             if (deactivated)
             {
-                templateInfo.Save();
+                templateListControl.TemplateInfo.Save();
                 Message.Inform("Some templates were deactivated as obsolete.\r\nSee the log for details.");
             }
             return deactivated;
         }
 
-        void removeObsoleteData(TemplateInfoSettings<Template2T, DocumentParserT> templateInfo)
+        void removeObsoleteData(TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             Log.Inform("Removing obsolete data from LocalInfo...");
-            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateInfo.Template2s.Where(a => a.Name == n).FirstOrDefault() == null).ToList();
+            var deletedTNs = TemplateNames2TemplateInfo.Keys.Where(n => templateListControl.TemplateInfo.Template2s.Where(a => a.Name == n).FirstOrDefault() == null).ToList();
             foreach (string n in deletedTNs)
                 TemplateNames2TemplateInfo.Remove(n);
         }
