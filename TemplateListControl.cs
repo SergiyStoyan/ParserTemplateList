@@ -27,6 +27,11 @@ namespace Cliver.ParserTemplateList
 
         public abstract DebugForm<Template2T, DocumentParserT> NewDebugForm(DataGridViewRow row);
 
+        public virtual Template2Form<Template2T, DocumentParserT> NewTemplate2Form(DataGridViewRow row)
+        {
+            return new Template2Form<Template2T, DocumentParserT>(row, this);
+        }
+
         public abstract DocumentParserCompiler<DocumentParserT> Compiler { get; }
 
         public TemplateListControl()
@@ -408,7 +413,7 @@ namespace Cliver.ParserTemplateList
                 tf.Activate();
                 return;
             }
-            tf = new Template2Form<Template2T, DocumentParserT>(r, this);
+            tf = NewTemplate2Form(r);
             FormManager.Set<Template2Form<Template2T, DocumentParserT>>(r, tf);
             tf.FormClosed += delegate
             {

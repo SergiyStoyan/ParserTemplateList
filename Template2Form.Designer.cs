@@ -35,6 +35,8 @@
             this.bOK = new System.Windows.Forms.Button();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bDebug = new System.Windows.Forms.Button();
+            this.bEdit = new System.Windows.Forms.Button();
+            this.bEdit2ext = new System.Windows.Forms.Button();
             this.Active = new System.Windows.Forms.CheckBox();
             this.Group = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -44,7 +46,7 @@
             this.DocumentParserClass = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.DocumentParserClassDefinition = new ICSharpCode.TextEditor.TextEditorControl();
-            this.bEdit = new System.Windows.Forms.Button();
+            this.bJson = new System.Windows.Forms.Button();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderWeight)).BeginInit();
             this.SuspendLayout();
@@ -52,7 +54,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(369, 12);
+            this.label1.Location = new System.Drawing.Point(351, 13);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(54, 13);
             this.label1.TabIndex = 0;
@@ -62,9 +64,9 @@
             // 
             this.Comment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.Comment.Location = new System.Drawing.Point(429, 6);
+            this.Comment.Location = new System.Drawing.Point(411, 6);
             this.Comment.Name = "Comment";
-            this.Comment.Size = new System.Drawing.Size(192, 20);
+            this.Comment.Size = new System.Drawing.Size(526, 20);
             this.Comment.TabIndex = 1;
             // 
             // label2
@@ -104,6 +106,8 @@
             this.flowLayoutPanel1.Controls.Add(this.bOK);
             this.flowLayoutPanel1.Controls.Add(this.bDebug);
             this.flowLayoutPanel1.Controls.Add(this.bEdit);
+            this.flowLayoutPanel1.Controls.Add(this.bEdit2ext);
+            this.flowLayoutPanel1.Controls.Add(this.bJson);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 399);
@@ -122,10 +126,32 @@
             this.bDebug.UseVisualStyleBackColor = true;
             this.bDebug.Click += new System.EventHandler(this.bDebug_Click);
             // 
+            // bEdit
+            // 
+            this.bEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bEdit.Location = new System.Drawing.Point(619, 3);
+            this.bEdit.Name = "bEdit";
+            this.bEdit.Size = new System.Drawing.Size(75, 23);
+            this.bEdit.TabIndex = 86;
+            this.bEdit.Text = "Edit";
+            this.bEdit.UseVisualStyleBackColor = true;
+            this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
+            // 
+            // bEdit2ext
+            // 
+            this.bEdit2ext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bEdit2ext.Location = new System.Drawing.Point(538, 3);
+            this.bEdit2ext.Name = "bEdit2ext";
+            this.bEdit2ext.Size = new System.Drawing.Size(75, 23);
+            this.bEdit2ext.TabIndex = 87;
+            this.bEdit2ext.Text = "Edit2 (ext)";
+            this.bEdit2ext.UseVisualStyleBackColor = true;
+            this.bEdit2ext.Click += new System.EventHandler(this.bEdit2ext_Click);
+            // 
             // Active
             // 
             this.Active.AutoSize = true;
-            this.Active.Location = new System.Drawing.Point(59, 12);
+            this.Active.Location = new System.Drawing.Point(56, 12);
             this.Active.Name = "Active";
             this.Active.Size = new System.Drawing.Size(15, 14);
             this.Active.TabIndex = 53;
@@ -133,7 +159,7 @@
             // 
             // Group
             // 
-            this.Group.Location = new System.Drawing.Point(138, 6);
+            this.Group.Location = new System.Drawing.Point(129, 6);
             this.Group.Name = "Group";
             this.Group.Size = new System.Drawing.Size(82, 20);
             this.Group.TabIndex = 64;
@@ -141,7 +167,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(93, 12);
+            this.label3.Location = new System.Drawing.Point(85, 12);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(39, 13);
             this.label3.TabIndex = 63;
@@ -150,7 +176,7 @@
             // OrderWeight
             // 
             this.OrderWeight.DecimalPlaces = 1;
-            this.OrderWeight.Location = new System.Drawing.Point(281, 6);
+            this.OrderWeight.Location = new System.Drawing.Point(267, 6);
             this.OrderWeight.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -163,7 +189,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(239, 12);
+            this.label7.Location = new System.Drawing.Point(227, 12);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(36, 13);
             this.label7.TabIndex = 65;
@@ -183,7 +209,7 @@
             this.DocumentParserClass.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.DocumentParserClass.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DocumentParserClass.FormattingEnabled = true;
-            this.DocumentParserClass.Location = new System.Drawing.Point(758, 6);
+            this.DocumentParserClass.Location = new System.Drawing.Point(758, 33);
             this.DocumentParserClass.Name = "DocumentParserClass";
             this.DocumentParserClass.Size = new System.Drawing.Size(179, 21);
             this.DocumentParserClass.TabIndex = 81;
@@ -192,7 +218,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(632, 12);
+            this.label5.Location = new System.Drawing.Point(632, 39);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(120, 13);
             this.label5.TabIndex = 84;
@@ -213,16 +239,16 @@
             this.DocumentParserClassDefinition.Size = new System.Drawing.Size(940, 340);
             this.DocumentParserClassDefinition.TabIndex = 85;
             // 
-            // bEdit
+            // bJson
             // 
-            this.bEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.bEdit.Location = new System.Drawing.Point(619, 3);
-            this.bEdit.Name = "bEdit";
-            this.bEdit.Size = new System.Drawing.Size(75, 23);
-            this.bEdit.TabIndex = 86;
-            this.bEdit.Text = "Edit";
-            this.bEdit.UseVisualStyleBackColor = true;
-            this.bEdit.Click += new System.EventHandler(this.bEdit_Click);
+            this.bJson.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.bJson.Location = new System.Drawing.Point(457, 3);
+            this.bJson.Name = "bJson";
+            this.bJson.Size = new System.Drawing.Size(75, 23);
+            this.bJson.TabIndex = 88;
+            this.bJson.Text = "Json";
+            this.bJson.UseVisualStyleBackColor = true;
+            this.bJson.Click += new System.EventHandler(this.bJson_Click);
             // 
             // Template2Form
             // 
@@ -270,5 +296,7 @@
         private System.Windows.Forms.Button bDebug;
         private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinition;
         private System.Windows.Forms.Button bEdit;
+        private System.Windows.Forms.Button bEdit2ext;
+        private System.Windows.Forms.Button bJson;
     }
 }

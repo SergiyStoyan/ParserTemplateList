@@ -16,7 +16,7 @@ namespace Cliver.ParserTemplateList
 {
     abstract public partial class DebugForm<Template2T, DocumentParserT> : Form where Template2T : Template2<DocumentParserT> where DocumentParserT : class
     {
-        public DebugForm(TemplateListControl<Template2T, DocumentParserT> templateListControl, DataGridViewRow template2Row)
+        public DebugForm(DataGridViewRow template2Row, TemplateListControl<Template2T, DocumentParserT> templateListControl)
         {
             InitializeComponent();
 

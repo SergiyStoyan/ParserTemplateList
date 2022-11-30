@@ -52,10 +52,14 @@ namespace Cliver.ParserTemplateList
                 DocumentParserClass.DataSource = ds;
                 if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
                     DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
+
+                bEdit2ext.Visible = ReflectionRoutines.IsOverridden(GetType(), nameof(bEdit2ext_Click));
             };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
         DataGridViewRow template2Row;
+
+        //public Action<Template2T> OnEdit2Clicked = null;
 
         virtual public Template2T Template2
         {
@@ -174,6 +178,17 @@ namespace Cliver.ParserTemplateList
         private void bEdit_Click(object sender, EventArgs e)
         {
             templateListControl.EditTemplate(template2Row);
+        }
+
+        protected virtual void bEdit2ext_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bJson_Click(object sender, EventArgs e)
+        {
+            Template2JsonForm<Template2T, DocumentParserT> f = new Template2JsonForm<Template2T, DocumentParserT>(Template2);
+            f.ShowDialog();
         }
     }
 }

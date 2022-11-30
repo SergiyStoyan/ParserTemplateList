@@ -76,10 +76,10 @@
       <Version>4.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>4.4.0-2.final</Version>
+      <Version>4.4.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.1</Version>
+      <Version>13.0.2</Version>
     </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -109,6 +109,12 @@
     <Compile Include="Settings\LocalInfo.cs" />
     <Compile Include="Settings\TemplateInfo.cs" />
     <Compile Include="Template2.cs" />
+    <Compile Include="Template2JsonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Template2JsonForm.Designer.cs">
+      <DependentUpon>Template2JsonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Template2Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +153,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FileFilterForm.resx">
       <DependentUpon>FileFilterForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Template2JsonForm.resx">
+      <DependentUpon>Template2JsonForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Template2Form.resx">
       <DependentUpon>Template2Form.cs</DependentUpon>
