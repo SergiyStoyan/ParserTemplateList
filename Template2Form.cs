@@ -53,13 +53,21 @@ namespace Cliver.ParserTemplateList
                 if (!string.IsNullOrWhiteSpace(Template2.DocumentParserClass))
                     DocumentParserClass.SelectedValue = Template2.DocumentParserClass;
 
-                bEdit2ext.Visible = ReflectionRoutines.IsOverridden(GetType(), nameof(bEdit2ext_Click));
+                bEdit2Custom.Visible = ReflectionRoutines.IsOverridden(GetType(), nameof(bEdit2Custom_Click));
+
+                if (customControl != null)
+                {
+                    Controls.Add(customControl);
+                    customControl.Dock = DockStyle.Bottom;
+                    customControl.BringToFront();
+                    pMain.BringToFront();
+                }
             };
         }
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
         DataGridViewRow template2Row;
 
-        //public Action<Template2T> OnEdit2Clicked = null;
+        protected virtual UserControl customControl { get; } = null;
 
         virtual public Template2T Template2
         {
@@ -76,9 +84,8 @@ namespace Cliver.ParserTemplateList
             }
         }
         Template2T template2;
-        //public readonly Template2T Template2;// { get; protected set; }
 
-        virtual protected bool setTemplate2()
+        protected bool setTemplate2()
         {
             try
             {
@@ -127,6 +134,8 @@ namespace Cliver.ParserTemplateList
                 //if (string.IsNullOrWhiteSpace(Company.Text))
                 //    throw new Exception2("Company cannot be empty");
 
+                setTemplate2Custom();
+
                 Template2.Active = Active.Checked;
                 Template2.Group = Group.Text;
                 Template2.Comment = Comment.Text;
@@ -144,7 +153,11 @@ namespace Cliver.ParserTemplateList
             }
         }
 
-        virtual protected void bOK_Click(object sender, EventArgs e)
+        virtual protected void setTemplate2Custom()
+        {
+        }
+
+        protected void bOK_Click(object sender, EventArgs e)
         {
             if (!setTemplate2())
                 return;
@@ -152,13 +165,13 @@ namespace Cliver.ParserTemplateList
             Close();
         }
 
-        virtual protected void bCancel_Click(object sender, EventArgs e)
+        protected void bCancel_Click(object sender, EventArgs e)
         {
             Close();
             DialogResult = DialogResult.Cancel;
         }
 
-        virtual protected void bDebug_Click(object sender, EventArgs e)
+        protected void bDebug_Click(object sender, EventArgs e)
         {
             if (setTemplate2())
             {
@@ -180,15 +193,15 @@ namespace Cliver.ParserTemplateList
             templateListControl.EditTemplate(template2Row);
         }
 
-        protected virtual void bEdit2ext_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void bJson_Click(object sender, EventArgs e)
         {
             Template2JsonForm<Template2T, DocumentParserT> f = new Template2JsonForm<Template2T, DocumentParserT>(Template2);
             f.ShowDialog();
+        }
+
+        protected virtual void bEdit2Custom_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
