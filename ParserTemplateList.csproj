@@ -72,14 +72,17 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CliverRoutines">
+      <Version>6.34.2</Version>
+    </PackageReference>
+    <PackageReference Include="CliverWinRoutines">
+      <Version>2.3.3.40379</Version>
+    </PackageReference>
     <PackageReference Include="ICSharpCode.TextEditor.Extended">
       <Version>4.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
       <Version>4.6.0-1.final</Version>
-    </PackageReference>
-    <PackageReference Include="Newtonsoft.Json">
-      <Version>13.0.3</Version>
     </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -174,23 +177,15 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PdfDocumentParser\CliverRoutines\CliverRoutines.csproj">
-      <Project>{e88444ba-1b07-40e6-96d1-922d27965f91}</Project>
-      <Name>CliverRoutines</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PdfDocumentParser\CliverWinRoutines\CliverWinRoutines.csproj">
-      <Project>{51f2df13-41f1-4f22-890f-c3b50c813909}</Project>
-      <Name>CliverWinRoutines</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\PdfDocumentParser\PdfDocumentParser.csproj">
       <Project>{b1d7ba69-35aa-45bd-b1d0-d84fd2bc47a0}</Project>
       <Name>PdfDocumentParser</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="app.manifest" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
