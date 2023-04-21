@@ -72,12 +72,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="CliverRoutines">
-      <Version>6.34.2</Version>
-    </PackageReference>
-    <PackageReference Include="CliverWinRoutines">
-      <Version>2.3.3.40379</Version>
-    </PackageReference>
     <PackageReference Include="ICSharpCode.TextEditor.Extended">
       <Version>4.2.4</Version>
     </PackageReference>
