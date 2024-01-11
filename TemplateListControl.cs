@@ -43,7 +43,7 @@ namespace Cliver.ParserTemplateList
 
         void initialize()
         {
-            LocalInfo.CleanObsoleteData(this);//(!)must called before loading templates to the table
+            LocalInfo.CleanObsoleteData(this);//(!)must be called before loading templates to the table
 
             template2s.CellPainting += delegate (object sender, DataGridViewCellPaintingEventArgs e)
             {

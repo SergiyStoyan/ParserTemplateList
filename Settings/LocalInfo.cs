@@ -57,11 +57,23 @@ namespace Cliver.ParserTemplateList
         {
             if (NextCleaningTime <= DateTime.Now)
             {
-                NextCleaningTime = DateTime.Now.AddDays(DoCleaningEveryDays);
-                deactivateObsoleteTemplates(templateListControl);
-                removeObsoleteData(templateListControl);
-                Save();
-                return true;
+                if (!System.Threading.Monitor.TryEnter(this, 1000))//lock to avoid overrriding when updating by Synchronization.onNewerSettingsFile()
+                {
+                    Log.Warning2("Could not lock " + this.GetType().Name);
+                    return false;
+                }
+                try
+                {
+                    NextCleaningTime = DateTime.Now.AddDays(DoCleaningEveryDays);
+                    deactivateObsoleteTemplates(templateListControl);
+                    removeObsoleteData(templateListControl);
+                    Save();
+                    return true;
+                }
+                finally
+                {
+                    System.Threading.Monitor.Exit(this);
+                }
             }
             return false;
         }
