@@ -42,7 +42,7 @@ namespace Cliver.ParserTemplateList
         {
             if (!TemplateNames2TemplateInfo.TryGetValue(template2.Name, out TemplateInfo i))
             {
-                i = new TemplateInfo();
+                i = new TemplateInfo() { UsedTime = DateTime.Now };
                 TemplateNames2TemplateInfo[template2.Name] = i;
             }
             return i;

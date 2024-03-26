@@ -73,7 +73,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CliverRoutines">
-      <Version>6.44.0</Version>
+      <Version>6.44.1</Version>
     </PackageReference>
     <PackageReference Include="ICSharpCode.TextEditor.Extended">
       <Version>4.2.4</Version>
