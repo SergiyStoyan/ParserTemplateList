@@ -26,6 +26,8 @@ namespace Cliver.ParserTemplateList
 
         public List<Type> CompileMultipleTypes(string documentParserClassDefinitions)
         {
+            if (documentParserClassDefinitions == null)
+                throw new Exception("documentParserClassDefinitions is NULL.");
             System.Windows.Forms.Cursor cursor0 = System.Windows.Forms.Cursor.Current;
             try
             {
@@ -44,6 +46,8 @@ namespace Cliver.ParserTemplateList
 
         public Type CompileSingleType(string documentParserClassDefinition)
         {
+            if (documentParserClassDefinition == null)
+                throw new Exception("documentParserClassDefinition is NULL.");
             System.Windows.Forms.Cursor cursor0 = System.Windows.Forms.Cursor.Current;
             try
             {
@@ -100,7 +104,7 @@ namespace Cliver.ParserTemplateList
             get
             {
                 if (commonDocumentParserTypes == null)
-                    commonDocumentParserTypes = CompileMultipleTypes(documentCommonParserClassDefinitions);
+                    commonDocumentParserTypes = documentCommonParserClassDefinitions == null ? new List<Type>() : CompileMultipleTypes(documentCommonParserClassDefinitions);
                 return commonDocumentParserTypes;
             }
             internal set

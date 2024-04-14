@@ -79,7 +79,7 @@
       <Version>4.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>4.6.0-1.final</Version>
+      <Version>4.10.0-2.final</Version>
     </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
