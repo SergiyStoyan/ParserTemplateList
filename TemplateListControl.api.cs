@@ -15,6 +15,25 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
+
+    /// <summary>
+    /// Used to exit the task silently
+    /// </summary>
+    public class ExitException : Exception
+    {
+        public ExitException(bool show, string message) : base(message)
+        {
+            Show = show;
+        }
+
+        public bool Show { get; private set; }
+
+        //public ExitException() : base()
+        //{
+
+        //}
+    }
+
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
         #region processorThread
@@ -41,16 +60,38 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
+            currentProgressTask = progressTask;
+
             startingProcessor();
 
             SetProgressTask(progressTask + ":", BackColor);
             processorThread = Win.ThreadRoutines.StartTry(
-               processorCode,
-               (Exception e) =>
+                () =>
+                {
+                    Log.Inform("STARTED " + progressTask.ToUpper());
+                    OnProgress("starting...");
+                    processorCode();
+                    SetProgressTask("COMPLETED " + progressTask.ToUpper(), Color.LightGreen);
+                    Log.Inform("COMPLETED " + progressTask.ToUpper());
+                },
+               (System.Exception e) =>
                {
-                   Log.Error(e);
-                   SetProgressTask("ERROR!", Color.Red);
-                   ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
+                   ExitException ee = e as ExitException;
+                   if (ee == null)
+                   {
+                       Log.Error("TERMINATED " + progressTask.ToUpper(), e);
+                       SetProgressTask("ERROR! " + progressTask.ToUpper(), Color.Red);
+                       Message.ErrorAsync(e, FindForm());
+                   }
+                   else
+                   {
+                       Log.Warning2("EXITED " + progressTask.ToUpper(), ee);
+                       if (ee.Show)
+                           //Message.ShowAsync(ee, FindForm());!!!create me!
+                           ThreadRoutines.Start(() => { Message.Show(ee, FindForm()); });
+                       SetProgressTask(null);
+                       OnProgress(null);
+                   }
                },
                () =>
                {
@@ -65,6 +106,8 @@ namespace Cliver.ParserTemplateList
         Thread processorThread = null;
         protected virtual void startingProcessor()
         { }
+
+        string currentProgressTask;
 
         public event Action<bool> ProcessorStateChange;
 
@@ -81,8 +124,8 @@ namespace Cliver.ParserTemplateList
                 {
                     processorThread.Join();
                     ProcessorStateChange?.Invoke(false);
-                    Log.Inform("TERMINATED");
-                    SetProgressTask("TERMINATED", Color.Yellow);
+                    Log.Inform("TERMINATED BY USER " + currentProgressTask.ToUpper());
+                    SetProgressTask("TERMINATED " + currentProgressTask.ToUpper(), Color.Yellow);
                     //Message.Inform("TERMINATED...", FindForm());
                 });
         }
