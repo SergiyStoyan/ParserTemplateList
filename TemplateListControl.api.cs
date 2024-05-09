@@ -60,6 +60,7 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
+            progressTask = progressTask.ToUpper();
             currentProgressTask = progressTask;
 
             startingProcessor();
@@ -68,24 +69,24 @@ namespace Cliver.ParserTemplateList
             processorThread = Win.ThreadRoutines.StartTry(
                 () =>
                 {
-                    Log.Inform("STARTED " + progressTask.ToUpper());
+                    Log.Inform("STARTED " + progressTask);
                     OnProgress("starting...");
                     processorCode();
-                    SetProgressTask("COMPLETED " + progressTask.ToUpper(), Color.LightGreen);
-                    Log.Inform("COMPLETED " + progressTask.ToUpper());
+                    SetProgressTask("COMPLETED " + progressTask, Color.LightGreen);
+                    Log.Inform("COMPLETED " + progressTask);
                 },
                (System.Exception e) =>
                {
                    ExitException ee = e as ExitException;
                    if (ee == null)
                    {
-                       Log.Error("TERMINATED " + progressTask.ToUpper(), e);
-                       SetProgressTask("ERROR! " + progressTask.ToUpper(), Color.Red);
+                       Log.Error("TERMINATED " + progressTask, e);
+                       SetProgressTask("ERROR! " + progressTask, Color.Red);
                        Message.ErrorAsync(e, FindForm());
                    }
                    else
                    {
-                       Log.Warning2("EXITED " + progressTask.ToUpper(), ee);
+                       Log.Warning2("EXITED " + progressTask, ee);
                        if (ee.Show)
                            //Message.ShowAsync(ee, FindForm());!!!create me!
                            ThreadRoutines.Start(() => { Message.Show(ee, FindForm()); });
@@ -117,15 +118,15 @@ namespace Cliver.ParserTemplateList
                 return;
             Log.Inform("Stopping processorThread...");
             begingStopProcessor(processorThread);
-            SetProgressTask("Terminating...", Color.LightPink);
+            SetProgressTask("Terminating..." + currentProgressTask, Color.LightPink);
 
             if (processorThreadJoinThread?.IsAlive != true)
                 processorThreadJoinThread = ThreadRoutines.Start(() =>
                 {
                     processorThread.Join();
                     ProcessorStateChange?.Invoke(false);
-                    Log.Inform("TERMINATED BY USER " + currentProgressTask.ToUpper());
-                    SetProgressTask("TERMINATED " + currentProgressTask.ToUpper(), Color.Yellow);
+                    Log.Inform("TERMINATED BY USER " + currentProgressTask);
+                    SetProgressTask("TERMINATED " + currentProgressTask, Color.Yellow);
                     //Message.Inform("TERMINATED...", FindForm());
                 });
         }
