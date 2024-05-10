@@ -89,7 +89,7 @@ namespace Cliver.ParserTemplateList
                        Log.Warning2("EXITED " + progressTask, ee);
                        if (ee.Show)
                            //Message.ShowAsync(ee, FindForm());!!!create me!
-                           ThreadRoutines.Start(() => { Message.Show(ee, FindForm()); });
+                           ThreadRoutines.Start(() => { Message.Inform(ee.Message, FindForm()); });
                        SetProgressTask(null);
                        OnProgress(null);
                    }
