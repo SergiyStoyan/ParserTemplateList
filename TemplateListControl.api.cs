@@ -15,6 +15,28 @@ using System.Drawing;
 
 namespace Cliver.ParserTemplateList
 {
+
+    /// <summary>
+    /// Used to exit the task silently
+    /// </summary>
+    public class ExitException : Exception
+    {
+        public ExitException(bool show, string message) : base(message)
+        {
+            Show = show;
+        }
+
+        //public ExitException(bool show, Log.MessageType messageType, string message) : this(show, message)
+        //{
+        //    Show = show;
+        //    MessageType = messageType;
+        //}
+
+        readonly public bool Show;
+
+        //readonly public Log.MessageType MessageType = Log.MessageType.WARNING;
+    }
+
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
         #region processorThread
@@ -41,16 +63,50 @@ namespace Cliver.ParserTemplateList
             if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
                 return false;
 
+            progressTask = progressTask.ToUpper();
+            currentProgressTask = progressTask;
+
             startingProcessor();
 
             SetProgressTask(progressTask + ":", BackColor);
             processorThread = Win.ThreadRoutines.StartTry(
-               processorCode,
-               (Exception e) =>
+                () =>
+                {
+                    Log.Inform("STARTED " + progressTask);
+                    OnProgress("starting...");
+                    processorCode();
+                    SetProgressTask("COMPLETED " + progressTask, Color.LightGreen);
+                    Log.Inform("COMPLETED " + progressTask);
+                },
+               (System.Exception e) =>
                {
-                   Log.Error(e);
-                   SetProgressTask("ERROR!", Color.Red);
-                   ThreadRoutines.Start(() => { Message.Error(e, FindForm()); });
+                   if (e is ExitException ee)
+                   {
+                       Log.Warning2("EXITED " + progressTask, ee);
+                       //Log.Write(ee.MessageType, "EXITED " + progressTask, Log.GetExceptionMessage2(ee));
+                       if (ee.Show)
+                           //switch (ee.MessageType)
+                           //{
+                           //    case Log.MessageType.ERROR:
+                           //        Message.ErrorAsync(ee.Message, FindForm());
+                           //        break;
+                           //    case Log.MessageType.WARNING:
+                           //        Message.WarningAsync(ee.Message, FindForm());
+                           //        break;
+                           //    default:
+                           //        Message.InformAsync(ee.Message, FindForm());
+                           //        break;
+                           //}
+                           Message.InformAsync(ee.Message, FindForm());
+                       SetProgressTask(null);
+                       OnProgress(null);
+                   }
+                   else
+                   {
+                       Log.Error("TERMINATED " + progressTask, e);
+                       SetProgressTask("ERROR! " + progressTask, Color.Red);
+                       Message.ErrorAsync(e, FindForm());
+                   }
                },
                () =>
                {
@@ -66,6 +122,8 @@ namespace Cliver.ParserTemplateList
         protected virtual void startingProcessor()
         { }
 
+        string currentProgressTask;
+
         public event Action<bool> ProcessorStateChange;
 
         public void BegingStopProcessor()
@@ -74,15 +132,15 @@ namespace Cliver.ParserTemplateList
                 return;
             Log.Inform("Stopping processorThread...");
             begingStopProcessor(processorThread);
-            SetProgressTask("Terminating...", Color.LightPink);
+            SetProgressTask("Terminating..." + currentProgressTask, Color.LightPink);
 
             if (processorThreadJoinThread?.IsAlive != true)
                 processorThreadJoinThread = ThreadRoutines.Start(() =>
                 {
                     processorThread.Join();
                     ProcessorStateChange?.Invoke(false);
-                    Log.Inform("TERMINATED");
-                    SetProgressTask("TERMINATED", Color.Yellow);
+                    Log.Inform("TERMINATED BY USER " + currentProgressTask);
+                    SetProgressTask("TERMINATED " + currentProgressTask, Color.Yellow);
                     //Message.Inform("TERMINATED...", FindForm());
                 });
         }
@@ -150,7 +208,8 @@ namespace Cliver.ParserTemplateList
                         count++;
                 }
                 selectedTemplatesCount.Text = "Selected: " + count + " of " + total;
-            };
+            }
+            ;
 
             void select_by_filter(object sender, EventArgs e)
             {
@@ -180,7 +239,8 @@ namespace Cliver.ParserTemplateList
                 Settings.General.UseOrderWeightPattern = useOrderWeightPattern.Checked;
                 Settings.General.SortSelectedUp = sortSelectedUp.Checked;
                 Settings.General.Save();
-            };
+            }
+            ;
             selectByFilter.Click += select_by_filter;
 
             void select_on_Enter(object sender, KeyEventArgs e)
@@ -189,7 +249,8 @@ namespace Cliver.ParserTemplateList
                     return;
                 e.Handled = true;
                 select_by_filter(null, null);
-            };
+            }
+            ;
             //AcceptButton = new Button { Visible = false };//just to suppress a ding
             activePattern.KeyDown += select_on_Enter;
             namePattern.KeyDown += select_on_Enter;
@@ -267,7 +328,7 @@ namespace Cliver.ParserTemplateList
         {
             progress.Invoke(() =>
             {
-                lProgressCurrentBlock.Text = message != null ? "processing: " + message : "";
+                lProgressCurrentBlock.Text = message;// != null ? "processing: " + message : "";
             });
         }
 
@@ -275,6 +336,7 @@ namespace Cliver.ParserTemplateList
         {
             progress.Invoke(() =>
             {
+                lProgressCurrentBlock.Text = null;
                 lProgress.Text = message;
             });
         }
@@ -285,6 +347,8 @@ namespace Cliver.ParserTemplateList
         }
         void onProgress(string unitsName, int processedN, int totalN, string messageSuffix = null)
         {
+            lProgressCurrentBlock.Text = null;
+
             Action f = () => { };
             if (processedN >= 0)
             {

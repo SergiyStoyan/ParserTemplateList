@@ -92,6 +92,10 @@ namespace Cliver.ParserTemplateList
                 }
                 return documentParser;
             }
+            //protected set
+            //{
+            //    throw new Exception("It must be defined in the inheritor.");
+            //}
         }
         protected DocumentParserT documentParser = null;
 
