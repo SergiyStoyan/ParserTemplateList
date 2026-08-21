@@ -108,6 +108,7 @@
       <DependentUpon>FileFilterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="FormManager.cs" />
+    <Compile Include="Operation.cs" />
     <Compile Include="Settings\General.cs" />
     <Compile Include="Settings\LocalInfo.cs" />
     <Compile Include="Settings\TemplateInfo.cs" />

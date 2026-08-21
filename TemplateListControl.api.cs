@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Threading;
 using System.Drawing;
+using System.Threading.Tasks;
 
 namespace Cliver.ParserTemplateList
 {
@@ -39,18 +40,13 @@ namespace Cliver.ParserTemplateList
 
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
-        #region processorThread
-
-        public int ProcessorThreadJoinTimeout = 10000;
-
-        public bool TryLaunchProcessorThread(string progressTask, Func<bool> preProcessorCode, MethodInvoker processorCode/*, Win.ThreadRoutines.ErrorHandler exceptionCode=null*/, MethodInvoker finallyCode = null)
+        async public Task<bool> StartProcessor(string progressTask, OperationController operationController)
         {
             if (IsProcessorRunning)
             {
                 if (!Message.YesNo("Processor is running. Would you like to abort it and restart?", FindForm()))
                     return false;
-                BegingStopProcessor();
-                if (!processorThread.Join(ProcessorThreadJoinTimeout))
+                if (!await StopProcessor(5000))
                 {
                     Message.Error("Processor was requested to stop but it is still running. Try a bit later.");
                     return false;
@@ -60,102 +56,96 @@ namespace Cliver.ParserTemplateList
             if (!SaveFromGui(false))
                 return false;
 
-            if (preProcessorCode != null && !(bool)this.Invoke(() => { return preProcessorCode(); }))
-                return false;
+            this.operationController = operationController;
 
             progressTask = progressTask.ToUpper();
             currentProgressTask = progressTask;
 
-            startingProcessor();
-
             SetProgressTask(progressTask + ":", BackColor);
-            processorThread = Win.ThreadRoutines.StartTry(
-                () =>
-                {
-                    Log.Inform("STARTED " + progressTask);
-                    OnProgress("starting...");
-                    processorCode();
-                    SetProgressTask("COMPLETED " + progressTask, Color.LightGreen);
-                    Log.Inform("COMPLETED " + progressTask);
-                },
-               (System.Exception e) =>
-               {
-                   if (e is ExitException ee)
-                   {
-                       Log.Warning2("EXITED " + progressTask, ee);
-                       //Log.Write(ee.MessageType, "EXITED " + progressTask, Log.GetExceptionMessage2(ee));
-                       if (ee.Show)
-                           //switch (ee.MessageType)
-                           //{
-                           //    case Log.MessageType.ERROR:
-                           //        Message.ErrorAsync(ee.Message, FindForm());
-                           //        break;
-                           //    case Log.MessageType.WARNING:
-                           //        Message.WarningAsync(ee.Message, FindForm());
-                           //        break;
-                           //    default:
-                           //        Message.InformAsync(ee.Message, FindForm());
-                           //        break;
-                           //}
-                           Message.InformAsync(ee.Message, FindForm());
-                       SetProgressTask(null);
-                       OnProgress(null);
-                   }
-                   else
-                   {
-                       Log.Error("TERMINATED " + progressTask, e);
-                       SetProgressTask("ERROR! " + progressTask, Color.Red);
-                       Message.ErrorAsync(e, FindForm());
-                   }
-               },
-               () =>
-               {
-                   finallyCode?.Invoke();
-                   ProcessorStateChange?.BeginInvoke(false);
-               }
-            );
-            ProcessorStateChange?.BeginInvoke(true);
 
-            return true;
+            operationController.OnStart.Add(() =>
+            {
+                Log.Inform("STARTED " + progressTask);
+                OnProgress("starting...");
+            });
+            operationController.OnCompletion.Add(() =>
+            {
+                SetProgressTask("COMPLETED " + progressTask, Color.LightGreen);
+                Log.Inform("COMPLETED " + progressTask);
+            });
+            operationController.OnException.Add((System.Exception e) =>
+            {
+                if (e is ExitException ee)
+                {
+                    Log.Warning2("EXITED " + progressTask, ee);
+                    //Log.Write(ee.MessageType, "EXITED " + progressTask, Log.GetExceptionMessage2(ee));
+                    if (ee.Show)
+                        //switch (ee.MessageType)
+                        //{
+                        //    case Log.MessageType.ERROR:
+                        //        Message.ErrorAsync(ee.Message, FindForm());
+                        //        break;
+                        //    case Log.MessageType.WARNING:
+                        //        Message.WarningAsync(ee.Message, FindForm());
+                        //        break;
+                        //    default:
+                        //        Message.InformAsync(ee.Message, FindForm());
+                        //        break;
+                        //}
+                        Message.InformAsync(ee.Message, FindForm());
+                    SetProgressTask(null);
+                    OnProgress(null);
+                }
+                else if (operationController.Aborting)
+                {
+                    Log.Warning("CANCELLED " + progressTask);
+                    SetProgressTask(null);
+                    OnProgress(null);
+                }
+                else
+                {
+                    Log.Error("TERMINATED " + progressTask, e);
+                    SetProgressTask("ERROR! " + progressTask, Color.Red);
+                    Message.ErrorAsync(e, FindForm());
+                }
+            });
+
+            ProcessorStateChange?.BeginInvoke(true);
+            bool r = await operationController.RunAsync() == Cliver.OperationController.OperationStatus.Completed;
+            operationController = null;
+            return r;
         }
-        Thread processorThread = null;
-        protected virtual void startingProcessor()
-        { }
+        OperationController operationController = null;
 
         string currentProgressTask;
 
         public event Action<bool> ProcessorStateChange;
 
-        public void BegingStopProcessor()
+        async public Task<bool> StopProcessor(int timeoutMss)
         {
             if (!IsProcessorRunning)
-                return;
+                return true;
             Log.Inform("Stopping processorThread...");
-            begingStopProcessor(processorThread);
+            //begingStopProcessor(processorThread);
             SetProgressTask("Terminating..." + currentProgressTask, Color.LightPink);
 
-            if (processorThreadJoinThread?.IsAlive != true)
-                processorThreadJoinThread = ThreadRoutines.Start(() =>
-                {
-                    processorThread.Join();
-                    ProcessorStateChange?.Invoke(false);
-                    Log.Inform("TERMINATED BY USER " + currentProgressTask);
-                    SetProgressTask("TERMINATED " + currentProgressTask, Color.Yellow);
-                    //Message.Inform("TERMINATED...", FindForm());
-                });
+            if (!await operationController?.AbortAsync(timeoutMss))
+                return false;
+
+            ProcessorStateChange?.Invoke(false);
+            Log.Inform("TERMINATED BY USER " + currentProgressTask);
+            SetProgressTask("TERMINATED " + currentProgressTask, Color.Yellow);
+            //Message.Inform("TERMINATED...", FindForm());
+            return true;
         }
-        Thread processorThreadJoinThread;
-        protected abstract void begingStopProcessor(Thread processorThread);
 
         public bool IsProcessorRunning
         {
             get
             {
-                return processorThread?.IsAlive == true;
+                return operationController?.Status <= Cliver.OperationController.OperationStatus.Running;
             }
         }
-
-        #endregion
 
         #region templates management panel
 
