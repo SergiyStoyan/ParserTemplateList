@@ -38,6 +38,11 @@ namespace Cliver.ParserTemplateList
         //readonly public Log.MessageType MessageType = Log.MessageType.WARNING;
     }
 
+    abstract public class Operation : Cliver.Operation
+    {
+        public abstract string Name { get; }
+    }
+
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
         async public Task<bool> StartProcessor(string progressTask, OperationController operationController)
@@ -111,7 +116,7 @@ namespace Cliver.ParserTemplateList
             });
 
             ProcessorStateChange?.BeginInvoke(true);
-            bool r = await operationController.RunAsync() == Cliver.OperationController.OperationStatus.Completed;
+            bool r = await operationController.PerformAsync() == Cliver.OperationController.OperationStatus.Completed;
             operationController = null;
             return r;
         }
