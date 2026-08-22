@@ -36,11 +36,11 @@ namespace Cliver.ParserTemplateList
         readonly public bool Show;
 
         //readonly public Log.MessageType MessageType = Log.MessageType.WARNING;
-    }   
+    }
 
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
-        async public Task<bool> StartProcessor(string progressTask, OperationController operationController)
+        async public Task<bool> StartProcessor(OperationController operationController)
         {
             if (IsProcessorRunning)
             {
@@ -58,7 +58,7 @@ namespace Cliver.ParserTemplateList
 
             this.operationController = operationController;
 
-            progressTask = progressTask.ToUpper();
+            string progressTask = operationController.Title.ToUpper();
             currentProgressTask = progressTask;
 
             SetProgressTask(progressTask + ":", BackColor);
@@ -105,7 +105,7 @@ namespace Cliver.ParserTemplateList
                 else
                 {
                     Log.Error("TERMINATED " + progressTask, e);
-                    SetProgressTask("ERROR! " + progressTask, Color.Red);
+                    SetProgressTask("TERMINAL ERROR! " + progressTask, Color.Red);
                     Message.ErrorAsync(e, FindForm());
                 }
             });
@@ -126,7 +126,6 @@ namespace Cliver.ParserTemplateList
             if (!IsProcessorRunning)
                 return true;
             Log.Inform("Stopping processorThread...");
-            //begingStopProcessor(processorThread);
             SetProgressTask("Terminating..." + currentProgressTask, Color.LightPink);
 
             if (!await operationController?.AbortAsync(timeoutMss))

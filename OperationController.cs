@@ -5,18 +5,15 @@
 //********************************************************************************************
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Cliver
 {
     /// <summary>
-    /// An intermediary between an operation method and its invoker which is usually GUI.
-    /// (!)Must be made available in the operation method.
-    /// Can be inherited and enhanced with custom methods like OnProgress() etc.
+    /// A standardized API between an operation method/class and its invoker which is usually GUI.
+    /// (!)The same instance must be available to both: the operation method/class and its invoker.
+    /// Can be inherited and enhanced with methods like OnProgress() etc.
     /// Provides:
     /// - safely aborting of the operation;
     /// - event entries;
@@ -24,6 +21,29 @@ namespace Cliver
     /// </summary>
     public class OperationController
     {
+        public readonly string Title;
+        //public virtual string Title
+        //{
+        //    get { return title; }
+        //    set
+        //    {
+        //        if (title != null)
+        //            throw new Exception(nameof(Title) + " must be set only once.");
+        //        title = value;
+        //    }
+        //}
+        //string title = null;
+
+        public OperationController(string title = null)
+        {
+            Title = title;
+        }
+
+        public OperationController(string title, Action operation) : this(title)
+        {
+            Operation = operation;
+        }
+
         /// <summary>
         /// Must be called by the invoker.
         /// </summary>
@@ -64,8 +84,8 @@ namespace Cliver
             get { return operation; }
             set
             {
-                if (operation != null)//mostly it is done for Operation class
-                    throw new Exception(nameof(Operation) + " can be set only once.");
+                if (operation != null)
+                    throw new Exception(nameof(Operation) + " must be set only once.");
                 operation = value;
             }
         }
@@ -80,7 +100,7 @@ namespace Cliver
         public void AddAbortingActions(params Action[] actions)
         {
             if (Aborting)
-                throw new Exception("Aborting");
+                throw new Exception("Aborting.");
             abortingActions.AddRange(actions);
         }
         List<Action> abortingActions = new List<Action>();

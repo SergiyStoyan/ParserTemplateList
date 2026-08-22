@@ -5,29 +5,58 @@
 //********************************************************************************************
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace Cliver
 {
     /// <summary>
-    /// As a base class provides:
-    /// - safely aborting of the operation;
-    /// - event entries;
-    /// - async methods;
+    /// A base class for a custom operation that exposes a standardized API to the operation invoker which is usually GUI.
+    /// See OperationController for details.
     /// </summary>
-    abstract public class Operation : OperationController
+    public class Operation
     {
-        public Operation()
+        public Operation(string title = null)
         {
-            Operation = Body;
+            OperationController = new OperationController(title);
+            //(!)must be set by the heir
+            //OperationController.Operation = () => { ?(?,...) };
         }
 
-        public virtual string Name { get { return GetType().Name; } }
+        readonly public OperationController OperationController;
+    }
 
-        public abstract void Body();
+    /// <summary>
+    /// A base class for a custom operation that exposes a standardized API to the operation invoker which is usually GUI.
+    /// See OperationController for details.
+    /// </summary>
+    abstract public class Operation2
+    {
+        public Operation2(string title = null)
+        {
+            OperationController = new OperationController(title == null ? GetType().Name : title, Do);
+        }
+
+        readonly public OperationController OperationController;
+
+        protected abstract void Do();
+    }
+
+    /// <summary>
+    /// A base class for a custom operation that exposes a standardized API to the operation invoker which is usually GUI.
+    /// See OperationController for details.
+    /// </summary>
+    public class Operation3
+    {
+        public Operation3(string title, string methodName, params object[] parameters)
+        {
+            OperationController = new OperationController(title);
+            OperationController.Operation = () => { GetType().InvokeMember(methodName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static, null, this, parameters); };
+        }
+
+        public Operation3(string methodName, params object[] parameters) : this(null, methodName, parameters)
+        {
+        }
+
+        readonly public OperationController OperationController;
     }
 }
