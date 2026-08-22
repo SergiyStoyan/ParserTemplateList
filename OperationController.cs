@@ -15,7 +15,8 @@ namespace Cliver
 {
     /// <summary>
     /// An intermediary between an operation method and its invoker which is usually GUI.
-    /// Must be made available to the operation method.
+    /// (!)Must be made available in the operation method.
+    /// Can be inherited and enhanced with custom methods like OnProgress() etc.
     /// Provides:
     /// - safely aborting of the operation;
     /// - event entries;
@@ -23,13 +24,17 @@ namespace Cliver
     /// </summary>
     public class OperationController
     {
+        /// <summary>
+        /// Must be called by the invoker.
+        /// </summary>
+        /// <returns></returns>
         public OperationStatus Perform()
         {
             OperationStatus status = OperationStatus.Running;
             try
             {
                 OnStart.ForEach(a => a());
-                Body();
+                Operation();
                 OnCompletion.ForEach(a => a());
                 status = OperationStatus.Completed;
             }
@@ -54,8 +59,24 @@ namespace Cliver
 
         readonly public List<Action<Exception>> OnException = new List<Action<Exception>>();
 
-        public Action Body;
+        public virtual Action Operation
+        {
+            get { return operation; }
+            set
+            {
+                if (operation != null)//mostly it is done for Operation class
+                    throw new Exception(nameof(Operation) + " can be set only once.");
+                operation = value;
+            }
+        }
+        Action operation = null;
 
+        /// <summary>
+        /// Provides aborting mechanisms, usually by causing exceptions within the operation code.
+        /// Must be called from the operation method.
+        /// </summary>
+        /// <param name="actions"></param>
+        /// <exception cref="Exception"></exception>
         public void AddAbortingActions(params Action[] actions)
         {
             if (Aborting)

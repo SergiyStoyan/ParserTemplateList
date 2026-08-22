@@ -36,12 +36,7 @@ namespace Cliver.ParserTemplateList
         readonly public bool Show;
 
         //readonly public Log.MessageType MessageType = Log.MessageType.WARNING;
-    }
-
-    abstract public class Operation : Cliver.Operation
-    {
-        public abstract string Name { get; }
-    }
+    }   
 
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
