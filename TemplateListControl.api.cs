@@ -44,11 +44,11 @@ namespace Cliver.ParserTemplateList
         {
             if (IsProcessorRunning)
             {
-                if (!Message.YesNo("Processor is running. Would you like to abort it and restart?", FindForm()))
+                if (!this.YesNo("Processor is running. Would you like to abort it and restart?"))
                     return false;
                 if (!await StopProcessor(5000))
                 {
-                    Message.Error("Processor was requested to stop but it is still running. Try a bit later.");
+                    this.Error("Processor was requested to stop but it is still running. Try a bit later.");
                     return false;
                 }
             }
@@ -92,7 +92,7 @@ namespace Cliver.ParserTemplateList
                         //        Message.InformAsync(ee.Message, FindForm());
                         //        break;
                         //}
-                        Message.InformAsync(ee.Message, FindForm());
+                        this.InformAsync(ee.Message);
                     SetProgressTask(null);
                     OnProgress(null);
                 }
@@ -106,7 +106,7 @@ namespace Cliver.ParserTemplateList
                 {
                     Log.Error("TERMINATED " + progressTask, e);
                     SetProgressTask("TERMINAL ERROR! " + progressTask, Color.Red);
-                    Message.ErrorAsync(e, FindForm());
+                    this.ErrorAsync(e);
                 }
             });
 

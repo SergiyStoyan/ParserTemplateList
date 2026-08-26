@@ -148,7 +148,7 @@ namespace Cliver.ParserTemplateList
             }
             catch (Exception ex)
             {
-                Message.Error2(ex, this);
+                this.Error2(ex);
                 return false;
             }
         }

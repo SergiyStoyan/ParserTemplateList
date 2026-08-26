@@ -56,7 +56,7 @@ namespace Cliver.ParserTemplateList
                 }
                 catch (Exception e)
                 {
-                    Message.Error(e);
+                    this.Error(e);
                 }
             };
 
@@ -233,7 +233,7 @@ namespace Cliver.ParserTemplateList
             }
             catch (Exception ex)
             {
-                Message.Error2(ex, this);
+                this.Error2(ex);
                 return false;
             }
         }
@@ -284,7 +284,7 @@ namespace Cliver.ParserTemplateList
             if (!validate())
                 return;
 
-            if (string.IsNullOrWhiteSpace(defaultDocumentParserClass) && !Message.YesNo("No default document parser class is set! Proceed?", this, Message.Icons.Warning))
+            if (string.IsNullOrWhiteSpace(defaultDocumentParserClass) && !this.YesNo("No default document parser class is set! Proceed?", Message.Icons.Warning))
                 return;
 
             //templateListControl.TemplateInfo.DocumentParserClassNames = documentParserTypes.Select(a => a.Name).ToList();

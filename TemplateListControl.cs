@@ -155,7 +155,7 @@ namespace Cliver.ParserTemplateList
                 catch (Exception ex)
                 {
                     e.Cancel = true;
-                    Message.Error2(ex, FindForm());
+                    this.Error2(ex);
                 }
             };
 
@@ -180,7 +180,7 @@ namespace Cliver.ParserTemplateList
                 }
                 catch (Exception ex)
                 {
-                    Message.Error2(ex, FindForm());
+                    this.Error2(ex);
                 }
             };
 
@@ -217,7 +217,7 @@ namespace Cliver.ParserTemplateList
                 }
                 catch (Exception ex)
                 {
-                    Message.Error2(ex, FindForm());
+                    this.Error2(ex);
                 }
             };
 
@@ -227,7 +227,7 @@ namespace Cliver.ParserTemplateList
                 {
                     if (e.Row == null || e.Row.Tag == null)
                         return;
-                    if (!Message.YesNo("Template '" + e.Row.Cells["Name_"].Value + "' will be deleted! Proceed?", FindForm()))
+                    if (!this.YesNo("Template '" + e.Row.Cells["Name_"].Value + "' will be deleted! Proceed?"))
                     {
                         e.Cancel = true;
                         return;
@@ -236,7 +236,7 @@ namespace Cliver.ParserTemplateList
                 catch (Exception ex)
                 {
                     Log.Error(ex);
-                    Message.Error(ex, FindForm());
+                    this.Error(ex);
                 }
             };
 
@@ -511,7 +511,7 @@ namespace Cliver.ParserTemplateList
             if (!TemplateInfo.IsTouched())
                 return true;
 
-            if (!Message.YesNo("Save the recent changes to templates?", FindForm()))
+            if (!this.YesNo("Save the recent changes to templates?"))
                 return trueIfDeclined || false;
 
             template2s.EndEdit();//needed to set checkbox values
@@ -548,7 +548,7 @@ namespace Cliver.ParserTemplateList
             catch (Exception e)
             {
                 Log.Error(e);
-                Message.Error(e, FindForm());
+                this.Error(e);
                 return null;
             }
         }
@@ -586,7 +586,7 @@ namespace Cliver.ParserTemplateList
                 catch (Exception ex)
                 {
                     Log.Error(ex);
-                    Message.Error(ex, FindForm());
+                    this.Error(ex);
                 }
             });
         }

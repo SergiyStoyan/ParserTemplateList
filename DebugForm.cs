@@ -50,12 +50,12 @@ namespace Cliver.ParserTemplateList
             {
                 if (string.IsNullOrWhiteSpace(TestFile.Text))
                 {
-                    Message.Exclaim("No test file is set.", this);
+                    this.Exclaim("No test file is set.");
                     return;
                 }
                 if (!System.IO.File.Exists(TestFile.Text))
                 {
-                    Message.Exclaim("The test file does not exist.", this);
+                    this.Exclaim("The test file does not exist.");
                     return;
                 }
                 Cursor.Current = Cursors.WaitCursor;
