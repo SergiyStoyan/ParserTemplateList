@@ -73,7 +73,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CliverRoutines">
-      <Version>6.60.0</Version>
+      <Version>6.62.0.9376</Version>
     </PackageReference>
     <PackageReference Include="CliverWinRoutines">
       <Version>3.0.1.594</Version>
@@ -82,7 +82,7 @@
       <Version>4.2.4</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>4.10.0-2.final</Version>
+      <Version>5.9.0</Version>
     </PackageReference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

@@ -40,13 +40,13 @@ namespace Cliver.ParserTemplateList
 
     public partial class TemplateListControl<Template2T, DocumentParserT>
     {
-        async public Task<bool> StartProcessor(OperationController operationController)
+        async public Task<bool> RunProcessorAsync(OperationController operationController)
         {
             if (IsProcessorRunning)
             {
                 if (!this.YesNo("Processor is running. Would you like to abort it and restart?"))
                     return false;
-                if (!await StopProcessor(5000))
+                if (!await StopProcessorAsync(5000))
                 {
                     this.Error("Processor was requested to stop but it is still running. Try a bit later.");
                     return false;
@@ -121,7 +121,7 @@ namespace Cliver.ParserTemplateList
 
         public event Action<bool> ProcessorStateChange;
 
-        async public Task<bool> StopProcessor(int timeoutMss)
+        async public Task<bool> StopProcessorAsync(int timeoutMss)
         {
             if (!IsProcessorRunning)
                 return true;
