@@ -23,7 +23,7 @@ namespace Cliver.ParserTemplateList
         }
 
         [Newtonsoft.Json.JsonIgnore]
-        public string Name { get { return Template.Name; } set { Template.Name = value; } }
+        virtual public string Name { get { return Template.Name; } set { Template.Name = value.Trim(); } }
 
         public virtual Template Template { get; set; }
 
