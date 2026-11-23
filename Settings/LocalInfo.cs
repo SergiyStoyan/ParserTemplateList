@@ -67,7 +67,7 @@ namespace Cliver.ParserTemplateList
                     NextCleaningTime = DateTime.Now.AddDays(DoCleaningEveryDays);
                     deactivateOutdatedTemplates(templateListControl);
                     removeOutdatedData(templateListControl);
-                    Save();
+                    __Save();
                     return true;
                 }
                 finally
@@ -95,7 +95,7 @@ namespace Cliver.ParserTemplateList
                 }
             if (deactivated)
             {
-                templateListControl.TemplateInfo.Save();
+                templateListControl.TemplateInfo.__Save();
                 Message.Inform("Some templates were deactivated as outdated.\r\nSee the log for details.");
             }
             return deactivated;
@@ -109,13 +109,13 @@ namespace Cliver.ParserTemplateList
                 TemplateNames2TemplateInfo.Remove(n);
         }
 
-        protected override void Loaded()
+        protected override void __Loaded()
         {
             if (TemplateNames2TemplateInfo == null)
                 TemplateNames2TemplateInfo = new Dictionary<string, TemplateInfo>();
         }
 
-        protected override void Saving()
+        protected override void __Saving()
         {
         }
     }

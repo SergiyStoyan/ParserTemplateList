@@ -53,7 +53,7 @@ namespace Cliver.ParserTemplateList
                 localInfo.DeactivateTemplatesOlderThanDays = (int)DeactivateTemplatesOlderThanDays.Value;
                 localInfo.DoCleaningEveryDays = (int)DoCleaningEveryDays.Value;
                 localInfo.NextCleaningTime = NextCleaningTime.Value;
-                localInfo.Save();
+                localInfo.__Save();
 
                 templateInfo.OcrConfig = Serialization.Json.Deserialize<PdfDocumentParser.Ocr.Config>(OcrConfig.Text);
 

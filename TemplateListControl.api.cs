@@ -227,7 +227,7 @@ namespace Cliver.ParserTemplateList
                 Settings.General.UseCommentSelectPattern = useCommentPattern.Checked;
                 Settings.General.UseOrderWeightPattern = useOrderWeightPattern.Checked;
                 Settings.General.SortSelectedUp = sortSelectedUp.Checked;
-                Settings.General.Save();
+                Settings.General.__Save();
             }
             ;
             selectByFilter.Click += select_by_filter;

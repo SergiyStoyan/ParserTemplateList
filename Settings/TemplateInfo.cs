@@ -22,7 +22,7 @@ namespace Cliver.ParserTemplateList
         public Ocr.Config OcrConfig;
         public string PdfDocumentParserVersion;
 
-        protected override void Loaded()
+        protected override void __Loaded()
         {
             if (OcrConfig == null)
                 OcrConfig = new Ocr.Config
@@ -38,7 +38,7 @@ namespace Cliver.ParserTemplateList
                 };
         }
 
-        protected override void Saving()
+        protected override void __Saving()
         {
             PdfDocumentParserVersion = PdfDocumentParser.Program.Version.ToString();
             Template2s.RemoveAll(x => string.IsNullOrWhiteSpace(x.Name));
@@ -66,7 +66,7 @@ namespace Cliver.ParserTemplateList
         public delegate void OnTouchedChanged();
         static public event OnTouchedChanged TouchedChanged;
 
-        protected override void Saved()
+        protected override void __Saved()
         {
             if (!touched)
                 return;

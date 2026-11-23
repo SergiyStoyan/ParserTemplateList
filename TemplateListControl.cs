@@ -395,7 +395,7 @@ namespace Cliver.ParserTemplateList
                 if (tm.LastTestFile != null)
                 {
                     LocalInfo.SetLastTestFile(t, tm.LastTestFile);
-                    LocalInfo.Save();
+                    LocalInfo.__Save();
                 }
             };
             tf.Show();
@@ -520,7 +520,7 @@ namespace Cliver.ParserTemplateList
             if (ts != null)
             {
                 TemplateInfo.Template2s = ts;
-                TemplateInfo.Save();
+                TemplateInfo.__Save();
                 return true;
             }
             return false;
