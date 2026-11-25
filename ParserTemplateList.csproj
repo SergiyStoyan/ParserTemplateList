@@ -1,194 +1,40 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B1806527-7726-4214-98D1-E2DE6D248388}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>Cliver.ParserTemplateList</RootNamespace>
-    <AssemblyName>ParserTemplateList</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>false</Deterministic>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="CliverRoutines">
-      <Version>7.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="CliverWinRoutines">
-      <Version>3.0.1.594</Version>
-    </PackageReference>
-    <PackageReference Include="ICSharpCode.TextEditor.Extended">
-      <Version>4.2.4</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp">
-      <Version>5.9.0</Version>
-    </PackageReference>
-    <Reference Include="System" />
-    <Reference Include="System.Configuration" />
-    <Reference Include="System.Data.Linq" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Compiler.cs" />
-    <Compile Include="DebugForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DebugForm.Designer.cs">
-      <DependentUpon>DebugForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DocumentParserCompiler.cs" />
-    <Compile Include="FileFilterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FileFilterForm.Designer.cs">
-      <DependentUpon>FileFilterForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormManager.cs" />
-    <Compile Include="Settings\General.cs" />
-    <Compile Include="Settings\LocalInfo.cs" />
-    <Compile Include="Settings\TemplateInfo.cs" />
-    <Compile Include="Template2.cs" />
-    <Compile Include="Template2JsonForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Template2JsonForm.Designer.cs">
-      <DependentUpon>Template2JsonForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Template2Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Template2Form.Designer.cs">
-      <DependentUpon>Template2Form.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TemplateListControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="TemplateListControl.api.cs">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TemplateListControl.Designer.cs">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DocumentParserClassDefinitionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DocumentParserClassDefinitionsForm.Designer.cs">
-      <DependentUpon>DocumentParserClassDefinitionsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="TemplatesSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="TemplatesSettingsForm.Designer.cs">
-      <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>
-    </Compile>
-    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="DebugForm.resx">
-      <DependentUpon>DebugForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FileFilterForm.resx">
-      <DependentUpon>FileFilterForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Template2JsonForm.resx">
-      <DependentUpon>Template2JsonForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Template2Form.resx">
-      <DependentUpon>Template2Form.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TemplateListControl.resx">
-      <DependentUpon>TemplateListControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DocumentParserClassDefinitionsForm.resx">
-      <DependentUpon>DocumentParserClassDefinitionsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TemplatesSettingsForm.resx">
-      <DependentUpon>TemplatesSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="app.manifest" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PdfDocumentParser\PdfDocumentParser.csproj">
-      <Project>{b1d7ba69-35aa-45bd-b1d0-d84fd2bc47a0}</Project>
-      <Name>PdfDocumentParser</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-    </PropertyGroup>
-  </Target>
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<UseWindowsForms>true</UseWindowsForms>
+		<ForceDesignerDPIUnaware>true</ForceDesignerDPIUnaware>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+		<!-- Optional: Keeps legacy default font (Microsoft Sans Serif 8.25pt) instead of Segoe UI 9pt -->
+		<!--ApplicationDefaultFont>Microsoft Sans Serif, 8.25pt</ApplicationDefaultFont-->
+
+		<Version>6.0.0</Version>
+		<Authors>Sergiy Stoyan</Authors>
+		<Company>CliverSoft</Company>
+		<Copyright>Sergiy Stoyan</Copyright>
+		<RootNamespace>Cliver.ParserTemplateList</RootNamespace>
+		<Platforms>AnyCPU;x64</Platforms>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove=".gitattributes" />
+	  <None Remove=".gitignore" />
+	  <None Remove="LICENSE" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="CliverRoutines" Version="7.0.0" />
+		<PackageReference Include="CliverWinRoutines" Version="3.0.1.594" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\PdfDocumentParser\PdfDocumentParser.csproj" />
+	</ItemGroup>
+
+
 </Project>

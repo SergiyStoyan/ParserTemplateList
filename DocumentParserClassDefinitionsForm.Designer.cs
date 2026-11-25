@@ -40,7 +40,7 @@
             this.templatesUsingSelectedDocumentParserClass = new System.Windows.Forms.ComboBox();
             this.bSelectedTemplateEdit = new System.Windows.Forms.Button();
             this.bSelectedTemplateEdit2 = new System.Windows.Forms.Button();
-            this.DocumentParserClassDefinitions = new ICSharpCode.TextEditor.TextEditorControl();
+            this.DocumentParserClassDefinitions = new ICSharpCode.TextEditor.TextEditorControlEx();
             this.panel1 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -178,10 +178,10 @@
             // 
             // DocumentParserClassDefinitions
             // 
-            this.DocumentParserClassDefinitions.AutoHideScrollbars = false;
+            //this.DocumentParserClassDefinitions.AutoHideScrollbars = false;
             this.DocumentParserClassDefinitions.AutoScroll = true;
             this.DocumentParserClassDefinitions.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DocumentParserClassDefinitions.Highlighting = null;
+            this.DocumentParserClassDefinitions.SyntaxHighlighting = "C#";
             this.DocumentParserClassDefinitions.Location = new System.Drawing.Point(0, 0);
             this.DocumentParserClassDefinitions.Margin = new System.Windows.Forms.Padding(1);
             this.DocumentParserClassDefinitions.Name = "DocumentParserClassDefinitions";
@@ -219,7 +219,7 @@
         #endregion
         private System.Windows.Forms.Button bCancel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinitions;
+        private ICSharpCode.TextEditor.TextEditorControlEx DocumentParserClassDefinitions;
         private System.Windows.Forms.Button bOK;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
         private System.Windows.Forms.Label label1;

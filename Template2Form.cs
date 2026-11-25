@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel;
 
 namespace Cliver.ParserTemplateList
 {
@@ -69,6 +70,7 @@ namespace Cliver.ParserTemplateList
 
         protected virtual UserControl customControl { get; } = null;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         virtual public Template2T Template2
         {
             set

@@ -30,6 +30,7 @@ namespace Cliver.ParserTemplateList
         TemplateListControl<Template2T, DocumentParserT> templateListControl;
         DataGridViewRow template2Row;
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         virtual public Template2T Template2
         {
             set

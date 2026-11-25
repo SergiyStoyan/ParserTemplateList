@@ -46,7 +46,7 @@
             this.label9 = new System.Windows.Forms.Label();
             this.DocumentParserClass = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.DocumentParserClassDefinition = new ICSharpCode.TextEditor.TextEditorControl();
+            this.DocumentParserClassDefinition = new ICSharpCode.TextEditor.TextEditorControlEx();
             this.pMain = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.OrderWeight)).BeginInit();
@@ -242,9 +242,9 @@
             this.DocumentParserClassDefinition.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.DocumentParserClassDefinition.AutoHideScrollbars = false;
+            //this.DocumentParserClassDefinition.AutoHideScrollbars = false;
             this.DocumentParserClassDefinition.AutoScroll = true;
-            this.DocumentParserClassDefinition.Highlighting = null;
+            this.DocumentParserClassDefinition.SyntaxHighlighting = "C#";
             this.DocumentParserClassDefinition.Location = new System.Drawing.Point(6, 60);
             this.DocumentParserClassDefinition.Margin = new System.Windows.Forms.Padding(1);
             this.DocumentParserClassDefinition.Name = "DocumentParserClassDefinition";
@@ -308,7 +308,7 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox DocumentParserClass;
         private System.Windows.Forms.Label label5;
-        private ICSharpCode.TextEditor.TextEditorControl DocumentParserClassDefinition;
+        private ICSharpCode.TextEditor.TextEditorControlEx DocumentParserClassDefinition;
         private System.Windows.Forms.Panel pMain;
     }
 }
